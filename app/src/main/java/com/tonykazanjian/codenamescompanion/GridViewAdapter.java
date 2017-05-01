@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import org.askerov.dynamicgrid.BaseDynamicGridAdapter;
 
@@ -39,6 +40,7 @@ public class GridViewAdapter extends BaseDynamicGridAdapter {
         EditText mCardText;
         ImageView mCloseBtn;
         ImageView mEditBtn;
+
 
         public CardHolder(View itemView) {
             super(itemView);
