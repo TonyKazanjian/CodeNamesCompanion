@@ -30,23 +30,30 @@ public class GridViewAdapter extends BaseDynamicGridAdapter {
             view = LayoutInflater.from(getContext()).inflate(R.layout.item_card, null);
             holder = new CardHolder(view);
             view.setTag(holder);
+        } else {
+            holder = (CardHolder)view.getTag();
         }
 
+        holder.build("Word");
         return view;
     }
 
     private class CardHolder extends RecyclerView.ViewHolder {
 
-        EditText mCardText;
+        TextView mCardText;
         ImageView mCloseBtn;
         ImageView mEditBtn;
 
 
         public CardHolder(View itemView) {
             super(itemView);
-            mCardText = (EditText) itemView.findViewById(R.id.card_edit_text);
+            mCardText = (TextView) itemView.findViewById(R.id.card_text);
             mCloseBtn = (ImageView) itemView.findViewById(R.id.close_btn);
             mEditBtn = (ImageView) itemView.findViewById(R.id.edit_btn);
+        }
+
+        void build(String word) {
+            mCardText.setText(word);
         }
     }
 }
