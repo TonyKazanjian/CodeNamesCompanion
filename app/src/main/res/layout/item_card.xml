@@ -5,8 +5,11 @@
                                              android:layout_height="match_parent"
                                              xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <EditText
+    <TextView
         android:id="@+id/card_edit_text"
+        android:text="Word"
+        android:textSize="60sp"
+        android:gravity="center"
         android:layout_width="368dp"
         android:layout_height="71dp"
         android:layout_marginTop="8dp"
@@ -38,6 +41,7 @@
         android:layout_marginRight="8dp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="8dp"/>
+        android:layout_marginTop="8dp"
+        android:visibility="gone"/>
 
 </android.support.constraint.ConstraintLayout>
