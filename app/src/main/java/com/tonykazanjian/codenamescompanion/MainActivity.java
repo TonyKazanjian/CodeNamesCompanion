@@ -1,6 +1,5 @@
 package com.tonykazanjian.codenamescompanion;
 
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -37,14 +36,24 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
     }
 
     @Override
-    public void displayCards(List<?> cards) {
+    public void onCardsDisplayed(List<?> cards) {
         cards = new ArrayList<>(Arrays.asList(words));
         mGridViewAdapter = new GridViewAdapter(this, cards, 3);
         mDynamicGridView.setAdapter(mGridViewAdapter);
     }
 
     @Override
-    public void removeCard() {
+    public void onEditModeInit() {
+
+    }
+
+    @Override
+    public void onEditStopItemClicked() {
+
+    }
+
+    @Override
+    public void onRemoveBtnClicked() {
 
     }
 

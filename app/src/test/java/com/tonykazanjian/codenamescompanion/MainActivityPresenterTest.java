@@ -9,6 +9,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 
@@ -36,6 +39,17 @@ public class MainActivityPresenterTest {
 
     @Test
     public void checkIfCardsAreDisplayed() {
-        Assert.assertEquals(1, mainActivityPresenter.getCardCount());
+        mainActivityPresenter.showCards(new ArrayList<WordCard>());
+        Assert.assertEquals(9, mainActivityPresenter.getCardCount());
+    }
+
+    @Test
+    public void checkEditModeStopped(){
+
+    }
+
+    @Test
+    public void checkEditModeStarted(){
+
     }
 }

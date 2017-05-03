@@ -10,7 +10,7 @@
     <org.askerov.dynamicgrid.DynamicGridView
         android:id="@+id/card_grid"
         android:layout_width="0dp"
-        android:layout_height="495dp"
+        android:layout_height="wrap_content"
         android:verticalSpacing="4dp"
         android:horizontalSpacing="4dp"
         android:numColumns="3"

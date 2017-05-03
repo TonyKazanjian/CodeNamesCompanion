@@ -1,6 +1,5 @@
 package com.tonykazanjian.codenamescompanion;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -10,24 +9,23 @@ import java.util.List;
 public class MainActivityPresenter {
 
     private MainActivityView mMainActivityView;
-    private int mCardCount;
+    private List<WordCard> mWordCards;
 
     public MainActivityPresenter(MainActivityView mainActivityView) {
         mMainActivityView = mainActivityView;
     }
 
     public void showCards(List<WordCard> cards){
-        WordCard card = new WordCard();
+        mWordCards = cards;
 
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i <= 8; i++) {
+            WordCard card = new WordCard();
             cards.add(card);
-            getCardCount();
         }
-        mMainActivityView.displayCards(cards);
+        mMainActivityView.onCardsDisplayed(cards);
     }
 
     public int getCardCount() {
-        mCardCount++;
-        return mCardCount;
+        return mWordCards.size();
     }
 }

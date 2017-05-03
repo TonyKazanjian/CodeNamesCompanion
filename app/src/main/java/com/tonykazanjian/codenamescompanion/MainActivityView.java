@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface MainActivityView {
 
-    void displayCards(List<?> cards);
-    void removeCard();
+    void onCardsDisplayed(List<?> cards);
+    void onEditModeInit();
+    void onEditStopItemClicked();
+    void onRemoveBtnClicked();
 }
