@@ -8,9 +8,7 @@ public class WordCard {
 
     private String mWord;
 
-    public WordCard(String word) {
-        mWord = word;
-    }
+    WordCard() {}
 
     public String getWord() {
         return mWord;

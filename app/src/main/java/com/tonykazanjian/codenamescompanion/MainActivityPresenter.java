@@ -17,9 +17,9 @@ public class MainActivityPresenter {
     }
 
     public void showCards(List<WordCard> cards){
-        WordCard card = new WordCard("word card");
+        WordCard card = new WordCard();
 
-        for (int i = 0; i <= 8; i++) {
+        for (int i = 0; i < 9; i++) {
             cards.add(card);
             getCardCount();
         }

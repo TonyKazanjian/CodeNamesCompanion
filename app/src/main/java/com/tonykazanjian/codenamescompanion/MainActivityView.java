@@ -8,7 +8,6 @@ import java.util.List;
 
 public interface MainActivityView {
 
-    void displayCards(List<WordCard> cards);
-    void saveTextOnCard(String text);
+    void displayCards(List<?> cards);
     void removeCard();
 }

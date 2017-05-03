@@ -34,7 +34,7 @@ public class GridViewAdapter extends BaseDynamicGridAdapter {
             holder = (CardHolder)view.getTag();
         }
 
-        holder.build("Word");
+        holder.build(getItem(i).toString());
         return view;
     }
 
