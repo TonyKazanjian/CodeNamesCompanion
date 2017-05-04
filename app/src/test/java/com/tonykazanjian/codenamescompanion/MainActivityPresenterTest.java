@@ -24,14 +24,14 @@ public class MainActivityPresenterTest {
 
 
     private MainActivityPresenter mainActivityPresenter;
+
+    @Mock
     private MainActivityView mMainActivityView;
-    private DynamicGridView mDynamicGridView;
 
 
     @Before
     public void setUp() throws Exception {
         mMainActivityView = mock(MainActivityView.class);
-        mDynamicGridView = mock(DynamicGridView.class);
         mainActivityPresenter = new MainActivityPresenter(mMainActivityView);
 
     }
@@ -49,13 +49,13 @@ public class MainActivityPresenterTest {
 
     @Test
     public void checkEditModeStopped(){
-
+        mainActivityPresenter.turnOffEditMode();
+        Mockito.verify(mMainActivityView).onEditStopItemClicked();
     }
 
     @Test
     public void checkEditModeStarted(){
         mainActivityPresenter.editCards(1);
-        Assert.assertTrue(mDynamicGridView.isEditMode());
-
+        Mockito.verify(mMainActivityView).onEditModeInit(1);
     }
 }
