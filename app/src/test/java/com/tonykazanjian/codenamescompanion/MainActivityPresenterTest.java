@@ -1,6 +1,8 @@
 package com.tonykazanjian.codenamescompanion;
 
-import org.askerov.dynamicgrid.DynamicGridView;
+import com.tonykazanjian.codenamescompanion.main.MainActivityPresenter;
+import com.tonykazanjian.codenamescompanion.main.MainActivityView;
+
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -11,9 +13,7 @@ import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 
 /**

@@ -1,4 +1,4 @@
-package com.tonykazanjian.codenamescompanion;
+package com.tonykazanjian.codenamescompanion.main;
 
 import java.util.List;
 

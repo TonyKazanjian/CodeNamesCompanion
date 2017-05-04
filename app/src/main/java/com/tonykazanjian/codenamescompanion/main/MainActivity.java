@@ -1,13 +1,16 @@
-package com.tonykazanjian.codenamescompanion;
+package com.tonykazanjian.codenamescompanion.main;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
+
+import com.tonykazanjian.codenamescompanion.adapter.GridViewAdapter;
+import com.tonykazanjian.codenamescompanion.R;
+import com.tonykazanjian.codenamescompanion.WordCard;
 
 import org.askerov.dynamicgrid.DynamicGridView;
 

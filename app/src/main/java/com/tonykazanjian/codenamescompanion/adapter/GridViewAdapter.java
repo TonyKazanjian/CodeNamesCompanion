@@ -1,13 +1,14 @@
-package com.tonykazanjian.codenamescompanion;
+package com.tonykazanjian.codenamescompanion.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.tonykazanjian.codenamescompanion.R;
 
 import org.askerov.dynamicgrid.BaseDynamicGridAdapter;
 

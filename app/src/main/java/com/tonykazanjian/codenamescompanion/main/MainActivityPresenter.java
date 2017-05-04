@@ -1,4 +1,6 @@
-package com.tonykazanjian.codenamescompanion;
+package com.tonykazanjian.codenamescompanion.main;
+
+import com.tonykazanjian.codenamescompanion.WordCard;
 
 import java.util.List;
 
