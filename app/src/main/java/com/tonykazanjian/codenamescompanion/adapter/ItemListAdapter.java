@@ -37,8 +37,8 @@ public class ItemListAdapter extends ItemBaseAdapter {
             rowView = inflater.inflate(R.layout.row, null);
 
            ViewHolder viewHolder = new ViewHolder();
-            viewHolder.icon = (ImageView) rowView.findViewById(R.id.rowImageView);
-            viewHolder.text = (TextView) rowView.findViewById(R.id.rowTextView);
+//            viewHolder.icon = (ImageView) rowView.findViewById(R.id.rowImageView);
+//            viewHolder.text = (TextView) rowView.findViewById(R.id.rowTextView);
             rowView.setTag(viewHolder);
         }
 
