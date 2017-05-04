@@ -2,6 +2,8 @@ package com.tonykazanjian.codenamescompanion;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -18,6 +20,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
     private MainActivityPresenter mMainActivityPresenter;
     private GridViewAdapter mGridViewAdapter;
     private DynamicGridView mDynamicGridView;
+    private MenuItem mStopEditBtn;
+
+
+    /** Data vars **/
     private String[] words = {"a", "b", "c", "d", "e", "f", "g", "h", "i"};
 
     @Override
@@ -36,6 +42,24 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        mStopEditBtn = menu.findItem(R.id.stop_edit_btn);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.stop_edit_btn:
+                mMainActivityPresenter.turnOffEditMode();
+        }
+        return true;
+    }
+
+    @Override
     public void onCardsDisplayed(List<?> cards) {
         cards = new ArrayList<>(Arrays.asList(words));
         mGridViewAdapter = new GridViewAdapter(this, cards, 3);
@@ -43,13 +67,15 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
     }
 
     @Override
-    public void onEditModeInit() {
-
+    public void onEditModeInit(int item) {
+        mDynamicGridView.startEditMode(item);
+        mStopEditBtn.setVisible(true);
     }
 
     @Override
     public void onEditStopItemClicked() {
-
+        mDynamicGridView.stopEditMode();
+        mStopEditBtn.setVisible(false);
     }
 
     @Override
@@ -59,8 +85,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
 
     @Override
     public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-        mDynamicGridView.startEditMode(i);
-
+        mMainActivityPresenter.editCards(i);
         return true;
     }
 }

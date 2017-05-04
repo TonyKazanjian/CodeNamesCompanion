@@ -3,8 +3,9 @@
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/edit_profile_done"
+        android:id="@+id/stop_edit_btn"
         android:title="Stop Edit Mode"
+        android:visible="false"
         app:showAsAction="always" />
 
 </menu>

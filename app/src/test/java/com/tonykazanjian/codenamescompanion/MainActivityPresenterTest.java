@@ -1,5 +1,6 @@
 package com.tonykazanjian.codenamescompanion;
 
+import org.askerov.dynamicgrid.DynamicGridView;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -23,12 +24,15 @@ public class MainActivityPresenterTest {
 
 
     private MainActivityPresenter mainActivityPresenter;
+    private MainActivityView mMainActivityView;
+    private DynamicGridView mDynamicGridView;
 
 
     @Before
     public void setUp() throws Exception {
-        MainActivityView mainActivityView = mock(MainActivityView.class);
-        mainActivityPresenter = new MainActivityPresenter(mainActivityView);
+        mMainActivityView = mock(MainActivityView.class);
+        mDynamicGridView = mock(DynamicGridView.class);
+        mainActivityPresenter = new MainActivityPresenter(mMainActivityView);
 
     }
 
@@ -50,6 +54,8 @@ public class MainActivityPresenterTest {
 
     @Test
     public void checkEditModeStarted(){
+        mainActivityPresenter.editCards(1);
+        Assert.assertTrue(mDynamicGridView.isEditMode());
 
     }
 }

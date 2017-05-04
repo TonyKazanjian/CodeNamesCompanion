@@ -28,4 +28,12 @@ public class MainActivityPresenter {
     public int getCardCount() {
         return mWordCards.size();
     }
+
+    public void editCards(int item) {
+        mMainActivityView.onEditModeInit(item);
+    }
+
+    public void turnOffEditMode(){
+        mMainActivityView.onEditStopItemClicked();
+    }
 }

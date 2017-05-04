@@ -9,7 +9,7 @@ import java.util.List;
 public interface MainActivityView {
 
     void onCardsDisplayed(List<?> cards);
-    void onEditModeInit();
+    void onEditModeInit(int item);
     void onEditStopItemClicked();
     void onRemoveBtnClicked();
 }
