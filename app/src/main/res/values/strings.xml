@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">CodeNamesCompanion</string>
+    <string name="bottom_panel_title">Codenames</string>
 </resources>
