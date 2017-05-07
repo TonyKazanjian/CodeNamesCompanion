@@ -1,4 +1,4 @@
-package com.tonykazanjian.codenamescompanion.main;
+package com.tonykazanjian.codenamescompanion.listeners.list;
 
 import android.view.DragEvent;
 import android.view.View;
@@ -16,24 +16,24 @@ import java.util.List;
  * @author Tony Kazanjian
  */
 
-public class ItemDragListener implements View.OnDragListener {
+public class ListViewDragListener implements View.OnDragListener {
     @Override
     public boolean onDrag(View view, DragEvent dragEvent) {
 
         switch (dragEvent.getAction()) {
             case DragEvent.ACTION_DROP:
                 PassObject passObject = (PassObject) dragEvent.getLocalState();
-                View itemView = passObject.view;
+                View listView = passObject.view;
                 WordCard passedWord = passObject.mWordCard;
-                List<WordCard> wordCardList = passObject.mWordCardList;
-                AbsListView oldParent = (AbsListView)itemView.getParent();
-                GridViewAdapter srcAdapter = (GridViewAdapter) (oldParent.getAdapter());
+                List<WordCard> srcList = passObject.mSourceList;
+                AbsListView oldParent = (AbsListView)listView.getParent();
+                ItemBaseAdapter srcAdapter = (ItemBaseAdapter)(oldParent.getAdapter());
 
                 LinearLayoutAbsListView newParent = (LinearLayoutAbsListView)view;
-                ItemBaseAdapter destAdapter = (ItemBaseAdapter)(newParent.mAbsListView.getAdapter());
+                ItemBaseAdapter destAdapter = (ItemBaseAdapter) (newParent.mAbsListView.getAdapter());
                 List<WordCard> destList = destAdapter.getWordCards();
 
-                if(removeItemToList(wordCardList, passedWord)){
+                if(removeItemToList(srcList, passedWord)){
                     addItemToList(destList, passedWord);
                 }
 
@@ -44,6 +44,8 @@ public class ItemDragListener implements View.OnDragListener {
                 newParent.mAbsListView.smoothScrollToPosition(destAdapter.getCount()-1);
 
                 break;
+
+
         }
         return true;
     }

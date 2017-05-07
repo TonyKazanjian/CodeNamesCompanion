@@ -12,11 +12,11 @@ public class PassObject {
 
     public View view;
     public WordCard mWordCard;
-    public List<WordCard> mWordCardList;
+    public List<WordCard> mSourceList;
 
-    public PassObject(View view, WordCard wordCard, List<WordCard> wordCardList) {
+    public PassObject(View view, WordCard wordCard, List<WordCard> sourceList) {
         this.view = view;
         mWordCard = wordCard;
-        mWordCardList = wordCardList;
+        mSourceList = sourceList;
     }
 }

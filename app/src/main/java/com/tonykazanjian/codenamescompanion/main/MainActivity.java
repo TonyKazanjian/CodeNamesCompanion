@@ -1,30 +1,28 @@
 package com.tonykazanjian.codenamescompanion.main;
 
-import android.content.ClipData;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.tonykazanjian.codenamescompanion.LinearLayoutAbsListView;
-import com.tonykazanjian.codenamescompanion.PassObject;
 import com.tonykazanjian.codenamescompanion.adapter.GridViewAdapter;
 import com.tonykazanjian.codenamescompanion.R;
 import com.tonykazanjian.codenamescompanion.WordCard;
-import com.tonykazanjian.codenamescompanion.adapter.ItemBaseAdapter;
 import com.tonykazanjian.codenamescompanion.adapter.ItemListAdapter;
+import com.tonykazanjian.codenamescompanion.listeners.grid.GridItemLongClickListener;
+import com.tonykazanjian.codenamescompanion.listeners.grid.GridViewDragListener;
+import com.tonykazanjian.codenamescompanion.listeners.list.ListItemLongClickListener;
+import com.tonykazanjian.codenamescompanion.listeners.list.ListViewDragListener;
 
 import org.askerov.dynamicgrid.DynamicGridView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements MainActivityView, AdapterView.OnItemLongClickListener{
+public class MainActivity extends AppCompatActivity implements MainActivityView {
 
     private MainActivityPresenter mMainActivityPresenter;
     private GridViewAdapter mGridViewAdapter;
@@ -52,22 +50,23 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
         mMainActivityPresenter = new MainActivityPresenter(this);
 
         mListView = (ListView)findViewById(R.id.listview1);
+        mDynamicGridView = (DynamicGridView) findViewById(R.id.card_grid);
+
 
         mCodePanel = (LinearLayoutAbsListView) findViewById(R.id.code_panel);
-        mCodePanel.setOnDragListener(new ItemDragListener());
+        mCodePanel.setOnDragListener(new ListViewDragListener());
         mCodePanel.setAbsListView(mListView);
         mGridPanel = (LinearLayoutAbsListView) findViewById(R.id.grid_panel);
-        mGridPanel.setOnDragListener(new ItemDragListener());
+        mGridPanel.setOnDragListener(new GridViewDragListener());
         mGridPanel.setAbsListView(mDynamicGridView);
+
+        mMainActivityPresenter.showCards(new ArrayList<WordCard>()); //creates and sets GridViewAdapter
+        mDynamicGridView.setOnItemLongClickListener(new GridItemLongClickListener(mMainActivityPresenter));
 
         mItemListAdapter = new ItemListAdapter(this, new ArrayList<WordCard>());
         mListView.setAdapter(mItemListAdapter);
         mListView.setOnItemLongClickListener(new ListItemLongClickListener());
-        mListView.setOnDragListener(new ItemDragListener());
-
-        mDynamicGridView = (DynamicGridView) findViewById(R.id.card_grid);
-        mMainActivityPresenter.showCards(new ArrayList<WordCard>());
-        mDynamicGridView.setOnItemLongClickListener(this);
+//        mListView.setOnDragListener(new ListViewDragListener());
     }
 
     @Override
@@ -113,23 +112,5 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
     @Override
     public void onRemoveBtnClicked() {
 
-    }
-
-    @Override
-    public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-        mMainActivityPresenter.editCards(i);
-
-        WordCard selectedWord = (WordCard) adapterView.getItemAtPosition(i);
-
-        GridViewAdapter associatedAdapter = (GridViewAdapter) (adapterView.getAdapter());
-        List<WordCard> wordCardList = associatedAdapter.getWordCards();
-
-        PassObject passObject = new PassObject(view, selectedWord, wordCardList);
-
-        ClipData data = ClipData.newPlainText("", "");
-        View.DragShadowBuilder shadowBuilder = new View.DragShadowBuilder(view);
-        view.startDrag(data, shadowBuilder, passObject, 0);
-
-        return true;
     }
 }

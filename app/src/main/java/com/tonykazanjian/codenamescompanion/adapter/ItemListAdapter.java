@@ -5,16 +5,13 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tonykazanjian.codenamescompanion.R;
 import com.tonykazanjian.codenamescompanion.WordCard;
-import com.tonykazanjian.codenamescompanion.main.ItemDragListener;
+import com.tonykazanjian.codenamescompanion.listeners.list.ListItemDragListener;
 
 import java.util.List;
-
-import static android.R.id.list;
 
 /**
  * @author Tony Kazanjian
@@ -23,7 +20,7 @@ import static android.R.id.list;
 public class ItemListAdapter extends ItemBaseAdapter {
 
     public ItemListAdapter(Context context, List<WordCard> wordCards) {
-        super(context, wordCards);
+        super(context, wordCards, 1);
     }
 
     @Override
@@ -34,7 +31,6 @@ public class ItemListAdapter extends ItemBaseAdapter {
         if (rowView == null) {
             LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
 
-            //TODO - create layout for row
             rowView = inflater.inflate(R.layout.item_word, null);
 
            ViewHolder viewHolder = new ViewHolder();
@@ -45,7 +41,7 @@ public class ItemListAdapter extends ItemBaseAdapter {
         ViewHolder holder = (ViewHolder) rowView.getTag();
         holder.text.setText(mWordCards.get(position).getWord());
 
-//        rowView.setOnDragListener(new ItemDragListener(mWordCards.get(position)));
+        rowView.setOnDragListener(new ListItemDragListener(mWordCards.get(position)));
 
         return rowView;
     }
