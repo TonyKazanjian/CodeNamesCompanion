@@ -1,4 +1,4 @@
-package com.tonykazanjian.codenamescompanion.listeners.grid;
+package com.tonykazanjian.codenamescompanion.listeners;
 
 import android.content.ClipData;
 import android.view.View;

@@ -16,13 +16,12 @@ import java.util.List;
  * @author Tony Kazanjian
  */
 
-public class ItemBaseAdapter extends BaseDynamicGridAdapter {
+public class ItemBaseAdapter extends BaseAdapter {
 
     Context mContext;
     List<WordCard> mWordCards;
 
-    public ItemBaseAdapter(Context context, List<WordCard> wordCards, int columncount) {
-        super(context, wordCards, columncount);
+    public ItemBaseAdapter(Context context, List<WordCard> wordCards) {
         mContext = context;
         mWordCards = wordCards;
     }
@@ -37,10 +36,10 @@ public class ItemBaseAdapter extends BaseDynamicGridAdapter {
         return mWordCards.get(i);
     }
 
-//    @Override
-//    public long getItemId(int i) {
-//        return i;
-//    }
+    @Override
+    public long getItemId(int i) {
+        return i;
+    }
 
     public List<WordCard> getWordCards(){
         return mWordCards;
@@ -49,20 +48,5 @@ public class ItemBaseAdapter extends BaseDynamicGridAdapter {
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         return null;
-    }
-
-    @Override
-    public void reorderItems(int originalPosition, int newPosition) {
-
-    }
-
-    @Override
-    public int getColumnCount() {
-        return 0;
-    }
-
-    @Override
-    public boolean canReorder(int position) {
-        return false;
     }
 }

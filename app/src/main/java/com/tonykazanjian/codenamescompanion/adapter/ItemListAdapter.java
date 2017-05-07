@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.tonykazanjian.codenamescompanion.R;
 import com.tonykazanjian.codenamescompanion.WordCard;
-import com.tonykazanjian.codenamescompanion.listeners.list.ListItemDragListener;
+import com.tonykazanjian.codenamescompanion.listeners.ItemDragListener;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ import java.util.List;
 public class ItemListAdapter extends ItemBaseAdapter {
 
     public ItemListAdapter(Context context, List<WordCard> wordCards) {
-        super(context, wordCards, 1);
+        super(context, wordCards);
     }
 
     @Override
@@ -36,12 +36,11 @@ public class ItemListAdapter extends ItemBaseAdapter {
            ViewHolder viewHolder = new ViewHolder();
             viewHolder.text = (TextView) rowView.findViewById(R.id.word_text);
             rowView.setTag(viewHolder);
+        } else {
+            ViewHolder holder = (ViewHolder) rowView.getTag();
+            holder.text.setText(mWordCards.get(position).getWord());
+            rowView.setOnDragListener(new ItemDragListener(mWordCards.get(position)));
         }
-
-        ViewHolder holder = (ViewHolder) rowView.getTag();
-        holder.text.setText(mWordCards.get(position).getWord());
-
-        rowView.setOnDragListener(new ListItemDragListener(mWordCards.get(position)));
 
         return rowView;
     }

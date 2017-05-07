@@ -12,10 +12,9 @@ import com.tonykazanjian.codenamescompanion.adapter.GridViewAdapter;
 import com.tonykazanjian.codenamescompanion.R;
 import com.tonykazanjian.codenamescompanion.WordCard;
 import com.tonykazanjian.codenamescompanion.adapter.ItemListAdapter;
-import com.tonykazanjian.codenamescompanion.listeners.grid.GridItemLongClickListener;
-import com.tonykazanjian.codenamescompanion.listeners.grid.GridViewDragListener;
-import com.tonykazanjian.codenamescompanion.listeners.list.ListItemLongClickListener;
-import com.tonykazanjian.codenamescompanion.listeners.list.ListViewDragListener;
+import com.tonykazanjian.codenamescompanion.listeners.GridItemLongClickListener;
+import com.tonykazanjian.codenamescompanion.listeners.ListItemLongClickListener;
+import com.tonykazanjian.codenamescompanion.listeners.ViewDragListener;
 
 import org.askerov.dynamicgrid.DynamicGridView;
 
@@ -54,10 +53,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
 
 
         mCodePanel = (LinearLayoutAbsListView) findViewById(R.id.code_panel);
-        mCodePanel.setOnDragListener(new ListViewDragListener());
+        mCodePanel.setOnDragListener(new ViewDragListener());
         mCodePanel.setAbsListView(mListView);
         mGridPanel = (LinearLayoutAbsListView) findViewById(R.id.grid_panel);
-        mGridPanel.setOnDragListener(new GridViewDragListener());
+        mGridPanel.setOnDragListener(new ViewDragListener());
         mGridPanel.setAbsListView(mDynamicGridView);
 
         mMainActivityPresenter.showCards(new ArrayList<WordCard>()); //creates and sets GridViewAdapter
@@ -66,7 +65,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
         mItemListAdapter = new ItemListAdapter(this, new ArrayList<WordCard>());
         mListView.setAdapter(mItemListAdapter);
         mListView.setOnItemLongClickListener(new ListItemLongClickListener());
-//        mListView.setOnDragListener(new ListViewDragListener());
     }
 
     @Override

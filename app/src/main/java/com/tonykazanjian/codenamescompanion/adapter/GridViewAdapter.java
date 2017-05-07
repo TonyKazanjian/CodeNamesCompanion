@@ -10,7 +10,7 @@ import android.widget.TextView;
 
 import com.tonykazanjian.codenamescompanion.R;
 import com.tonykazanjian.codenamescompanion.WordCard;
-import com.tonykazanjian.codenamescompanion.listeners.grid.GridItemDragListener;
+import com.tonykazanjian.codenamescompanion.listeners.ItemDragListener;
 
 import org.askerov.dynamicgrid.BaseDynamicGridAdapter;
 
@@ -20,7 +20,7 @@ import java.util.List;
  * @author Tony Kazanjian
  */
 
-public class GridViewAdapter extends ItemBaseAdapter {
+public class GridViewAdapter extends BaseDynamicGridAdapter {
 
     List<WordCard> mWordCards;
     Context mContext;
@@ -44,9 +44,9 @@ public class GridViewAdapter extends ItemBaseAdapter {
 
         if (mWordCards.size() != 0) {
             holder.build(mWordCards.get(i));
-
-            view.setOnDragListener(new GridItemDragListener(mWordCards.get(i)));
+            view.setOnDragListener(new ItemDragListener(mWordCards.get(i)));
         }
+
         return view;
     }
 

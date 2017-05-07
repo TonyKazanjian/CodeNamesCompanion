@@ -1,8 +1,9 @@
-package com.tonykazanjian.codenamescompanion.listeners.list;
+package com.tonykazanjian.codenamescompanion.listeners;
 
 import android.view.DragEvent;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.BaseAdapter;
 
 import com.tonykazanjian.codenamescompanion.LinearLayoutAbsListView;
 import com.tonykazanjian.codenamescompanion.PassObject;
@@ -16,7 +17,12 @@ import java.util.List;
  * @author Tony Kazanjian
  */
 
-public class ListViewDragListener implements View.OnDragListener {
+public class ViewDragListener implements View.OnDragListener {
+
+    private BaseAdapter srcAdapter;
+    private BaseAdapter destAdapter;
+    private List<WordCard> destList;
+
     @Override
     public boolean onDrag(View view, DragEvent dragEvent) {
 
@@ -27,11 +33,21 @@ public class ListViewDragListener implements View.OnDragListener {
                 WordCard passedWord = passObject.mWordCard;
                 List<WordCard> srcList = passObject.mSourceList;
                 AbsListView oldParent = (AbsListView)listView.getParent();
-                ItemBaseAdapter srcAdapter = (ItemBaseAdapter)(oldParent.getAdapter());
+                if (oldParent.getAdapter() instanceof GridViewAdapter) {
+                    srcAdapter = (GridViewAdapter) (oldParent.getAdapter());
+                } else {
+                    srcAdapter = (ItemBaseAdapter) (oldParent.getAdapter());
+                }
 
                 LinearLayoutAbsListView newParent = (LinearLayoutAbsListView)view;
-                ItemBaseAdapter destAdapter = (ItemBaseAdapter) (newParent.mAbsListView.getAdapter());
-                List<WordCard> destList = destAdapter.getWordCards();
+                if (newParent.mAbsListView.getAdapter() instanceof GridViewAdapter) {
+                    destAdapter = (GridViewAdapter) newParent.mAbsListView.getAdapter();
+                    destList = ((GridViewAdapter)destAdapter).getWordCards();
+                } else {
+                    destAdapter = (ItemBaseAdapter) newParent.mAbsListView.getAdapter();
+                    destList = ((ItemBaseAdapter)destAdapter).getWordCards();
+                }
+
 
                 if(removeItemToList(srcList, passedWord)){
                     addItemToList(destList, passedWord);
@@ -51,6 +67,7 @@ public class ListViewDragListener implements View.OnDragListener {
     }
 
     private boolean removeItemToList(List<WordCard> l, WordCard it){
+
         return l.remove(it);
     }
 
