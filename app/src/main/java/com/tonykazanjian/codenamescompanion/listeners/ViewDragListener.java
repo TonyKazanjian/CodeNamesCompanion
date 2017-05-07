@@ -67,11 +67,18 @@ public class ViewDragListener implements View.OnDragListener {
     }
 
     private boolean removeItemToList(List<WordCard> l, WordCard it){
+        if (srcAdapter instanceof GridViewAdapter) {
+            ((GridViewAdapter) srcAdapter).remove(it);
+        }
 
         return l.remove(it);
     }
 
     private boolean addItemToList(List<WordCard> l, WordCard it){
+
+        if (destAdapter instanceof GridViewAdapter) {
+            ((GridViewAdapter)destAdapter).add(it);
+        }
         return l.add(it);
     }
 }
