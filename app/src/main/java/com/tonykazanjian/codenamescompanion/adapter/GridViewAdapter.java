@@ -23,29 +23,28 @@ import java.util.List;
 public class GridViewAdapter extends BaseDynamicGridAdapter {
 
     List<WordCard> mWordCards;
-    Context mContext;
 
     public GridViewAdapter(Context context, List<WordCard> words, int columnCount) {
         super(context, words, columnCount);
         mWordCards = words;
-        mContext = context;
     }
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         CardHolder holder;
         if (view == null) {
-            view = LayoutInflater.from(mContext).inflate(R.layout.item_card, null);
+            view = LayoutInflater.from(getContext()).inflate(R.layout.item_card, null);
             holder = new CardHolder(view);
             view.setTag(holder);
         } else {
             holder = (CardHolder)view.getTag();
         }
 
-        if (mWordCards.size() != 0) {
-            holder.build(mWordCards.get(i));
+        if (i <= mWordCards.size()-1){
+            holder.mCardText.setText(mWordCards.get(i).getWord());
             view.setOnDragListener(new ItemDragListener(mWordCards.get(i)));
         }
+
 
         return view;
     }
@@ -60,16 +59,11 @@ public class GridViewAdapter extends BaseDynamicGridAdapter {
         ImageView mCloseBtn;
         ImageView mEditBtn;
 
-
         public CardHolder(View itemView) {
             super(itemView);
             mCardText = (TextView) itemView.findViewById(R.id.card_text);
             mCloseBtn = (ImageView) itemView.findViewById(R.id.close_btn);
             mEditBtn = (ImageView) itemView.findViewById(R.id.edit_btn);
-        }
-
-        void build(WordCard word) {
-            mCardText.setText(word.getWord());
         }
     }
 }

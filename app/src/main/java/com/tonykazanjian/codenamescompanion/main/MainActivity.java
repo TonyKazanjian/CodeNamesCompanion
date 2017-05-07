@@ -51,7 +51,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
         mListView = (ListView)findViewById(R.id.listview1);
         mDynamicGridView = (DynamicGridView) findViewById(R.id.card_grid);
 
-
         mCodePanel = (LinearLayoutAbsListView) findViewById(R.id.code_panel);
         mCodePanel.setOnDragListener(new ViewDragListener());
         mCodePanel.setAbsListView(mListView);
@@ -91,6 +90,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
         WordCard card1 = new WordCard();
         card1.setWord("Dog");
         cards.add(card1);
+        WordCard card2 = new WordCard();
+        card2.setWord("Cat");
+        cards.add(card2);
+        WordCard card3 = new WordCard();
+        card3.setWord("Monkey");
+        cards.add(card3);
         mGridViewAdapter = new GridViewAdapter(this, cards, 3);
         mDynamicGridView.setAdapter(mGridViewAdapter);
     }

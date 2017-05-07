@@ -1,5 +1,6 @@
 package com.tonykazanjian.codenamescompanion.listeners;
 
+import android.support.v7.widget.CardView;
 import android.view.DragEvent;
 import android.view.View;
 import android.widget.AbsListView;
@@ -45,12 +46,14 @@ public class ItemDragListener implements View.OnDragListener {
                 }
 
                 LinearLayoutAbsListView newParent = (LinearLayoutAbsListView)view;
-                if (newParent.mAbsListView.getAdapter() instanceof GridViewAdapter) {
-                    destAdapter = (GridViewAdapter) newParent.mAbsListView.getAdapter();
-                    destList = ((GridViewAdapter)destAdapter).getWordCards();
-                } else {
-                    destAdapter = (ItemBaseAdapter) newParent.mAbsListView.getAdapter();
-                    destList = ((ItemBaseAdapter)destAdapter).getWordCards();
+                if (newParent.mAbsListView != null) {
+                    if (newParent.mAbsListView.getAdapter() instanceof GridViewAdapter) {
+                        destAdapter = (GridViewAdapter) newParent.mAbsListView.getAdapter();
+                        destList = ((GridViewAdapter) destAdapter).getWordCards();
+                    } else {
+                        destAdapter = (ItemBaseAdapter) newParent.mAbsListView.getAdapter();
+                        destList = ((ItemBaseAdapter) destAdapter).getWordCards();
+                    }
                 }
 
                 int removeLocation = srcList.indexOf(passedWord);
