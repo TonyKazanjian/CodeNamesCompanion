@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.tonykazanjian.codenamescompanion.R;
 import com.tonykazanjian.codenamescompanion.WordCard;
+import com.tonykazanjian.codenamescompanion.main.ItemDragListener;
 
 import java.util.List;
 
@@ -34,25 +35,22 @@ public class ItemListAdapter extends ItemBaseAdapter {
             LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
 
             //TODO - create layout for row
-            rowView = inflater.inflate(R.layout.row, null);
+            rowView = inflater.inflate(R.layout.item_word, null);
 
            ViewHolder viewHolder = new ViewHolder();
-//            viewHolder.icon = (ImageView) rowView.findViewById(R.id.rowImageView);
-//            viewHolder.text = (TextView) rowView.findViewById(R.id.rowTextView);
+            viewHolder.text = (TextView) rowView.findViewById(R.id.word_text);
             rowView.setTag(viewHolder);
         }
 
         ViewHolder holder = (ViewHolder) rowView.getTag();
-        holder.icon.setImageDrawable(list.get(position).ItemDrawable);
-        holder.text.setText(list.get(position).ItemString);
+        holder.text.setText(mWordCards.get(position).getWord());
 
-        rowView.setOnDragListener(new ItemOnDragListener(list.get(position)));
+//        rowView.setOnDragListener(new ItemDragListener(mWordCards.get(position)));
 
         return rowView;
     }
 
     static class ViewHolder {
-        ImageView icon;
         TextView text;
     }
 

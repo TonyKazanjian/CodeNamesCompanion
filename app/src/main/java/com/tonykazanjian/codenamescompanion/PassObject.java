@@ -10,9 +10,9 @@ import java.util.List;
 
 public class PassObject {
 
-    View view;
-    WordCard mWordCard;
-    List<WordCard> mWordCardList;
+    public View view;
+    public WordCard mWordCard;
+    public List<WordCard> mWordCardList;
 
     public PassObject(View view, WordCard wordCard, List<WordCard> wordCardList) {
         this.view = view;

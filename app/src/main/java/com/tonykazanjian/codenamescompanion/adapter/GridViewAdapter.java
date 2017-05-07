@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tonykazanjian.codenamescompanion.R;
+import com.tonykazanjian.codenamescompanion.WordCard;
+import com.tonykazanjian.codenamescompanion.main.ItemDragListener;
 
 import org.askerov.dynamicgrid.BaseDynamicGridAdapter;
 
@@ -20,8 +22,11 @@ import java.util.List;
 
 public class GridViewAdapter extends BaseDynamicGridAdapter {
 
-    public GridViewAdapter(Context context, List<?> items, int columnCount) {
-        super(context, items, columnCount);
+    List<WordCard> mWordCards;
+
+    public GridViewAdapter(Context context, List<WordCard> words, int columnCount) {
+        super(context, words, columnCount);
+        mWordCards = words;
     }
 
     @Override
@@ -35,8 +40,13 @@ public class GridViewAdapter extends BaseDynamicGridAdapter {
             holder = (CardHolder)view.getTag();
         }
 
-        holder.build(getItem(i).toString());
+        if (mWordCards.size() != 0)
+        holder.build(mWordCards.get(i));
         return view;
+    }
+
+    public List<WordCard> getWordCards() {
+        return mWordCards;
     }
 
     private class CardHolder extends RecyclerView.ViewHolder {
@@ -53,8 +63,8 @@ public class GridViewAdapter extends BaseDynamicGridAdapter {
             mEditBtn = (ImageView) itemView.findViewById(R.id.edit_btn);
         }
 
-        void build(String word) {
-            mCardText.setText(word);
+        void build(WordCard word) {
+            mCardText.setText(word.getWord());
         }
     }
 }

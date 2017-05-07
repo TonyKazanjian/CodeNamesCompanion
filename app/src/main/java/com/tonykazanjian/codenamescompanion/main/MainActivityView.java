@@ -1,5 +1,7 @@
 package com.tonykazanjian.codenamescompanion.main;
 
+import com.tonykazanjian.codenamescompanion.WordCard;
+
 import java.util.List;
 
 /**
@@ -8,7 +10,7 @@ import java.util.List;
 
 public interface MainActivityView {
 
-    void onCardsDisplayed(List<?> cards);
+    void onCardsDisplayed(List<WordCard> cards);
     void onEditModeInit(int item);
     void onEditStopItemClicked();
     void onRemoveBtnClicked();
