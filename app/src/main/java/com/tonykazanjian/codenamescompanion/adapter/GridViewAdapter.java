@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tonykazanjian.codenamescompanion.R;
+import com.tonykazanjian.codenamescompanion.WordCard;
+import com.tonykazanjian.codenamescompanion.listeners.ItemDragListener;
 
 import org.askerov.dynamicgrid.BaseDynamicGridAdapter;
 
@@ -20,8 +22,11 @@ import java.util.List;
 
 public class GridViewAdapter extends BaseDynamicGridAdapter {
 
-    public GridViewAdapter(Context context, List<?> items, int columnCount) {
-        super(context, items, columnCount);
+    List<WordCard> mWordCards;
+
+    public GridViewAdapter(Context context, List<WordCard> words, int columnCount) {
+        super(context, words, columnCount);
+        mWordCards = words;
     }
 
     @Override
@@ -35,8 +40,17 @@ public class GridViewAdapter extends BaseDynamicGridAdapter {
             holder = (CardHolder)view.getTag();
         }
 
-        holder.build(getItem(i).toString());
+        if (i <= mWordCards.size()-1){
+            holder.mCardText.setText(mWordCards.get(i).getWord());
+            view.setOnDragListener(new ItemDragListener(mWordCards.get(i)));
+        }
+
+
         return view;
+    }
+
+    public List<WordCard> getWordCards() {
+        return mWordCards;
     }
 
     private class CardHolder extends RecyclerView.ViewHolder {
@@ -45,16 +59,11 @@ public class GridViewAdapter extends BaseDynamicGridAdapter {
         ImageView mCloseBtn;
         ImageView mEditBtn;
 
-
         public CardHolder(View itemView) {
             super(itemView);
             mCardText = (TextView) itemView.findViewById(R.id.card_text);
             mCloseBtn = (ImageView) itemView.findViewById(R.id.close_btn);
             mEditBtn = (ImageView) itemView.findViewById(R.id.edit_btn);
-        }
-
-        void build(String word) {
-            mCardText.setText(word);
         }
     }
 }

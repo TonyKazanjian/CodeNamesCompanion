@@ -5,25 +5,33 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
+import android.widget.ListView;
 
+import com.tonykazanjian.codenamescompanion.LinearLayoutAbsListView;
 import com.tonykazanjian.codenamescompanion.adapter.GridViewAdapter;
 import com.tonykazanjian.codenamescompanion.R;
 import com.tonykazanjian.codenamescompanion.WordCard;
+import com.tonykazanjian.codenamescompanion.adapter.ItemListAdapter;
+import com.tonykazanjian.codenamescompanion.listeners.GridItemLongClickListener;
+import com.tonykazanjian.codenamescompanion.listeners.ListItemLongClickListener;
+import com.tonykazanjian.codenamescompanion.listeners.ViewDragListener;
 
 import org.askerov.dynamicgrid.DynamicGridView;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements MainActivityView, AdapterView.OnItemLongClickListener{
+public class MainActivity extends AppCompatActivity implements MainActivityView {
 
     private MainActivityPresenter mMainActivityPresenter;
     private GridViewAdapter mGridViewAdapter;
     private DynamicGridView mDynamicGridView;
     private MenuItem mStopEditBtn;
+
+    ListView mListView;
+    ItemListAdapter mItemListAdapter;
+    LinearLayoutAbsListView mCodePanel;
+    LinearLayoutAbsListView mGridPanel;
 
 
     /** Data vars **/
@@ -39,9 +47,23 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
 
     private void init() {
         mMainActivityPresenter = new MainActivityPresenter(this);
+
+        mListView = (ListView)findViewById(R.id.listview1);
         mDynamicGridView = (DynamicGridView) findViewById(R.id.card_grid);
-        mMainActivityPresenter.showCards(new ArrayList<WordCard>());
-        mDynamicGridView.setOnItemLongClickListener(this);
+
+        mCodePanel = (LinearLayoutAbsListView) findViewById(R.id.code_panel);
+        mCodePanel.setOnDragListener(new ViewDragListener());
+        mCodePanel.setAbsListView(mListView);
+        mGridPanel = (LinearLayoutAbsListView) findViewById(R.id.grid_panel);
+        mGridPanel.setOnDragListener(new ViewDragListener());
+        mGridPanel.setAbsListView(mDynamicGridView);
+
+        mMainActivityPresenter.showCards(new ArrayList<WordCard>()); //creates and sets GridViewAdapter
+        mDynamicGridView.setOnItemLongClickListener(new GridItemLongClickListener(mMainActivityPresenter));
+
+        mItemListAdapter = new ItemListAdapter(this, new ArrayList<WordCard>());
+        mListView.setAdapter(mItemListAdapter);
+        mListView.setOnItemLongClickListener(new ListItemLongClickListener());
     }
 
     @Override
@@ -63,8 +85,17 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
     }
 
     @Override
-    public void onCardsDisplayed(List<?> cards) {
-        cards = new ArrayList<>(Arrays.asList(words));
+    public void onCardsDisplayed(List<WordCard> cards) {
+        cards = new ArrayList<>();
+        WordCard card1 = new WordCard();
+        card1.setWord("Dog");
+        cards.add(card1);
+        WordCard card2 = new WordCard();
+        card2.setWord("Cat");
+        cards.add(card2);
+        WordCard card3 = new WordCard();
+        card3.setWord("Monkey");
+        cards.add(card3);
         mGridViewAdapter = new GridViewAdapter(this, cards, 3);
         mDynamicGridView.setAdapter(mGridViewAdapter);
     }
@@ -84,11 +115,5 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
     @Override
     public void onRemoveBtnClicked() {
 
-    }
-
-    @Override
-    public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-        mMainActivityPresenter.editCards(i);
-        return true;
     }
 }

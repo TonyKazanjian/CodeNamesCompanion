@@ -902,9 +902,13 @@ public class DynamicGridView extends GridView {
     private Point getColumnAndRowForView(View view) {
         int pos = getPositionForView(view);
         int columns = getColumnCount();
-        int column = pos % columns;
-        int row = pos / columns;
-        return new Point(column, row);
+        if (columns != 0) {
+            int column = pos % columns;
+            int row = pos / columns;
+            return new Point(column, row);
+        } else {
+            return new Point(0,0);
+        }
     }
 
     private long getId(int position) {

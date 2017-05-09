@@ -12,7 +12,7 @@ import android.widget.LinearLayout;
 
 public class LinearLayoutAbsListView extends LinearLayout {
 
-    AbsListView mAbsListView;
+    public AbsListView mAbsListView;
 
     public LinearLayoutAbsListView(Context context) {
         super(context);
@@ -26,7 +26,7 @@ public class LinearLayoutAbsListView extends LinearLayout {
         super(context, attrs, defStyleAttr);
     }
 
-    public void setAbsLIstView(AbsListView absListView) {
+    public void setAbsListView(AbsListView absListView) {
         mAbsListView = absListView;
     }
 }
