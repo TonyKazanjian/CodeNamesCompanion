@@ -1,5 +1,7 @@
 package com.tonykazanjian.codenamescompanion.main;
 
+import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -34,8 +36,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
     LinearLayoutAbsListView mGridPanel;
 
 
-    /** Data vars **/
-    private String[] words = {"a", "b", "c", "d", "e", "f", "g", "h", "i"};
+    public static Intent newIntent(Context context, ArrayList<WordCard> wordCards) {
+        Intent intent = new Intent(context, MainActivity.class);
+        intent.putParcelableArrayListExtra(WordCard.EXTRA_WORD_CARD_LIST, wordCards);
+        return intent;
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -86,16 +91,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
 
     @Override
     public void onCardsDisplayed(List<WordCard> cards) {
-        cards = new ArrayList<>();
-        WordCard card1 = new WordCard();
-        card1.setWord("Dog");
-        cards.add(card1);
-        WordCard card2 = new WordCard();
-        card2.setWord("Cat");
-        cards.add(card2);
-        WordCard card3 = new WordCard();
-        card3.setWord("Monkey");
-        cards.add(card3);
+        cards = getIntent().getParcelableArrayListExtra(WordCard.EXTRA_WORD_CARD_LIST);
         mGridViewAdapter = new GridViewAdapter(this, cards, 3);
         mDynamicGridView.setAdapter(mGridViewAdapter);
     }

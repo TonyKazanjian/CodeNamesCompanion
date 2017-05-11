@@ -1,5 +1,6 @@
 package com.tonykazanjian.codenamescompanion.start;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
@@ -10,6 +11,7 @@ import android.widget.Button;
 
 import com.tonykazanjian.codenamescompanion.R;
 import com.tonykazanjian.codenamescompanion.WordCard;
+import com.tonykazanjian.codenamescompanion.main.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -92,6 +94,8 @@ public class StartActivity extends AppCompatActivity implements StartActivityVie
         strings.add(mWordInputEditText8.getText().toString());
         strings.add(mWordInputEditText9.getText().toString());
         mStartActivityPresenter.setWordText(strings);
+
+        startActivity(MainActivity.newIntent(this, (ArrayList<WordCard>) mStartActivityPresenter.getWordCards()));
     }
 
     @Override
