@@ -60,4 +60,30 @@ public class StartActivityPresenterTest {
 
     }
 
+    @Test
+    public void checkReadiness(){
+        mWordCardList.add(new WordCard());
+        mWordCardList.add(new WordCard());
+        mWordCardList.add(new WordCard());
+        mWordCardList.add(new WordCard());
+        mWordCardList.add(new WordCard());
+        mWordCardList.add(new WordCard());
+        mWordCardList.add(new WordCard());
+        mWordCardList.add(new WordCard());
+        mWordCardList.add(new WordCard());
+
+        List<String> wordStrings = new ArrayList<>();
+        wordStrings.add("Cat");
+        wordStrings.add("Dog");
+        wordStrings.add("Fish");
+        wordStrings.add("Cat");
+        wordStrings.add("Dog");
+        wordStrings.add("Fish");
+        wordStrings.add("Cat");
+        wordStrings.add("Dog");
+        wordStrings.add("Fish");
+
+        Assert.assertTrue(mStartActivityPresenter.checkReadiness());
+    }
+
 }

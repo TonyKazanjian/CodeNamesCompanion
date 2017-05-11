@@ -10,8 +10,8 @@ import java.util.List;
 
 public class StartActivityPresenter {
 
-    private List<WordCard> mWordCards;
     private StartActivityView mStartActivityView;
+    private List<WordCard> mWordCards;
 
     public StartActivityPresenter(List<WordCard> wordCards, StartActivityView startActivityView) {
         mWordCards = wordCards;
@@ -19,8 +19,17 @@ public class StartActivityPresenter {
     }
 
     public void setWordText(List<String> stringList) {
+
         for (int i = 0; i < stringList.size(); i++) {
             mWordCards.get(i).setWord(stringList.get(i));
         }
+    }
+
+    public void startGame() {
+        mStartActivityView.onStartBtnPressed();
+    }
+
+    public boolean checkReadiness() {
+        return mWordCards.size() >= 7;
     }
 }
