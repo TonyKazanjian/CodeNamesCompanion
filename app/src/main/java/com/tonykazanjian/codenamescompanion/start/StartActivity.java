@@ -6,8 +6,10 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.tonykazanjian.codenamescompanion.R;
 import com.tonykazanjian.codenamescompanion.WordCard;
@@ -81,25 +83,42 @@ public class StartActivity extends AppCompatActivity implements StartActivityVie
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        mStartActivityPresenter.clearWords();
+    }
+
+    @Override
     public void onStartBtnPressed() {
 
         List<String> strings = new ArrayList<>();
-        strings.add(mWordInputEditText1.getText().toString());
-        strings.add(mWordInputEditText2.getText().toString());
-        strings.add(mWordInputEditText3.getText().toString());
-        strings.add(mWordInputEditText4.getText().toString());
-        strings.add(mWordInputEditText5.getText().toString());
-        strings.add(mWordInputEditText6.getText().toString());
-        strings.add(mWordInputEditText7.getText().toString());
-        strings.add(mWordInputEditText8.getText().toString());
-        strings.add(mWordInputEditText9.getText().toString());
+        TextInputEditText[] textInputEditTexts = {mWordInputEditText1, mWordInputEditText2,
+        mWordInputEditText3, mWordInputEditText4, mWordInputEditText5, mWordInputEditText6,
+        mWordInputEditText7, mWordInputEditText8, mWordInputEditText9};
+        checkForText(textInputEditTexts, strings);
         mStartActivityPresenter.setWordText(strings);
 
-        startActivity(MainActivity.newIntent(this, (ArrayList<WordCard>) mStartActivityPresenter.getWordCards()));
+        if (isGameReady()) {
+            startActivity(MainActivity.newIntent(this, (ArrayList<WordCard>) mStartActivityPresenter.getWordCards()));
+        } else {
+            Toast.makeText(getApplicationContext(), "You must have at least 8 words to start the game.", Toast.LENGTH_SHORT).show();
+        }
+
     }
 
     @Override
     public boolean isGameReady() {
-        return false;
+        return mStartActivityPresenter.getWordCards().size()>=8;
+    }
+
+    private void checkForText(TextInputEditText[] textInputEditTexts, List<String> strings) {
+
+        int i = 0;
+        while (i <=8) {
+            if (!TextUtils.isEmpty(textInputEditTexts[i].getText().toString())) {
+                strings.add(textInputEditTexts[i].getText().toString());
+            }
+            i++;
+        }
     }
 }

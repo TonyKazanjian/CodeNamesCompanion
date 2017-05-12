@@ -20,7 +20,6 @@ public class StartActivityPresenter {
 
     public void setWordText(List<String> stringList) {
 
-
         for (int i = 0; i < stringList.size(); i++) {
             mWordCards.add(i, new WordCard());
             mWordCards.get(i).setWord(stringList.get(i));
@@ -31,11 +30,11 @@ public class StartActivityPresenter {
         mStartActivityView.onStartBtnPressed();
     }
 
-    public boolean checkReadiness() {
-        return mWordCards.size() >= 7;
-    }
-
     public List<WordCard> getWordCards(){
         return mWordCards;
+    }
+
+    public void clearWords(){
+        mWordCards.clear();
     }
 }

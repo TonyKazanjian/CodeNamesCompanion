@@ -83,7 +83,7 @@ public class StartActivityPresenterTest {
         wordStrings.add("Dog");
         wordStrings.add("Fish");
 
-        Assert.assertTrue(mStartActivityPresenter.checkReadiness());
+        Assert.assertTrue(mStartActivityPresenter.getWordCards().size()>=7);
     }
 
 }
