@@ -96,12 +96,13 @@ public class StartActivity extends AppCompatActivity implements StartActivityVie
         mWordInputEditText3, mWordInputEditText4, mWordInputEditText5, mWordInputEditText6,
         mWordInputEditText7, mWordInputEditText8, mWordInputEditText9};
         checkForText(textInputEditTexts, strings);
-        mStartActivityPresenter.setWordText(strings);
 
+        mStartActivityPresenter.setWordText(strings);
         if (isGameReady()) {
             startActivity(MainActivity.newIntent(this, (ArrayList<WordCard>) mStartActivityPresenter.getWordCards()));
         } else {
             Toast.makeText(getApplicationContext(), "You must have at least 8 words to start the game.", Toast.LENGTH_SHORT).show();
+            mStartActivityPresenter.getWordCards().clear();
         }
 
     }
