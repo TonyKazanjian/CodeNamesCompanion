@@ -30,9 +30,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
     private DynamicGridView mDynamicGridView;
     private MenuItem mStopEditBtn;
 
-    ListView mListView;
-    ItemListAdapter mItemListAdapter;
-    LinearLayoutAbsListView mCodePanel;
+    ListView mListView1;
+    ListView mListView2;
+    ItemListAdapter mItemListAdapter1;
+    ItemListAdapter mItemListAdapter2;
+    LinearLayoutAbsListView mCodePanel1;
+    LinearLayoutAbsListView mCodePanel2;
     LinearLayoutAbsListView mGridPanel;
 
 
@@ -53,12 +56,16 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
     private void init() {
         mMainActivityPresenter = new MainActivityPresenter(this);
 
-        mListView = (ListView)findViewById(R.id.listview1);
+        mListView1 = (ListView)findViewById(R.id.listview1);
+        mListView2 = (ListView)findViewById(R.id.listview2);
         mDynamicGridView = (DynamicGridView) findViewById(R.id.card_grid);
 
-        mCodePanel = (LinearLayoutAbsListView) findViewById(R.id.code_panel);
-        mCodePanel.setOnDragListener(new ViewDragListener());
-        mCodePanel.setAbsListView(mListView);
+        mCodePanel1 = (LinearLayoutAbsListView) findViewById(R.id.code_panel1);
+        mCodePanel1.setOnDragListener(new ViewDragListener());
+        mCodePanel1.setAbsListView(mListView1);
+        mCodePanel2 = (LinearLayoutAbsListView) findViewById(R.id.code_panel2);
+        mCodePanel2.setOnDragListener(new ViewDragListener());
+        mCodePanel2.setAbsListView(mListView2);
         mGridPanel = (LinearLayoutAbsListView) findViewById(R.id.grid_panel);
         mGridPanel.setOnDragListener(new ViewDragListener());
         mGridPanel.setAbsListView(mDynamicGridView);
@@ -66,9 +73,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
         mMainActivityPresenter.showCards(new ArrayList<WordCard>()); //creates and sets GridViewAdapter
         mDynamicGridView.setOnItemLongClickListener(new GridItemLongClickListener(mMainActivityPresenter));
 
-        mItemListAdapter = new ItemListAdapter(this, new ArrayList<WordCard>());
-        mListView.setAdapter(mItemListAdapter);
-        mListView.setOnItemLongClickListener(new ListItemLongClickListener());
+        mItemListAdapter1 = new ItemListAdapter(this, new ArrayList<WordCard>());
+        mItemListAdapter2 = new ItemListAdapter(this, new ArrayList<WordCard>());
+        mListView1.setAdapter(mItemListAdapter1);
+        mListView1.setOnItemLongClickListener(new ListItemLongClickListener());
+        mListView2.setAdapter(mItemListAdapter2);
+        mListView2.setOnItemLongClickListener(new ListItemLongClickListener());
     }
 
     @Override
@@ -91,7 +101,16 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
 
     @Override
     public void onCardsDisplayed(List<WordCard> cards) {
-        cards = getIntent().getParcelableArrayListExtra(WordCard.EXTRA_WORD_CARD_LIST);
+//        cards = getIntent().getParcelableArrayListExtra(WordCard.EXTRA_WORD_CARD_LIST);
+        WordCard card1 = new WordCard();
+        card1.setWord("Dog");
+        cards.add(card1);
+        WordCard card2 = new WordCard();
+        card2.setWord("Cat");
+        cards.add(card2);
+        WordCard card3 = new WordCard();
+        card3.setWord("Monkey");
+        cards.add(card3);
         mGridViewAdapter = new GridViewAdapter(this, cards, 3);
         mDynamicGridView.setAdapter(mGridViewAdapter);
     }
