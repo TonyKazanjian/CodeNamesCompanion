@@ -20,7 +20,8 @@ public class MainActivityPresenter {
     public void showCards(List<WordCard> cards){
         mWordCards = cards;
 
-        for (int i = 0; i <= 8; i++) {
+        //TODO - change to 8
+        for (int i = 0; i <= 5; i++) {
             WordCard card = new WordCard();
             cards.add(card);
         }
