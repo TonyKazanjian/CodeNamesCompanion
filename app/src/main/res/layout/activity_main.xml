@@ -57,7 +57,7 @@
         app:layout_constraintTop_toBottomOf="@+id/bottom_panel_title"
         app:layout_constraintRight_toLeftOf="@+id/code_panel2"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/code_panel3"
+        app:layout_constraintBottom_toTopOf="@+id/code_panel3"
         android:background="@android:color/background_light">
 
         <ListView
