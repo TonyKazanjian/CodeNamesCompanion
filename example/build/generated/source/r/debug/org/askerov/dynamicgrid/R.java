@@ -7,10 +7,4 @@
 package org.askerov.dynamicgrid;
 
 public final class R {
-    public static final class dimen {
-        public static final int dgv_overlap_if_switch_straight_line = 0x7f040000;
-    }
-    public static final class id {
-        public static final int dgv_wobble_tag = 0x7f050000;
-    }
 }
