@@ -6,12 +6,15 @@ import android.view.DragEvent;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.BaseAdapter;
+import android.widget.GridView;
 
 import com.tonykazanjian.codenamescompanion.LinearLayoutAbsListView;
 import com.tonykazanjian.codenamescompanion.PassObject;
 import com.tonykazanjian.codenamescompanion.WordCard;
 import com.tonykazanjian.codenamescompanion.adapter.GridViewAdapter;
 import com.tonykazanjian.codenamescompanion.adapter.ItemBaseAdapter;
+
+import org.askerov.dynamicgrid.DynamicGridView;
 
 import java.util.List;
 
@@ -32,32 +35,30 @@ public class ItemDragListener implements View.OnDragListener {
     @Override
     public boolean onDrag(View view, DragEvent dragEvent) {
 
+        PassObject passObject = (PassObject) dragEvent.getLocalState();
+        View itemView = passObject.view;
+        WordCard passedWord = passObject.mWordCard;
+        List<WordCard> srcList = passObject.mSourceList;
+        AbsListView oldParent = (AbsListView)itemView.getParent();
+
         switch (dragEvent.getAction()) {
             case DragEvent.ACTION_DROP:
-                PassObject passObject = (PassObject) dragEvent.getLocalState();
-                View itemView = passObject.view;
-                WordCard passedWord = passObject.mWordCard;
-                List<WordCard> srcList = passObject.mSourceList;
-                AbsListView oldParent = (AbsListView)itemView.getParent();
-
                 if (oldParent.getAdapter() instanceof GridViewAdapter) {
                     srcAdapter = (GridViewAdapter) (oldParent.getAdapter());
                 } else {
                     srcAdapter = (ItemBaseAdapter) (oldParent.getAdapter());
                 }
 
-                if (view instanceof CardView) {
-                    //TODO - need callback for GridView to move and notify
-                } else {
-                    LinearLayoutAbsListView newParent = (LinearLayoutAbsListView) view;
-                    if (newParent.mAbsListView != null) {
-                        if (newParent.mAbsListView.getAdapter() instanceof GridViewAdapter) {
-                            destAdapter = (GridViewAdapter) newParent.mAbsListView.getAdapter();
-                            destList = ((GridViewAdapter) destAdapter).getWordCards();
-                        } else {
-                            destAdapter = (ItemBaseAdapter) newParent.mAbsListView.getAdapter();
-                            destList = ((ItemBaseAdapter) destAdapter).getWordCards();
-                        }
+                LinearLayoutAbsListView newParent = (LinearLayoutAbsListView) view;
+
+                //TODO - mAbsListView is always null. Will need to get parent of items somehow
+                if (newParent.mAbsListView != null) {
+                    if (newParent.mAbsListView.getAdapter() instanceof GridViewAdapter) {
+                        destAdapter = (GridViewAdapter) newParent.mAbsListView.getAdapter();
+                        destList = ((GridViewAdapter) destAdapter).getWordCards();
+                    } else {
+                        destAdapter = (ItemBaseAdapter) newParent.mAbsListView.getAdapter();
+                        destList = ((ItemBaseAdapter) destAdapter).getWordCards();
                     }
                 }
 

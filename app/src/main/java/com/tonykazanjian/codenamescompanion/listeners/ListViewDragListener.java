@@ -1,5 +1,6 @@
 package com.tonykazanjian.codenamescompanion.listeners;
 
+import android.util.Log;
 import android.view.DragEvent;
 import android.view.View;
 import android.widget.AbsListView;
@@ -10,6 +11,7 @@ import com.tonykazanjian.codenamescompanion.PassObject;
 import com.tonykazanjian.codenamescompanion.WordCard;
 import com.tonykazanjian.codenamescompanion.adapter.GridViewAdapter;
 import com.tonykazanjian.codenamescompanion.adapter.ItemBaseAdapter;
+import com.tonykazanjian.codenamescompanion.adapter.ItemListAdapter;
 
 import java.util.List;
 
@@ -25,14 +27,35 @@ public class ListViewDragListener implements View.OnDragListener {
 
     @Override
     public boolean onDrag(View view, DragEvent dragEvent) {
+        PassObject passObject = (PassObject) dragEvent.getLocalState();
+        View listView = passObject.view;
+        WordCard passedWord = passObject.mWordCard;
+        List<WordCard> srcList = passObject.mSourceList;
+        AbsListView oldParent = (AbsListView)listView.getParent();
 
         switch (dragEvent.getAction()) {
+
+            case DragEvent.ACTION_DRAG_ENTERED:
+                if (oldParent.getAdapter() instanceof ItemListAdapter){
+                    Log.i(this.getClass().getCanonicalName(), "Dragged From List");
+                    LinearLayoutAbsListView enteredParent = (LinearLayoutAbsListView)view;
+                    if (enteredParent.mAbsListView.getAdapter() instanceof GridViewAdapter) {
+                        Log.i(this.getClass().getCanonicalName(), "Inside Grid");
+                        destAdapter = (GridViewAdapter) enteredParent.mAbsListView.getAdapter();
+                        destList = ((GridViewAdapter)destAdapter).getWordCards();
+
+//                        if(removeItemToList(srcList, passedWord)){
+//                            addItemToList(destList, passedWord);
+//                        }
+//
+//                        destAdapter.notifyDataSetChanged();
+                    }
+                } else {
+                    Log.i(this.getClass().getCanonicalName(), "Dragged from Grid");
+                }
+                break;
             case DragEvent.ACTION_DROP:
-                PassObject passObject = (PassObject) dragEvent.getLocalState();
-                View listView = passObject.view;
-                WordCard passedWord = passObject.mWordCard;
-                List<WordCard> srcList = passObject.mSourceList;
-                AbsListView oldParent = (AbsListView)listView.getParent();
+
                 if (oldParent.getAdapter() instanceof GridViewAdapter) {
                     srcAdapter = (GridViewAdapter) (oldParent.getAdapter());
                 } else {

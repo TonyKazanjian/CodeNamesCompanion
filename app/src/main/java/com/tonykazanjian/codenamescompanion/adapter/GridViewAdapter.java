@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.tonykazanjian.codenamescompanion.R;
 import com.tonykazanjian.codenamescompanion.WordCard;
 import com.tonykazanjian.codenamescompanion.listeners.ItemDragListener;
+import com.tonykazanjian.codenamescompanion.listeners.ListViewDragListener;
 
 import org.askerov.dynamicgrid.BaseDynamicGridAdapter;
 
