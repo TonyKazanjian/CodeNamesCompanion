@@ -16,7 +16,7 @@ import com.tonykazanjian.codenamescompanion.WordCard;
 import com.tonykazanjian.codenamescompanion.adapter.ItemListAdapter;
 import com.tonykazanjian.codenamescompanion.listeners.GridItemLongClickListener;
 import com.tonykazanjian.codenamescompanion.listeners.ListItemLongClickListener;
-import com.tonykazanjian.codenamescompanion.listeners.ViewDragListener;
+import com.tonykazanjian.codenamescompanion.listeners.ListViewDragListener;
 
 import org.askerov.dynamicgrid.DynamicGridView;
 
@@ -69,19 +69,19 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
         mDynamicGridView = (DynamicGridView) findViewById(R.id.card_grid);
 
         mCodePanel1 = (LinearLayoutAbsListView) findViewById(R.id.code_panel1);
-        mCodePanel1.setOnDragListener(new ViewDragListener());
+        mCodePanel1.setOnDragListener(new ListViewDragListener());
         mCodePanel1.setAbsListView(mListView1);
         mCodePanel2 = (LinearLayoutAbsListView) findViewById(R.id.code_panel2);
-        mCodePanel2.setOnDragListener(new ViewDragListener());
+        mCodePanel2.setOnDragListener(new ListViewDragListener());
         mCodePanel2.setAbsListView(mListView2);
         mCodePanel3 = (LinearLayoutAbsListView) findViewById(R.id.code_panel3);
-        mCodePanel3.setOnDragListener(new ViewDragListener());
+        mCodePanel3.setOnDragListener(new ListViewDragListener());
         mCodePanel3.setAbsListView(mListView3);
         mCodePanel4 = (LinearLayoutAbsListView) findViewById(R.id.code_panel4);
-        mCodePanel4.setOnDragListener(new ViewDragListener());
+        mCodePanel4.setOnDragListener(new ListViewDragListener());
         mCodePanel4.setAbsListView(mListView4);
         mGridPanel = (LinearLayoutAbsListView) findViewById(R.id.grid_panel);
-        mGridPanel.setOnDragListener(new ViewDragListener());
+        mGridPanel.setOnDragListener(new ListViewDragListener());
         mGridPanel.setAbsListView(mDynamicGridView);
 
         mMainActivityPresenter.showCards(new ArrayList<WordCard>()); //creates and sets GridViewAdapter
@@ -121,16 +121,16 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
 
     @Override
     public void onCardsDisplayed(List<WordCard> cards) {
-        cards = getIntent().getParcelableArrayListExtra(WordCard.EXTRA_WORD_CARD_LIST);
-//        WordCard card1 = new WordCard();
-//        card1.setWord("Dog");
-//        cards.add(card1);
-//        WordCard card2 = new WordCard();
-//        card2.setWord("Cat");
-//        cards.add(card2);
-//        WordCard card3 = new WordCard();
-//        card3.setWord("Monkey");
-//        cards.add(card3);
+//        cards = getIntent().getParcelableArrayListExtra(WordCard.EXTRA_WORD_CARD_LIST);
+        WordCard card1 = new WordCard();
+        card1.setWord("Dog");
+        cards.add(card1);
+        WordCard card2 = new WordCard();
+        card2.setWord("Cat");
+        cards.add(card2);
+        WordCard card3 = new WordCard();
+        card3.setWord("Monkey");
+        cards.add(card3);
         mGridViewAdapter = new GridViewAdapter(this, cards, 3);
         mDynamicGridView.setAdapter(mGridViewAdapter);
     }

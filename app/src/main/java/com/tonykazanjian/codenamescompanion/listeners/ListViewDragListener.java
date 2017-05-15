@@ -17,7 +17,7 @@ import java.util.List;
  * @author Tony Kazanjian
  */
 
-public class ViewDragListener implements View.OnDragListener {
+public class ListViewDragListener implements View.OnDragListener {
 
     private BaseAdapter srcAdapter;
     private BaseAdapter destAdapter;

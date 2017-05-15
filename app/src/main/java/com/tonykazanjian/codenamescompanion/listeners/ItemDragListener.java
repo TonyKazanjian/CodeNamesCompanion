@@ -1,6 +1,7 @@
 package com.tonykazanjian.codenamescompanion.listeners;
 
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.DragEvent;
 import android.view.View;
 import android.widget.AbsListView;
@@ -45,32 +46,38 @@ public class ItemDragListener implements View.OnDragListener {
                     srcAdapter = (ItemBaseAdapter) (oldParent.getAdapter());
                 }
 
-                LinearLayoutAbsListView newParent = (LinearLayoutAbsListView)view;
-                if (newParent.mAbsListView != null) {
-                    if (newParent.mAbsListView.getAdapter() instanceof GridViewAdapter) {
-                        destAdapter = (GridViewAdapter) newParent.mAbsListView.getAdapter();
-                        destList = ((GridViewAdapter) destAdapter).getWordCards();
-                    } else {
-                        destAdapter = (ItemBaseAdapter) newParent.mAbsListView.getAdapter();
-                        destList = ((ItemBaseAdapter) destAdapter).getWordCards();
+                if (view instanceof CardView) {
+                    //TODO - need callback for GridView to move and notify
+                } else {
+                    LinearLayoutAbsListView newParent = (LinearLayoutAbsListView) view;
+                    if (newParent.mAbsListView != null) {
+                        if (newParent.mAbsListView.getAdapter() instanceof GridViewAdapter) {
+                            destAdapter = (GridViewAdapter) newParent.mAbsListView.getAdapter();
+                            destList = ((GridViewAdapter) destAdapter).getWordCards();
+                        } else {
+                            destAdapter = (ItemBaseAdapter) newParent.mAbsListView.getAdapter();
+                            destList = ((ItemBaseAdapter) destAdapter).getWordCards();
+                        }
                     }
                 }
 
-                int removeLocation = srcList.indexOf(passedWord);
-                int insertLocation = destList.indexOf(mWordCard);
+                if (destList != null) {
+                    int removeLocation = srcList.indexOf(passedWord);
+                    int insertLocation = destList.indexOf(mWordCard);
     /*
      * If drag and drop on the same list, same position,
      * ignore
      */
-                if(srcList != destList || removeLocation != insertLocation){
-                    if(removeItemToList(srcList, passedWord)){
-                        destList.add(insertLocation, passedWord);
-                    }
+                    if(srcList != destList || removeLocation != insertLocation){
+                        if(removeItemToList(srcList, passedWord)){
+                            destList.add(insertLocation, passedWord);
+                        }
 
-                    srcAdapter.notifyDataSetChanged();
-                    destAdapter.notifyDataSetChanged();
+                        srcAdapter.notifyDataSetChanged();
+                        destAdapter.notifyDataSetChanged();
+                    }
+                    break;
                 }
-                break;
         }
         return true;
     }
