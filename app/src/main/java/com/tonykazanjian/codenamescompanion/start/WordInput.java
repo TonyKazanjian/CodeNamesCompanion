@@ -19,7 +19,7 @@ import java.util.List;
  * @author Tony Kazanjian
  */
 
-public class StartActivity extends AppCompatActivity implements StartActivityView {
+public class WordInput extends AppCompatActivity implements WordInputView {
 
     TextInputLayout mWordInputLayout1;
     TextInputEditText mWordInputEditText1;
@@ -40,7 +40,7 @@ public class StartActivity extends AppCompatActivity implements StartActivityVie
     TextInputLayout mWordInputLayout9;
     TextInputEditText mWordInputEditText9;
 
-    StartActivityPresenter mStartActivityPresenter;
+    WordInputPresenter mWordInputPresenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,12 +66,12 @@ public class StartActivity extends AppCompatActivity implements StartActivityVie
         mWordInputLayout9 = (TextInputLayout)findViewById(R.id.word_input_layout_9);
         mWordInputEditText9 = (TextInputEditText)findViewById(R.id.word_input_9);
 
-        mStartActivityPresenter = new StartActivityPresenter(new ArrayList<WordCard>(), this);
+        mWordInputPresenter = new WordInputPresenter(new ArrayList<WordCard>(), this);
 
 //        mStartBtn.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View view) {
-//                mStartActivityPresenter.startGame();
+//                mWordInputPresenter.startGame();
 //            }
 //        });
 
@@ -80,7 +80,7 @@ public class StartActivity extends AppCompatActivity implements StartActivityVie
     @Override
     protected void onStart() {
         super.onStart();
-        mStartActivityPresenter.clearWords();
+        mWordInputPresenter.clearWords();
     }
 
     @Override
@@ -92,19 +92,19 @@ public class StartActivity extends AppCompatActivity implements StartActivityVie
         mWordInputEditText7, mWordInputEditText8, mWordInputEditText9};
         checkForText(textInputEditTexts, strings);
 
-        mStartActivityPresenter.setWordText(strings);
+        mWordInputPresenter.setWordText(strings);
         if (isGameReady()) {
-            startActivity(MainActivity.newIntent(this, (ArrayList<WordCard>) mStartActivityPresenter.getWordCards()));
+            startActivity(MainActivity.newIntent(this, (ArrayList<WordCard>) mWordInputPresenter.getWordCards()));
         } else {
             Toast.makeText(getApplicationContext(), "You must have at least 8 words to start the game.", Toast.LENGTH_SHORT).show();
-            mStartActivityPresenter.getWordCards().clear();
+            mWordInputPresenter.getWordCards().clear();
         }
 
     }
 
     @Override
     public boolean isGameReady() {
-        return mStartActivityPresenter.getWordCards().size()>=8;
+        return mWordInputPresenter.getWordCards().size()>=8;
     }
 
     private void checkForText(TextInputEditText[] textInputEditTexts, List<String> strings) {

@@ -55,7 +55,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
 
         setContentView(R.layout.activity_main);
         init();
-        WordInputDialog.newInstance().show(getSupportFragmentManager(), "TAG");
+        WordInputDialog wordInputDialog =  WordInputDialog.newInstance();
+        wordInputDialog.setCancelable(false);
+        wordInputDialog.show(getSupportFragmentManager(), "TAG");
     }
 
     private void init() {
@@ -83,7 +85,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
         mGridPanel.setOnDragListener(new ListViewDragListener(mMainActivityPresenter));
         mGridPanel.setAbsListView(mGridView);
 
-        mMainActivityPresenter.showCards(new ArrayList<WordCard>()); //creates and sets GridViewAdapter
+
+
+        //TODO - needs to happen on result
+//        mMainActivityPresenter.showCards(new ArrayList<WordCard>()); //creates and sets GridViewAdapter
         mGridView.setOnItemLongClickListener(new GridItemLongClickListener(mMainActivityPresenter));
 
         mItemListAdapter1 = new ItemListAdapter(this, new ArrayList<WordCard>());
@@ -119,16 +124,16 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
 
     @Override
     public void onCardsDisplayed(List<WordCard> cards) {
-//        cards = getIntent().getParcelableArrayListExtra(WordCard.EXTRA_WORD_CARD_LIST);
-        WordCard card1 = new WordCard();
-        card1.setWord("Dog");
-        cards.add(card1);
-        WordCard card2 = new WordCard();
-        card2.setWord("Cat");
-        cards.add(card2);
-        WordCard card3 = new WordCard();
-        card3.setWord("Monkey");
-        cards.add(card3);
+        cards = getIntent().getParcelableArrayListExtra(WordCard.EXTRA_WORD_CARD_LIST);
+//        WordCard card1 = new WordCard();
+//        card1.setWord("Dog");
+//        cards.add(card1);
+//        WordCard card2 = new WordCard();
+//        card2.setWord("Cat");
+//        cards.add(card2);
+//        WordCard card3 = new WordCard();
+//        card3.setWord("Monkey");
+//        cards.add(card3);
         mGridViewAdapter = new GridViewAdapter(this, cards);
         mGridView.setAdapter(mGridViewAdapter);
     }

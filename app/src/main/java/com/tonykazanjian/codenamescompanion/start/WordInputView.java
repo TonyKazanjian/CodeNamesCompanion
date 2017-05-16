@@ -4,7 +4,7 @@ package com.tonykazanjian.codenamescompanion.start;
  * @author Tony Kazanjian
  */
 
-public interface StartActivityView {
+public interface WordInputView {
     void onStartBtnPressed();
     boolean isGameReady();
 }

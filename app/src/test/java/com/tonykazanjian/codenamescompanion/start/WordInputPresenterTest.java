@@ -8,33 +8,31 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 
 /**
  * @author Tony Kazanjian
  */
 @RunWith(MockitoJUnitRunner.class)
-public class StartActivityPresenterTest {
+public class WordInputPresenterTest {
 
-    private StartActivityPresenter mStartActivityPresenter;
+    private WordInputPresenter mWordInputPresenter;
 
     @Mock
-    private StartActivityView mStartActivityView;
+    private WordInputView mWordInputView;
 
     List<WordCard> mWordCardList;
 
     @Before
     public void setUp() throws Exception {
-        mStartActivityView = mock(StartActivityView.class);
+        mWordInputView = mock(WordInputView.class);
         mWordCardList = new ArrayList<>();
-        mStartActivityPresenter = new StartActivityPresenter(mWordCardList, mStartActivityView);
+        mWordInputPresenter = new WordInputPresenter(mWordCardList, mWordInputView);
 
     }
 
@@ -53,7 +51,7 @@ public class StartActivityPresenterTest {
         wordStrings.add("Cat");
         wordStrings.add("Dog");
         wordStrings.add("Fish");
-        mStartActivityPresenter.setWordText(wordStrings);
+        mWordInputPresenter.setWordText(wordStrings);
         Assert.assertTrue(mWordCardList.get(0).getWord().equals("Cat"));
         Assert.assertTrue(mWordCardList.get(1).getWord().equals("Dog"));
         Assert.assertTrue(mWordCardList.get(2).getWord().equals("Fish"));
@@ -83,7 +81,7 @@ public class StartActivityPresenterTest {
         wordStrings.add("Dog");
         wordStrings.add("Fish");
 
-        Assert.assertTrue(mStartActivityPresenter.getWordCards().size()>=7);
+        Assert.assertTrue(mWordInputPresenter.getWordCards().size()>=7);
     }
 
 }

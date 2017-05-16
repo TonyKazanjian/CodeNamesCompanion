@@ -8,14 +8,14 @@ import java.util.List;
  * @author Tony Kazanjian
  */
 
-public class StartActivityPresenter {
+public class WordInputPresenter {
 
-    private StartActivityView mStartActivityView;
+    private WordInputView mWordInputView;
     private List<WordCard> mWordCards;
 
-    public StartActivityPresenter(List<WordCard> wordCards, StartActivityView startActivityView) {
+    public WordInputPresenter(List<WordCard> wordCards, WordInputView wordInputView) {
         mWordCards = wordCards;
-        mStartActivityView = startActivityView;
+        mWordInputView = wordInputView;
     }
 
     public void setWordText(List<String> stringList) {
@@ -27,7 +27,7 @@ public class StartActivityPresenter {
     }
 
     public void startGame() {
-        mStartActivityView.onStartBtnPressed();
+        mWordInputView.onStartBtnPressed();
     }
 
     public List<WordCard> getWordCards(){
