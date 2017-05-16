@@ -1,14 +1,11 @@
 package com.tonykazanjian.codenamescompanion.start;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.tonykazanjian.codenamescompanion.R;
@@ -42,14 +39,13 @@ public class StartActivity extends AppCompatActivity implements StartActivityVie
     TextInputEditText mWordInputEditText8;
     TextInputLayout mWordInputLayout9;
     TextInputEditText mWordInputEditText9;
-    Button mStartBtn;
 
     StartActivityPresenter mStartActivityPresenter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_start);
+        setContentView(R.layout.dialog_word_input);
 
         mWordInputLayout1 = (TextInputLayout)findViewById(R.id.word_input_layout_1);
         mWordInputEditText1 = (TextInputEditText)findViewById(R.id.word_input_1);
@@ -69,16 +65,15 @@ public class StartActivity extends AppCompatActivity implements StartActivityVie
         mWordInputEditText8 = (TextInputEditText)findViewById(R.id.word_input_8);
         mWordInputLayout9 = (TextInputLayout)findViewById(R.id.word_input_layout_9);
         mWordInputEditText9 = (TextInputEditText)findViewById(R.id.word_input_9);
-        mStartBtn = (Button) findViewById(R.id.startBtn);
 
         mStartActivityPresenter = new StartActivityPresenter(new ArrayList<WordCard>(), this);
 
-        mStartBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mStartActivityPresenter.startGame();
-            }
-        });
+//        mStartBtn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                mStartActivityPresenter.startGame();
+//            }
+//        });
 
     }
 
