@@ -114,8 +114,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.stop_edit_btn:
-                mMainActivityPresenter.turnOffEditMode();
+
         }
         return true;
     }
@@ -135,18 +134,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
         mGridViewAdapter = new GridViewAdapter(this, cards);
         mDynamicGridView.setAdapter(mGridViewAdapter);
     }
-
-//    @Override
-//    public void onEditModeInit(int item) {
-//        mDynamicGridView.startEditMode(item);
-//        mStopEditBtn.setVisible(true);
-//    }
-//
-//    @Override
-//    public void onEditStopItemClicked() {
-//        mDynamicGridView.stopEditMode();
-//        mStopEditBtn.setVisible(false);
-//    }
 
     @Override
     public void onRemoveBtnClicked() {

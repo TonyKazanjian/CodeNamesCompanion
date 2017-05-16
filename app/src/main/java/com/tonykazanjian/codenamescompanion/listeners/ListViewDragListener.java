@@ -35,25 +35,6 @@ public class ListViewDragListener implements View.OnDragListener {
 
         switch (dragEvent.getAction()) {
 
-//            case DragEvent.ACTION_DRAG_ENTERED:
-//                if (oldParent.getAdapter() instanceof ItemListAdapter){
-//                    Log.i(this.getClass().getCanonicalName(), "Dragged From List");
-//                    LinearLayoutAbsListView enteredParent = (LinearLayoutAbsListView)view;
-//                    if (enteredParent.mAbsListView.getAdapter() instanceof GridViewAdapter) {
-//                        Log.i(this.getClass().getCanonicalName(), "Inside Grid");
-//                        destAdapter = (GridViewAdapter) enteredParent.mAbsListView.getAdapter();
-//                        destList = ((GridViewAdapter)destAdapter).getWordCards();
-//
-////                        if(removeItemToList(srcList, passedWord)){
-////                            addItemToList(destList, passedWord);
-////                        }
-////
-////                        destAdapter.notifyDataSetChanged();
-//                    }
-//                } else {
-//                    Log.i(this.getClass().getCanonicalName(), "Dragged from Grid");
-//                }
-//                break;
             case DragEvent.ACTION_DROP:
 
                 srcAdapter = (ItemBaseAdapter) (oldParent.getAdapter());
@@ -72,8 +53,6 @@ public class ListViewDragListener implements View.OnDragListener {
                 newParent.mAbsListView.smoothScrollToPosition(destAdapter.getCount()-1);
 
                 break;
-
-
         }
         return true;
     }

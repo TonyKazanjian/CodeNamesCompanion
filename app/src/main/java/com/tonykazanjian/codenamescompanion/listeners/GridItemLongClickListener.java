@@ -25,8 +25,6 @@ public class GridItemLongClickListener implements AdapterView.OnItemLongClickLis
 
     @Override
     public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-        mMainActivityPresenter.editCards(i);
-
         WordCard selectedWord = (WordCard) adapterView.getItemAtPosition(i);
 
         GridViewAdapter associatedAdapter = (GridViewAdapter) (adapterView.getAdapter());
