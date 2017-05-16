@@ -43,24 +43,11 @@ public class ItemDragListener implements View.OnDragListener {
 
         switch (dragEvent.getAction()) {
             case DragEvent.ACTION_DROP:
-                if (oldParent.getAdapter() instanceof GridViewAdapter) {
-                    srcAdapter = (GridViewAdapter) (oldParent.getAdapter());
-                } else {
-                    srcAdapter = (ItemBaseAdapter) (oldParent.getAdapter());
-                }
+                srcAdapter = (ItemBaseAdapter) (oldParent.getAdapter());
+                AbsListView newParent = (AbsListView) view.getParent();
 
-                LinearLayoutAbsListView newParent = (LinearLayoutAbsListView) view;
-
-                //TODO - mAbsListView is always null. Will need to get parent of items somehow
-                if (newParent.mAbsListView != null) {
-                    if (newParent.mAbsListView.getAdapter() instanceof GridViewAdapter) {
-                        destAdapter = (GridViewAdapter) newParent.mAbsListView.getAdapter();
-                        destList = ((GridViewAdapter) destAdapter).getWordCards();
-                    } else {
-                        destAdapter = (ItemBaseAdapter) newParent.mAbsListView.getAdapter();
-                        destList = ((ItemBaseAdapter) destAdapter).getWordCards();
-                    }
-                }
+                destAdapter = (ItemBaseAdapter) newParent.getAdapter();
+                destList = ((ItemBaseAdapter) destAdapter).getWordCards();
 
                 if (destList != null) {
                     int removeLocation = srcList.indexOf(passedWord);

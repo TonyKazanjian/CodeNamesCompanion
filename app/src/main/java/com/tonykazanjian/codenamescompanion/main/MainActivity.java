@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.GridView;
 import android.widget.ListView;
 
 import com.tonykazanjian.codenamescompanion.LinearLayoutAbsListView;
@@ -27,7 +28,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
 
     private MainActivityPresenter mMainActivityPresenter;
     private GridViewAdapter mGridViewAdapter;
-    private DynamicGridView mDynamicGridView;
+    private GridView mDynamicGridView;
     private MenuItem mStopEditBtn;
 
     ListView mListView1;
@@ -66,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
         mListView2 = (ListView)findViewById(R.id.listview2);
         mListView3 = (ListView)findViewById(R.id.listview3);
         mListView4 = (ListView)findViewById(R.id.listview4);
-        mDynamicGridView = (DynamicGridView) findViewById(R.id.card_grid);
+        mDynamicGridView = (GridView) findViewById(R.id.card_grid);
 
         mCodePanel1 = (LinearLayoutAbsListView) findViewById(R.id.code_panel1);
         mCodePanel1.setOnDragListener(new ListViewDragListener());
@@ -131,21 +132,21 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
         WordCard card3 = new WordCard();
         card3.setWord("Monkey");
         cards.add(card3);
-        mGridViewAdapter = new GridViewAdapter(this, cards, 3);
+        mGridViewAdapter = new GridViewAdapter(this, cards);
         mDynamicGridView.setAdapter(mGridViewAdapter);
     }
 
-    @Override
-    public void onEditModeInit(int item) {
-        mDynamicGridView.startEditMode(item);
-        mStopEditBtn.setVisible(true);
-    }
-
-    @Override
-    public void onEditStopItemClicked() {
-        mDynamicGridView.stopEditMode();
-        mStopEditBtn.setVisible(false);
-    }
+//    @Override
+//    public void onEditModeInit(int item) {
+//        mDynamicGridView.startEditMode(item);
+//        mStopEditBtn.setVisible(true);
+//    }
+//
+//    @Override
+//    public void onEditStopItemClicked() {
+//        mDynamicGridView.stopEditMode();
+//        mStopEditBtn.setVisible(false);
+//    }
 
     @Override
     public void onRemoveBtnClicked() {

@@ -11,7 +11,7 @@ import java.util.List;
 public interface MainActivityView {
 
     void onCardsDisplayed(List<WordCard> cards);
-    void onEditModeInit(int item);
-    void onEditStopItemClicked();
+//    void onEditModeInit(int item);
+//    void onEditStopItemClicked();
     void onRemoveBtnClicked();
 }

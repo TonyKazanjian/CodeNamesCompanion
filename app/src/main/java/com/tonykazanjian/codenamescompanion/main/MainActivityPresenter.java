@@ -33,10 +33,10 @@ public class MainActivityPresenter {
     }
 
     public void editCards(int item) {
-        mMainActivityView.onEditModeInit(item);
+//        mMainActivityView.onEditModeInit(item);
     }
 
     public void turnOffEditMode(){
-        mMainActivityView.onEditStopItemClicked();
+//        mMainActivityView.onEditStopItemClicked();
     }
 }

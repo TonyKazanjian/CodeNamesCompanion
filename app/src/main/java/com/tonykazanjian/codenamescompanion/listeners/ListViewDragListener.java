@@ -35,42 +35,31 @@ public class ListViewDragListener implements View.OnDragListener {
 
         switch (dragEvent.getAction()) {
 
-            case DragEvent.ACTION_DRAG_ENTERED:
-                if (oldParent.getAdapter() instanceof ItemListAdapter){
-                    Log.i(this.getClass().getCanonicalName(), "Dragged From List");
-                    LinearLayoutAbsListView enteredParent = (LinearLayoutAbsListView)view;
-                    if (enteredParent.mAbsListView.getAdapter() instanceof GridViewAdapter) {
-                        Log.i(this.getClass().getCanonicalName(), "Inside Grid");
-                        destAdapter = (GridViewAdapter) enteredParent.mAbsListView.getAdapter();
-                        destList = ((GridViewAdapter)destAdapter).getWordCards();
-
-//                        if(removeItemToList(srcList, passedWord)){
-//                            addItemToList(destList, passedWord);
-//                        }
+//            case DragEvent.ACTION_DRAG_ENTERED:
+//                if (oldParent.getAdapter() instanceof ItemListAdapter){
+//                    Log.i(this.getClass().getCanonicalName(), "Dragged From List");
+//                    LinearLayoutAbsListView enteredParent = (LinearLayoutAbsListView)view;
+//                    if (enteredParent.mAbsListView.getAdapter() instanceof GridViewAdapter) {
+//                        Log.i(this.getClass().getCanonicalName(), "Inside Grid");
+//                        destAdapter = (GridViewAdapter) enteredParent.mAbsListView.getAdapter();
+//                        destList = ((GridViewAdapter)destAdapter).getWordCards();
 //
-//                        destAdapter.notifyDataSetChanged();
-                    }
-                } else {
-                    Log.i(this.getClass().getCanonicalName(), "Dragged from Grid");
-                }
-                break;
+////                        if(removeItemToList(srcList, passedWord)){
+////                            addItemToList(destList, passedWord);
+////                        }
+////
+////                        destAdapter.notifyDataSetChanged();
+//                    }
+//                } else {
+//                    Log.i(this.getClass().getCanonicalName(), "Dragged from Grid");
+//                }
+//                break;
             case DragEvent.ACTION_DROP:
 
-                if (oldParent.getAdapter() instanceof GridViewAdapter) {
-                    srcAdapter = (GridViewAdapter) (oldParent.getAdapter());
-                } else {
-                    srcAdapter = (ItemBaseAdapter) (oldParent.getAdapter());
-                }
-
+                srcAdapter = (ItemBaseAdapter) (oldParent.getAdapter());
                 LinearLayoutAbsListView newParent = (LinearLayoutAbsListView)view;
-                if (newParent.mAbsListView.getAdapter() instanceof GridViewAdapter) {
-                    destAdapter = (GridViewAdapter) newParent.mAbsListView.getAdapter();
-                    destList = ((GridViewAdapter)destAdapter).getWordCards();
-                } else {
-                    destAdapter = (ItemBaseAdapter) newParent.mAbsListView.getAdapter();
-                    destList = ((ItemBaseAdapter)destAdapter).getWordCards();
-                }
-
+                destAdapter = (ItemBaseAdapter) newParent.mAbsListView.getAdapter();
+                destList = ((ItemBaseAdapter)destAdapter).getWordCards();
 
                 if(removeItemToList(srcList, passedWord)){
                     addItemToList(destList, passedWord);
@@ -90,18 +79,10 @@ public class ListViewDragListener implements View.OnDragListener {
     }
 
     private boolean removeItemToList(List<WordCard> l, WordCard it){
-        if (srcAdapter instanceof GridViewAdapter) {
-            ((GridViewAdapter) srcAdapter).remove(it);
-        }
-
         return l.remove(it);
     }
 
     private boolean addItemToList(List<WordCard> l, WordCard it){
-
-        if (destAdapter instanceof GridViewAdapter) {
-            ((GridViewAdapter)destAdapter).add(it);
-        }
         return l.add(it);
     }
 }
