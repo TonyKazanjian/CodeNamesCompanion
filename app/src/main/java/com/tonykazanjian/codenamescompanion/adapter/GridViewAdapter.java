@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.tonykazanjian.codenamescompanion.R;
 import com.tonykazanjian.codenamescompanion.WordCard;
 import com.tonykazanjian.codenamescompanion.listeners.ItemDragListener;
+import com.tonykazanjian.codenamescompanion.listeners.ListViewDragListener;
 
 import org.askerov.dynamicgrid.BaseDynamicGridAdapter;
 
@@ -20,20 +21,22 @@ import java.util.List;
  * @author Tony Kazanjian
  */
 
-public class GridViewAdapter extends BaseDynamicGridAdapter {
+public class GridViewAdapter extends ItemBaseAdapter {
 
     List<WordCard> mWordCards;
+    Context mContext;
 
-    public GridViewAdapter(Context context, List<WordCard> words, int columnCount) {
-        super(context, words, columnCount);
+    public GridViewAdapter(Context context, List<WordCard> words) {
+        super(context, words);
         mWordCards = words;
+        mContext = context;
     }
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         CardHolder holder;
         if (view == null) {
-            view = LayoutInflater.from(getContext()).inflate(R.layout.item_card, null);
+            view = LayoutInflater.from(mContext).inflate(R.layout.item_card, null);
             holder = new CardHolder(view);
             view.setTag(holder);
         } else {

@@ -2,10 +2,5 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item
-        android:id="@+id/stop_edit_btn"
-        android:title="Stop Edit Mode"
-        android:visible="false"
-        app:showAsAction="always" />
 
 </menu>

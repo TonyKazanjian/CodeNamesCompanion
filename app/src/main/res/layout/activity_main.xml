@@ -17,7 +17,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <org.askerov.dynamicgrid.DynamicGridView
+        <GridView
             android:id="@+id/card_grid"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -49,6 +49,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         />
 
+
     <com.tonykazanjian.codenamescompanion.LinearLayoutAbsListView
         android:id="@+id/code_panel1"
         android:layout_width="0dp"
@@ -63,7 +64,10 @@
         <ListView
             android:id="@+id/listview1"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginTop="35dp"/>
 
     </com.tonykazanjian.codenamescompanion.LinearLayoutAbsListView>
 
@@ -74,14 +78,18 @@
         android:layout_margin="4dp"
         app:layout_constraintTop_toBottomOf="@+id/bottom_panel_title"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/code_panel1"
+        app:layout_constraintLeft_toRightOf="@+id/code_panel1"
         app:layout_constraintBottom_toTopOf="@+id/code_panel4"
         android:background="@android:color/background_light">
 
         <ListView
             android:id="@+id/listview2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginTop="35dp"
+            />
 
     </com.tonykazanjian.codenamescompanion.LinearLayoutAbsListView>
 
@@ -91,7 +99,7 @@
         android:layout_height="0dp"
         android:layout_margin="4dp"
         app:layout_constraintTop_toBottomOf="@+id/code_panel1"
-        app:layout_constraintRight_toLeftOf="@id/code_panel4"
+        app:layout_constraintRight_toLeftOf="@+id/code_panel4"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
         android:background="@android:color/background_light">
@@ -99,7 +107,10 @@
         <ListView
             android:id="@+id/listview3"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginTop="35dp"/>
 
     </com.tonykazanjian.codenamescompanion.LinearLayoutAbsListView>
 
@@ -111,14 +122,262 @@
         android:background="@android:color/background_light"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/code_panel3"
+        app:layout_constraintLeft_toRightOf="@+id/code_panel3"
         app:layout_constraintTop_toBottomOf="@+id/code_panel2">
 
         <ListView
             android:id="@+id/listview4"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginTop="35dp"/>
 
     </com.tonykazanjian.codenamescompanion.LinearLayoutAbsListView>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/code_input_layout_1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/edit_text_outline"
+        app:hintEnabled="false"
+        app:layout_constraintTop_toBottomOf="@+id/bottom_panel_title"
+        app:layout_constraintRight_toRightOf="@+id/code_panel1"
+        app:layout_constraintLeft_toLeftOf="@+id/code_panel1">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/code_input_1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:hint="Enter your code word here"
+            android:paddingLeft="5dp"
+            android:textSize="12sp"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/code_input_layout_2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/edit_text_outline"
+        app:hintEnabled="false"
+        app:layout_constraintTop_toBottomOf="@+id/bottom_panel_title"
+        app:layout_constraintRight_toRightOf="@+id/code_panel2"
+        app:layout_constraintLeft_toLeftOf="@+id/code_panel2"
+        android:layout_marginTop="10dp">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/code_input_2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:textSize="12sp"
+            android:background="@android:color/transparent"
+            android:hint="Enter your code word here"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/code_input_layout_3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/edit_text_outline"
+        app:hintEnabled="false"
+        app:layout_constraintTop_toTopOf="@+id/code_panel3"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="@+id/code_panel3"
+        android:layout_marginRight="8dp"
+        app:layout_constraintRight_toRightOf="@+id/code_panel3"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/code_input_3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:textSize="12sp"
+            android:background="@android:color/transparent"
+            android:hint="Enter your code word here"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/code_input_layout_4"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:background="@drawable/edit_text_outline"
+        app:hintEnabled="false"
+        app:layout_constraintTop_toTopOf="@+id/code_panel4"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="9dp"
+        app:layout_constraintRight_toRightOf="@+id/code_panel4"
+        android:layout_marginLeft="8dp"
+        app:layout_constraintLeft_toLeftOf="@+id/code_panel4">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/code_input_4"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="5dp"
+            android:textSize="12sp"
+            android:background="@android:color/transparent"
+            android:hint="Enter your code word here"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+    <!--<com.tonykazanjian.codenamescompanion.LinearLayoutAbsListView-->
+        <!--android:id="@+id/code_panel5"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:layout_margin="4dp"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/bottom_panel_title"-->
+        <!--app:layout_constraintRight_toLeftOf="@+id/code_panel6"-->
+        <!--app:layout_constraintLeft_toLeftOf="parent"-->
+        <!--app:layout_constraintBottom_toTopOf="@+id/code_panel7"-->
+        <!--android:background="@android:color/background_light">-->
+
+        <!--<android.support.design.widget.TextInputLayout-->
+            <!--android:id="@+id/code_input_layout_5"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_margin="10dp"-->
+            <!--android:background="@drawable/edit_text_outline"-->
+            <!--app:hintEnabled="false">-->
+
+            <!--<android.support.design.widget.TextInputEditText-->
+                <!--android:id="@+id/code_input_5"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:paddingLeft="5dp"-->
+                <!--android:textSize="12sp"-->
+                <!--android:background="@android:color/transparent"-->
+                <!--android:hint="Enter your code word here"/>-->
+
+        <!--</android.support.design.widget.TextInputLayout>-->
+
+        <!--<ListView-->
+            <!--android:id="@+id/listview5"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"/>-->
+
+    <!--</com.tonykazanjian.codenamescompanion.LinearLayoutAbsListView>-->
+
+    <!--<com.tonykazanjian.codenamescompanion.LinearLayoutAbsListView-->
+        <!--android:id="@+id/code_panel6"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:layout_margin="4dp"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/bottom_panel_title"-->
+        <!--app:layout_constraintRight_toRightOf="parent"-->
+        <!--app:layout_constraintLeft_toRightOf="@id/code_panel5"-->
+        <!--app:layout_constraintBottom_toTopOf="@+id/code_panel8"-->
+        <!--android:background="@android:color/background_light">-->
+
+        <!--<android.support.design.widget.TextInputLayout-->
+            <!--android:id="@+id/code_input_layout_6"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_margin="10dp"-->
+            <!--android:background="@drawable/edit_text_outline"-->
+            <!--app:hintEnabled="false">-->
+
+            <!--<android.support.design.widget.TextInputEditText-->
+                <!--android:id="@+id/code_input_6"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:paddingLeft="5dp"-->
+                <!--android:textSize="12sp"-->
+                <!--android:background="@android:color/transparent"-->
+                <!--android:hint="Enter your code word here"/>-->
+
+        <!--</android.support.design.widget.TextInputLayout>-->
+
+        <!--<ListView-->
+            <!--android:id="@+id/listview6"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"/>-->
+
+    <!--</com.tonykazanjian.codenamescompanion.LinearLayoutAbsListView>-->
+
+    <!--<com.tonykazanjian.codenamescompanion.LinearLayoutAbsListView-->
+        <!--android:id="@+id/code_panel7"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:layout_margin="4dp"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/code_panel5"-->
+        <!--app:layout_constraintRight_toLeftOf="@id/code_panel8"-->
+        <!--app:layout_constraintLeft_toLeftOf="parent"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--android:background="@android:color/background_light">-->
+
+        <!--<android.support.design.widget.TextInputLayout-->
+            <!--android:id="@+id/code_input_layout_7"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_margin="10dp"-->
+            <!--android:background="@drawable/edit_text_outline"-->
+            <!--app:hintEnabled="false">-->
+
+            <!--<android.support.design.widget.TextInputEditText-->
+                <!--android:id="@+id/code_input_7"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:paddingLeft="5dp"-->
+                <!--android:textSize="12sp"-->
+                <!--android:background="@android:color/transparent"-->
+                <!--android:hint="Enter your code word here"/>-->
+
+        <!--</android.support.design.widget.TextInputLayout>-->
+
+        <!--<ListView-->
+            <!--android:id="@+id/listview7"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"/>-->
+
+    <!--</com.tonykazanjian.codenamescompanion.LinearLayoutAbsListView>-->
+
+    <!--<com.tonykazanjian.codenamescompanion.LinearLayoutAbsListView-->
+        <!--android:id="@+id/code_panel8"-->
+        <!--android:layout_width="0dp"-->
+        <!--android:layout_height="0dp"-->
+        <!--android:layout_margin="4dp"-->
+        <!--android:background="@android:color/background_light"-->
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintRight_toRightOf="parent"-->
+        <!--app:layout_constraintLeft_toRightOf="@id/code_panel7"-->
+        <!--app:layout_constraintTop_toBottomOf="@+id/code_panel6">-->
+
+        <!--<android.support.design.widget.TextInputLayout-->
+            <!--android:id="@+id/code_input_layout_8"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_margin="10dp"-->
+            <!--android:background="@drawable/edit_text_outline"-->
+            <!--app:hintEnabled="false">-->
+
+            <!--<android.support.design.widget.TextInputEditText-->
+                <!--android:id="@+id/code_input_8"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:paddingLeft="5dp"-->
+                <!--android:textSize="12sp"-->
+                <!--android:background="@android:color/transparent"-->
+                <!--android:hint="Enter your code word here"/>-->
+
+        <!--</android.support.design.widget.TextInputLayout>-->
+
+        <!--<ListView-->
+            <!--android:id="@+id/listview8"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"/>-->
+
+    <!--</com.tonykazanjian.codenamescompanion.LinearLayoutAbsListView>-->
 
 </android.support.constraint.ConstraintLayout>

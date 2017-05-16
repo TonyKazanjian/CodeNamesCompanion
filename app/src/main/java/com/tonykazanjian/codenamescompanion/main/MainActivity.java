@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.GridView;
 import android.widget.ListView;
 
 import com.tonykazanjian.codenamescompanion.LinearLayoutAbsListView;
@@ -16,7 +17,7 @@ import com.tonykazanjian.codenamescompanion.WordCard;
 import com.tonykazanjian.codenamescompanion.adapter.ItemListAdapter;
 import com.tonykazanjian.codenamescompanion.listeners.GridItemLongClickListener;
 import com.tonykazanjian.codenamescompanion.listeners.ListItemLongClickListener;
-import com.tonykazanjian.codenamescompanion.listeners.ViewDragListener;
+import com.tonykazanjian.codenamescompanion.listeners.ListViewDragListener;
 
 import org.askerov.dynamicgrid.DynamicGridView;
 
@@ -27,15 +28,21 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
 
     private MainActivityPresenter mMainActivityPresenter;
     private GridViewAdapter mGridViewAdapter;
-    private DynamicGridView mDynamicGridView;
+    private GridView mDynamicGridView;
     private MenuItem mStopEditBtn;
 
     ListView mListView1;
     ListView mListView2;
+    ListView mListView3;
+    ListView mListView4;
     ItemListAdapter mItemListAdapter1;
     ItemListAdapter mItemListAdapter2;
+    ItemListAdapter mItemListAdapter3;
+    ItemListAdapter mItemListAdapter4;
     LinearLayoutAbsListView mCodePanel1;
     LinearLayoutAbsListView mCodePanel2;
+    LinearLayoutAbsListView mCodePanel3;
+    LinearLayoutAbsListView mCodePanel4;
     LinearLayoutAbsListView mGridPanel;
 
 
@@ -58,16 +65,24 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
 
         mListView1 = (ListView)findViewById(R.id.listview1);
         mListView2 = (ListView)findViewById(R.id.listview2);
-        mDynamicGridView = (DynamicGridView) findViewById(R.id.card_grid);
+        mListView3 = (ListView)findViewById(R.id.listview3);
+        mListView4 = (ListView)findViewById(R.id.listview4);
+        mDynamicGridView = (GridView) findViewById(R.id.card_grid);
 
         mCodePanel1 = (LinearLayoutAbsListView) findViewById(R.id.code_panel1);
-        mCodePanel1.setOnDragListener(new ViewDragListener());
+        mCodePanel1.setOnDragListener(new ListViewDragListener());
         mCodePanel1.setAbsListView(mListView1);
         mCodePanel2 = (LinearLayoutAbsListView) findViewById(R.id.code_panel2);
-        mCodePanel2.setOnDragListener(new ViewDragListener());
+        mCodePanel2.setOnDragListener(new ListViewDragListener());
         mCodePanel2.setAbsListView(mListView2);
+        mCodePanel3 = (LinearLayoutAbsListView) findViewById(R.id.code_panel3);
+        mCodePanel3.setOnDragListener(new ListViewDragListener());
+        mCodePanel3.setAbsListView(mListView3);
+        mCodePanel4 = (LinearLayoutAbsListView) findViewById(R.id.code_panel4);
+        mCodePanel4.setOnDragListener(new ListViewDragListener());
+        mCodePanel4.setAbsListView(mListView4);
         mGridPanel = (LinearLayoutAbsListView) findViewById(R.id.grid_panel);
-        mGridPanel.setOnDragListener(new ViewDragListener());
+        mGridPanel.setOnDragListener(new ListViewDragListener());
         mGridPanel.setAbsListView(mDynamicGridView);
 
         mMainActivityPresenter.showCards(new ArrayList<WordCard>()); //creates and sets GridViewAdapter
@@ -79,6 +94,12 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
         mListView1.setOnItemLongClickListener(new ListItemLongClickListener());
         mListView2.setAdapter(mItemListAdapter2);
         mListView2.setOnItemLongClickListener(new ListItemLongClickListener());
+        mItemListAdapter3 = new ItemListAdapter(this, new ArrayList<WordCard>());
+        mItemListAdapter4 = new ItemListAdapter(this, new ArrayList<WordCard>());
+        mListView3.setAdapter(mItemListAdapter3);
+        mListView3.setOnItemLongClickListener(new ListItemLongClickListener());
+        mListView4.setAdapter(mItemListAdapter4);
+        mListView4.setOnItemLongClickListener(new ListItemLongClickListener());
     }
 
     @Override
@@ -93,8 +114,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.stop_edit_btn:
-                mMainActivityPresenter.turnOffEditMode();
+
         }
         return true;
     }
@@ -111,20 +131,8 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
         WordCard card3 = new WordCard();
         card3.setWord("Monkey");
         cards.add(card3);
-        mGridViewAdapter = new GridViewAdapter(this, cards, 3);
+        mGridViewAdapter = new GridViewAdapter(this, cards);
         mDynamicGridView.setAdapter(mGridViewAdapter);
-    }
-
-    @Override
-    public void onEditModeInit(int item) {
-        mDynamicGridView.startEditMode(item);
-        mStopEditBtn.setVisible(true);
-    }
-
-    @Override
-    public void onEditStopItemClicked() {
-        mDynamicGridView.stopEditMode();
-        mStopEditBtn.setVisible(false);
     }
 
     @Override
