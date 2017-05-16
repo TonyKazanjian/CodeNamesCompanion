@@ -19,11 +19,6 @@ public class MainActivityPresenter {
 
     public void showCards(List<WordCard> cards){
         mWordCards = cards;
-
-        for (int i = 0; i <= 8; i++) {
-            WordCard card = new WordCard();
-            cards.add(card);
-        }
         mMainActivityView.onCardsDisplayed(cards);
     }
 

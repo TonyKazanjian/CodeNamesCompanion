@@ -21,12 +21,11 @@ import com.tonykazanjian.codenamescompanion.listeners.ListViewDragListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements MainActivityView {
+public class MainActivity extends AppCompatActivity implements MainActivityView, WordInputDialog.WordInputListener {
 
     private MainActivityPresenter mMainActivityPresenter;
     private GridViewAdapter mGridViewAdapter;
     private GridView mGridView;
-    private MenuItem mStopEditBtn;
 
     ListView mListView1;
     ListView mListView2;
@@ -41,13 +40,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
     LinearLayoutAbsListView mCodePanel3;
     LinearLayoutAbsListView mCodePanel4;
     LinearLayoutAbsListView mGridPanel;
-
-
-    public static Intent newIntent(Context context, ArrayList<WordCard> wordCards) {
-        Intent intent = new Intent(context, MainActivity.class);
-        intent.putParcelableArrayListExtra(WordCard.EXTRA_WORD_CARD_LIST, wordCards);
-        return intent;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -85,10 +77,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
         mGridPanel.setOnDragListener(new ListViewDragListener(mMainActivityPresenter));
         mGridPanel.setAbsListView(mGridView);
 
-
-
-        //TODO - needs to happen on result
-//        mMainActivityPresenter.showCards(new ArrayList<WordCard>()); //creates and sets GridViewAdapter
         mGridView.setOnItemLongClickListener(new GridItemLongClickListener(mMainActivityPresenter));
 
         mItemListAdapter1 = new ItemListAdapter(this, new ArrayList<WordCard>());
@@ -124,7 +112,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
 
     @Override
     public void onCardsDisplayed(List<WordCard> cards) {
-        cards = getIntent().getParcelableArrayListExtra(WordCard.EXTRA_WORD_CARD_LIST);
+//        cards = getIntent().getParcelableArrayListExtra(WordCard.EXTRA_WORD_CARD_LIST);
 //        WordCard card1 = new WordCard();
 //        card1.setWord("Dog");
 //        cards.add(card1);
@@ -141,5 +129,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityView 
     @Override
     public void onRemoveBtnClicked() {
 
+    }
+
+    @Override
+    public void onWordListComplete(List<WordCard> wordCards) {
+        mMainActivityPresenter.showCards(wordCards); //creates and sets GridViewAdapter
     }
 }

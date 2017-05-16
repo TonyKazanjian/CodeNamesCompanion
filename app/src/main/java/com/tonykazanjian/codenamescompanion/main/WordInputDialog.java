@@ -49,6 +49,7 @@ public class WordInputDialog extends DialogFragment implements WordInputView {
     TextInputEditText mWordInputEditText9;
 
     WordInputPresenter mWordInputPresenter;
+    WordInputListener mWordInputListener;
 
     public WordInputDialog() {
     }
@@ -122,7 +123,10 @@ public class WordInputDialog extends DialogFragment implements WordInputView {
 
         mWordInputPresenter.setWordText(strings);
         if (isGameReady()) {
-            startActivity(MainActivity.newIntent(getActivity(), (ArrayList<WordCard>) mWordInputPresenter.getWordCards()));
+            mWordInputListener = (WordInputListener) getActivity();
+            mWordInputListener.onWordListComplete(mWordInputPresenter.getWordCards());
+            dismiss();
+
         } else {
             Toast.makeText(getContext(), "You must have at least 8 words to start the game.", Toast.LENGTH_SHORT).show();
             mWordInputPresenter.getWordCards().clear();
@@ -144,5 +148,9 @@ public class WordInputDialog extends DialogFragment implements WordInputView {
             }
             i++;
         }
+    }
+
+    public interface WordInputListener {
+        void onWordListComplete(List<WordCard> wordCards);
     }
 }
