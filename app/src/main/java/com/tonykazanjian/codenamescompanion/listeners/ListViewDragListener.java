@@ -12,6 +12,7 @@ import com.tonykazanjian.codenamescompanion.WordCard;
 import com.tonykazanjian.codenamescompanion.adapter.GridViewAdapter;
 import com.tonykazanjian.codenamescompanion.adapter.ItemBaseAdapter;
 import com.tonykazanjian.codenamescompanion.adapter.ItemListAdapter;
+import com.tonykazanjian.codenamescompanion.main.MainActivityPresenter;
 
 import java.util.List;
 
@@ -24,6 +25,12 @@ public class ListViewDragListener implements View.OnDragListener {
     private BaseAdapter srcAdapter;
     private BaseAdapter destAdapter;
     private List<WordCard> destList;
+
+    private MainActivityPresenter mMainActivityPresenter;
+
+    public ListViewDragListener(MainActivityPresenter mainActivityPresenter) {
+        mMainActivityPresenter = mainActivityPresenter;
+    }
 
     @Override
     public boolean onDrag(View view, DragEvent dragEvent) {
@@ -42,8 +49,8 @@ public class ListViewDragListener implements View.OnDragListener {
                 destAdapter = (ItemBaseAdapter) newParent.mAbsListView.getAdapter();
                 destList = ((ItemBaseAdapter)destAdapter).getWordCards();
 
-                if(removeItemToList(srcList, passedWord)){
-                    addItemToList(destList, passedWord);
+                if(mMainActivityPresenter.removeItemToList(srcList, passedWord)){
+                    mMainActivityPresenter.addItemToList(destList, passedWord);
                 }
 
                 srcAdapter.notifyDataSetChanged();
@@ -55,13 +62,5 @@ public class ListViewDragListener implements View.OnDragListener {
                 break;
         }
         return true;
-    }
-
-    private boolean removeItemToList(List<WordCard> l, WordCard it){
-        return l.remove(it);
-    }
-
-    private boolean addItemToList(List<WordCard> l, WordCard it){
-        return l.add(it);
     }
 }

@@ -48,14 +48,17 @@ public class MainActivityPresenterTest {
     }
 
     @Test
-    public void checkEditModeStopped(){
-        mainActivityPresenter.turnOffEditMode();
-        Mockito.verify(mMainActivityView).onEditStopItemClicked();
+    public void checkCardAdded(){
+        checkIfCardsAreDisplayed();
+        Assert.assertTrue(mainActivityPresenter.addItemToList(mainActivityPresenter.getWordCards(), new WordCard()));
+        Assert.assertEquals(10, mainActivityPresenter.getCardCount());
     }
 
     @Test
-    public void checkEditModeStarted(){
-        mainActivityPresenter.editCards(1);
-        Mockito.verify(mMainActivityView).onEditModeInit(1);
+    public void checkCardRemoved() {
+        checkIfCardsAreDisplayed();
+        Assert.assertTrue(mainActivityPresenter.removeItemToList(mainActivityPresenter.getWordCards(),
+                mainActivityPresenter.getWordCards().get(0)));
+        Assert.assertEquals(8, mainActivityPresenter.getCardCount());
     }
 }
