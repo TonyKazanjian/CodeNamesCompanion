@@ -5,6 +5,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tonykazanjian.codenamescompanion.R;
@@ -25,7 +26,7 @@ public class ItemListAdapter extends ItemBaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         View rowView = convertView;
 
         // reuse views
@@ -36,10 +37,18 @@ public class ItemListAdapter extends ItemBaseAdapter {
 
            ViewHolder viewHolder = new ViewHolder();
             viewHolder.text = (TextView) rowView.findViewById(R.id.word_text);
+            viewHolder.mCloseBtn =  (ImageView)rowView.findViewById(R.id.close_btn);
             rowView.setTag(viewHolder);
         } else {
             ViewHolder holder = (ViewHolder) rowView.getTag();
             holder.text.setText(mWordCards.get(position).getWord());
+            holder.mCloseBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mWordCards.remove(position);
+                    notifyDataSetChanged();
+                }
+            });
             rowView.setOnDragListener(new ItemDragListener(mWordCards.get(position)));
         }
 
@@ -48,6 +57,7 @@ public class ItemListAdapter extends ItemBaseAdapter {
 
     static class ViewHolder {
         TextView text;
+        ImageView mCloseBtn;
     }
 
 

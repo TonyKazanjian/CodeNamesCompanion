@@ -49,7 +49,7 @@ public class ListViewDragListener implements View.OnDragListener {
                 destAdapter = (ItemBaseAdapter) newParent.mAbsListView.getAdapter();
                 destList = ((ItemBaseAdapter)destAdapter).getWordCards();
 
-                if(mMainActivityPresenter.removeItemToList(srcList, passedWord)){
+                if(mMainActivityPresenter.removeItemFromList(srcList, passedWord)){
                     mMainActivityPresenter.addItemToList(destList, passedWord);
                 }
 

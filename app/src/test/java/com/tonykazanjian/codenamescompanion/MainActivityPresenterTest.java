@@ -9,7 +9,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
@@ -57,7 +56,7 @@ public class MainActivityPresenterTest {
     @Test
     public void checkCardRemoved() {
         checkIfCardsAreDisplayed();
-        Assert.assertTrue(mainActivityPresenter.removeItemToList(mainActivityPresenter.getWordCards(),
+        Assert.assertTrue(mainActivityPresenter.removeItemFromList(mainActivityPresenter.getWordCards(),
                 mainActivityPresenter.getWordCards().get(0)));
         Assert.assertEquals(8, mainActivityPresenter.getCardCount());
     }

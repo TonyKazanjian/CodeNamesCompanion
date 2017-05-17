@@ -34,7 +34,7 @@ public class MainActivityPresenter {
         return l.add(it);
     }
 
-    public boolean removeItemToList(List<WordCard> l, WordCard it){
+    public boolean removeItemFromList(List<WordCard> l, WordCard it){
         return l.remove(it);
     }
 
