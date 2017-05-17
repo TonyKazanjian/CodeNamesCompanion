@@ -153,6 +153,8 @@
             android:background="@android:color/transparent"
             android:hint="Enter your code word here"
             android:paddingLeft="5dp"
+            android:maxLines="1"
+            android:focusable="false"
             android:textSize="12sp"/>
 
     </android.support.design.widget.TextInputLayout>
@@ -176,6 +178,8 @@
             android:paddingLeft="5dp"
             android:textSize="12sp"
             android:background="@android:color/transparent"
+            android:maxLines="1"
+            android:focusable="false"
             android:hint="Enter your code word here"/>
 
     </android.support.design.widget.TextInputLayout>
@@ -203,6 +207,8 @@
             android:paddingLeft="5dp"
             android:textSize="12sp"
             android:background="@android:color/transparent"
+            android:maxLines="1"
+            android:focusable="false"
             android:hint="Enter your code word here"/>
 
     </android.support.design.widget.TextInputLayout>
@@ -228,6 +234,8 @@
             android:paddingLeft="5dp"
             android:textSize="12sp"
             android:background="@android:color/transparent"
+            android:maxLines="1"
+            android:focusable="false"
             android:hint="Enter your code word here"/>
 
     </android.support.design.widget.TextInputLayout>
