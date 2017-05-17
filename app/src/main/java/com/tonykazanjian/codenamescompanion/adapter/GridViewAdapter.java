@@ -59,14 +59,10 @@ public class GridViewAdapter extends ItemBaseAdapter {
     private class CardHolder extends RecyclerView.ViewHolder {
 
         TextView mCardText;
-        ImageView mCloseBtn;
-        ImageView mEditBtn;
 
         public CardHolder(View itemView) {
             super(itemView);
             mCardText = (TextView) itemView.findViewById(R.id.card_text);
-            mCloseBtn = (ImageView) itemView.findViewById(R.id.close_btn);
-            mEditBtn = (ImageView) itemView.findViewById(R.id.edit_btn);
         }
     }
 }
