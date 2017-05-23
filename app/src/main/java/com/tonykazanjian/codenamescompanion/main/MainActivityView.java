@@ -11,5 +11,5 @@ import java.util.List;
 public interface MainActivityView {
 
     void onCardsDisplayed(List<WordCard> cards);
-    void onRemoveBtnClicked();
+    void onCodeWordEnterClick();
 }

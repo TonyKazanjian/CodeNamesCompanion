@@ -1,0 +1,47 @@
+package com.tonykazanjian.codenamescompanion;
+
+import android.support.design.widget.TextInputEditText;
+import android.view.KeyEvent;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
+import android.widget.TextView;
+
+/**
+ * @author Tony Kazanjian
+ */
+
+public class OSUtil {
+
+    /**
+     * Handles the logic for overriding a hardware keyboard's return key, and a software keyboard's
+     * done key.
+     *
+     * @param editText; the EditText we're using to listen for keyboard events on
+     * @param keyboardInterface;
+     */
+    public static void setKeyboardDoneAction(TextInputEditText editText, final KeyboardInterface keyboardInterface)
+            throws NullPointerException {
+
+        if(editText != null && keyboardInterface != null) {
+            editText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+                public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                    if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER) && (event.getAction() == KeyEvent.ACTION_DOWN))
+                            || (actionId == EditorInfo.IME_ACTION_DONE)) {
+                        keyboardInterface.keyboardDoneAction();
+                        return true;
+                    } else return false;
+                }
+            });
+        }
+        else {
+            throw new NullPointerException("Must pass a non-null EditText, and KeyboardInterface");
+        }
+    }
+
+    /**
+     * Provides an interface for handling keyboard events
+     */
+    public interface KeyboardInterface {
+        void keyboardDoneAction();
+    }
+}

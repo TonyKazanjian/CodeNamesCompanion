@@ -2,14 +2,18 @@ package com.tonykazanjian.codenamescompanion.main;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.GridView;
 import android.widget.ListView;
 
 import com.tonykazanjian.codenamescompanion.LinearLayoutAbsListView;
+import com.tonykazanjian.codenamescompanion.OSUtil;
 import com.tonykazanjian.codenamescompanion.adapter.GridViewAdapter;
 import com.tonykazanjian.codenamescompanion.R;
 import com.tonykazanjian.codenamescompanion.WordCard;
@@ -40,6 +44,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
     LinearLayoutAbsListView mCodePanel3;
     LinearLayoutAbsListView mCodePanel4;
     LinearLayoutAbsListView mGridPanel;
+    TextInputEditText mCodeInput1;
+    TextInputEditText mCodeInput2;
+    TextInputEditText mCodeInput3;
+    TextInputEditText mCodeInput4;
+    TextInputLayout mCodeInputLayout1;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,18 +56,18 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
 
         setContentView(R.layout.activity_main);
         init();
-        WordInputDialog wordInputDialog =  WordInputDialog.newInstance();
-        wordInputDialog.setCancelable(false);
-        wordInputDialog.show(getSupportFragmentManager(), "TAG");
+//        WordInputDialog wordInputDialog =  WordInputDialog.newInstance();
+//        wordInputDialog.setCancelable(false);
+//        wordInputDialog.show(getSupportFragmentManager(), "TAG");
     }
 
     private void init() {
         mMainActivityPresenter = new MainActivityPresenter(this);
 
-        mListView1 = (ListView)findViewById(R.id.listview1);
-        mListView2 = (ListView)findViewById(R.id.listview2);
-        mListView3 = (ListView)findViewById(R.id.listview3);
-        mListView4 = (ListView)findViewById(R.id.listview4);
+        mListView1 = (ListView) findViewById(R.id.listview1);
+        mListView2 = (ListView) findViewById(R.id.listview2);
+        mListView3 = (ListView) findViewById(R.id.listview3);
+        mListView4 = (ListView) findViewById(R.id.listview4);
         mGridView = (GridView) findViewById(R.id.card_grid);
 
         mCodePanel1 = (LinearLayoutAbsListView) findViewById(R.id.code_panel1);
@@ -93,6 +102,35 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
         mListView3.setOnItemLongClickListener(new ListItemLongClickListener());
         mListView4.setAdapter(mItemListAdapter4);
         mListView4.setOnItemLongClickListener(new ListItemLongClickListener());
+
+        mCodeInput1 = (TextInputEditText) findViewById(R.id.code_input_1);
+        mCodeInput2 = (TextInputEditText) findViewById(R.id.code_input_2);
+        mCodeInput3 = (TextInputEditText) findViewById(R.id.code_input_3);
+        mCodeInput4 = (TextInputEditText) findViewById(R.id.code_input_4);
+
+        setKeyboardAndClickActions(mCodeInput1);
+        setKeyboardAndClickActions(mCodeInput2);
+        setKeyboardAndClickActions(mCodeInput3);
+        setKeyboardAndClickActions(mCodeInput4);
+
+//        mCodeInputLayout1.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                mCodeInput1.setFocusableInTouchMode(true);
+//            }
+//        });
+    }
+
+    private void setKeyboardAndClickActions(final TextInputEditText editText) {
+        editText.setOnClickListener(new CodeInputListener());
+        OSUtil.setKeyboardDoneAction(editText, new OSUtil.KeyboardInterface() {
+            @Override
+            public void keyboardDoneAction() {
+                editText.setFocusable(false);
+                editText.setFocusableInTouchMode(false);
+
+            }
+        });
     }
 
     @Override
@@ -119,21 +157,40 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
     }
 
     @Override
-    public void onRemoveBtnClicked() {
+    public void onCodeWordEnterClick() {
+
 
     }
 
     @Override
     public void onWordListComplete(List<WordCard> wordCards) {
-//        WordCard card1 = new WordCard();
-//        card1.setWord("Dog");
-//        wordCards.add(card1);
-//        WordCard card2 = new WordCard();
-//        card2.setWord("Cat");
-//        wordCards.add(card2);
-//        WordCard card3 = new WordCard();
-//        card3.setWord("Monkey");
-//        wordCards.add(card3);
+        WordCard card1 = new WordCard();
+        card1.setWord("Dog");
+        wordCards.add(card1);
+        WordCard card2 = new WordCard();
+        card2.setWord("Cat");
+        wordCards.add(card2);
+        WordCard card3 = new WordCard();
+        card3.setWord("Monkey");
+        wordCards.add(card3);
         mMainActivityPresenter.showCards(wordCards); //creates and sets GridViewAdapter
+    }
+
+    private class CodeInputListener implements View.OnClickListener {
+
+//        TextInputEditText mTextInputEditText;
+
+//        public CodeInputListener(TextInputEditText textInputEditText) {
+//            mTextInputEditText = textInputEditText;
+//        }
+
+        @Override
+        public void onClick(View view) {
+
+//            mTextInputEditText = (TextInputEditText) view;
+//            mTextInputEditText.setFocusableInTouchMode(true);
+//            view.setFocusable(true);
+            view.setFocusableInTouchMode(true);
+        }
     }
 }
