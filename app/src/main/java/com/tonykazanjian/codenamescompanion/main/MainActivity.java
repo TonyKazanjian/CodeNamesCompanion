@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.GridView;
 import android.widget.ListView;
 
@@ -128,7 +129,6 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
             public void keyboardDoneAction() {
                 editText.setFocusable(false);
                 editText.setFocusableInTouchMode(false);
-
             }
         });
     }
@@ -189,7 +189,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
 
 //            mTextInputEditText = (TextInputEditText) view;
 //            mTextInputEditText.setFocusableInTouchMode(true);
-//            view.setFocusable(true);
+            view.setFocusable(true);
             view.setFocusableInTouchMode(true);
         }
     }

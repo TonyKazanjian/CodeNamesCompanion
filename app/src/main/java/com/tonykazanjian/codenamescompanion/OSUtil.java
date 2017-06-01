@@ -1,8 +1,10 @@
 package com.tonykazanjian.codenamescompanion;
 
+import android.content.Context;
 import android.support.design.widget.TextInputEditText;
 import android.view.KeyEvent;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -19,7 +21,7 @@ public class OSUtil {
      * @param editText; the EditText we're using to listen for keyboard events on
      * @param keyboardInterface;
      */
-    public static void setKeyboardDoneAction(TextInputEditText editText, final KeyboardInterface keyboardInterface)
+    public static void setKeyboardDoneAction(final TextInputEditText editText, final KeyboardInterface keyboardInterface)
             throws NullPointerException {
 
         if(editText != null && keyboardInterface != null) {
@@ -28,6 +30,8 @@ public class OSUtil {
                     if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER) && (event.getAction() == KeyEvent.ACTION_DOWN))
                             || (actionId == EditorInfo.IME_ACTION_DONE)) {
                         keyboardInterface.keyboardDoneAction();
+                        InputMethodManager imm = (InputMethodManager)CodeNamesCompanionApplication.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
                         return true;
                     } else return false;
                 }
