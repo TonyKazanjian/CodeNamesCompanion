@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.GridView;
@@ -123,14 +124,13 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
     }
 
     private void setKeyboardAndClickActions(final TextInputEditText editText) {
-        editText.setOnClickListener(new CodeInputListener());
+        editText.setOnFocusChangeListener(new CodeInputListener());
         OSUtil.setKeyboardDoneAction(editText, new OSUtil.KeyboardInterface() {
             @Override
             public void keyboardDoneAction() {
                 editText.setFocusable(false);
-                editText.setFocusableInTouchMode(false);
             }
-        });
+        }, this);
     }
 
     @Override
@@ -176,19 +176,10 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
         mMainActivityPresenter.showCards(wordCards); //creates and sets GridViewAdapter
     }
 
-    private class CodeInputListener implements View.OnClickListener {
-
-//        TextInputEditText mTextInputEditText;
-
-//        public CodeInputListener(TextInputEditText textInputEditText) {
-//            mTextInputEditText = textInputEditText;
-//        }
+    private class CodeInputListener implements View.OnFocusChangeListener {
 
         @Override
-        public void onClick(View view) {
-
-//            mTextInputEditText = (TextInputEditText) view;
-//            mTextInputEditText.setFocusableInTouchMode(true);
+        public void onFocusChange(View view, boolean b) {
             view.setFocusable(true);
             view.setFocusableInTouchMode(true);
         }

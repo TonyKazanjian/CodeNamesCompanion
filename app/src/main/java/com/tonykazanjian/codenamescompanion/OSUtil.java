@@ -21,7 +21,7 @@ public class OSUtil {
      * @param editText; the EditText we're using to listen for keyboard events on
      * @param keyboardInterface;
      */
-    public static void setKeyboardDoneAction(final TextInputEditText editText, final KeyboardInterface keyboardInterface)
+    public static void setKeyboardDoneAction(final TextInputEditText editText, final KeyboardInterface keyboardInterface, final Context context)
             throws NullPointerException {
 
         if(editText != null && keyboardInterface != null) {
@@ -30,7 +30,7 @@ public class OSUtil {
                     if ((event != null && (event.getKeyCode() == KeyEvent.KEYCODE_ENTER) && (event.getAction() == KeyEvent.ACTION_DOWN))
                             || (actionId == EditorInfo.IME_ACTION_DONE)) {
                         keyboardInterface.keyboardDoneAction();
-                        InputMethodManager imm = (InputMethodManager)CodeNamesCompanionApplication.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        InputMethodManager imm = (InputMethodManager)context.getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(editText.getWindowToken(), 0);
                         return true;
                     } else return false;

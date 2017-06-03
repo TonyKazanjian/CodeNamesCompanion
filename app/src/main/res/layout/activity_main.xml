@@ -137,10 +137,7 @@
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/code_input_layout_1"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:background="@drawable/edit_text_outline"
+        style="@style/CodeWordInputLayoutStyle"
         app:hintEnabled="false"
         app:layout_constraintTop_toBottomOf="@+id/bottom_panel_title"
         app:layout_constraintRight_toRightOf="@+id/code_panel1"
@@ -148,50 +145,27 @@
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/code_input_1"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@android:color/transparent"
-            android:hint="Enter your code word here"
-            android:paddingLeft="5dp"
-            android:inputType="text"
-            android:imeOptions="actionDone"
-            android:maxLines="1"
-            android:textSize="12sp"/>
+            style="@style/CodeWordEditTextStyle"/>
 
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/code_input_layout_2"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:background="@drawable/edit_text_outline"
+        style="@style/CodeWordInputLayoutStyle"
         app:hintEnabled="false"
         app:layout_constraintTop_toBottomOf="@+id/bottom_panel_title"
         app:layout_constraintRight_toRightOf="@+id/code_panel2"
-        app:layout_constraintLeft_toLeftOf="@+id/code_panel2"
-        android:layout_marginTop="10dp">
+        app:layout_constraintLeft_toLeftOf="@+id/code_panel2">
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/code_input_2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="5dp"
-            android:inputType="text"
-            android:imeOptions="actionDone"
-            android:textSize="12sp"
-            android:background="@android:color/transparent"
-            android:maxLines="1"
-            android:hint="Enter your code word here"/>
+            style="@style/CodeWordEditTextStyle"/>
 
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/code_input_layout_3"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:background="@drawable/edit_text_outline"
+        style="@style/CodeWordInputLayoutStyle"
         app:hintEnabled="false"
         app:layout_constraintTop_toTopOf="@+id/code_panel3"
         android:layout_marginTop="8dp"
@@ -204,43 +178,24 @@
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/code_input_3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="5dp"
-            android:textSize="12sp"
-            android:background="@android:color/transparent"
-            android:maxLines="1"
-            android:inputType="text"
-            android:imeOptions="actionDone"
-            android:hint="Enter your code word here"/>
+            style="@style/CodeWordEditTextStyle"/>
 
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/code_input_layout_4"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="10dp"
-        android:background="@drawable/edit_text_outline"
+        style="@style/CodeWordInputLayoutStyle"
         app:hintEnabled="false"
         app:layout_constraintTop_toTopOf="@+id/code_panel4"
         android:layout_marginTop="10dp"
-        android:layout_marginRight="9dp"
+        android:layout_marginEnd="9dp"
         app:layout_constraintRight_toRightOf="@+id/code_panel4"
-        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
         app:layout_constraintLeft_toLeftOf="@+id/code_panel4">
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/code_input_4"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingLeft="5dp"
-            android:textSize="12sp"
-            android:background="@android:color/transparent"
-            android:maxLines="1"
-            android:inputType="text"
-            android:imeOptions="actionDone"
-            android:hint="Enter your code word here"/>
+            style="@style/CodeWordEditTextStyle"/>
 
     </android.support.design.widget.TextInputLayout>
 
