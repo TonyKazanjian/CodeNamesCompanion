@@ -173,11 +173,32 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
         card1.setWord("Dog");
         wordCards.add(card1);
         WordCard card2 = new WordCard();
-        card2.setWord("Cat");
+        card2.setWord("Car");
         wordCards.add(card2);
         WordCard card3 = new WordCard();
-        card3.setWord("Monkey");
+        card3.setWord("Donkey");
         wordCards.add(card3);
+
+        WordCard card4 = new WordCard();
+        card4.setWord("Keyboard");
+        wordCards.add(card4);
+        WordCard card5 = new WordCard();
+        card5.setWord("Sky");
+        wordCards.add(card5);
+        WordCard card6 = new WordCard();
+        card6.setWord("Orange");
+        wordCards.add(card6);
+
+        WordCard card7 = new WordCard();
+        card7.setWord("Apple");
+        wordCards.add(card7);
+        WordCard card8 = new WordCard();
+        card8.setWord("Cloud");
+        wordCards.add(card8);
+        WordCard card9 = new WordCard();
+        card9.setWord("Street");
+        wordCards.add(card9);
+
         mMainActivityPresenter.showCards(wordCards); //creates and sets GridViewAdapter
     }
 
