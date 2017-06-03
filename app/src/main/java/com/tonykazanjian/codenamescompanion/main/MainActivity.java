@@ -1,21 +1,17 @@
 package com.tonykazanjian.codenamescompanion.main;
 
-import android.content.Context;
-import android.content.Intent;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.GridView;
 import android.widget.ListView;
 
 import com.tonykazanjian.codenamescompanion.LinearLayoutAbsListView;
-import com.tonykazanjian.codenamescompanion.OSUtil;
+import com.tonykazanjian.codenamescompanion.Utils;
 import com.tonykazanjian.codenamescompanion.adapter.GridViewAdapter;
 import com.tonykazanjian.codenamescompanion.R;
 import com.tonykazanjian.codenamescompanion.WordCard;
@@ -51,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
     TextInputEditText mCodeInput3;
     TextInputEditText mCodeInput4;
     TextInputLayout mCodeInputLayout1;
+    TextInputLayout mCodeInputLayout2;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -110,6 +107,14 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
         mCodeInput3 = (TextInputEditText) findViewById(R.id.code_input_3);
         mCodeInput4 = (TextInputEditText) findViewById(R.id.code_input_4);
 
+        mCodeInput1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                view.setFocusableInTouchMode(true);
+            }
+        });
+//        mCodeInput2.setFocusableInTouchMode(true);
+
         setKeyboardAndClickActions(mCodeInput1);
         setKeyboardAndClickActions(mCodeInput2);
         setKeyboardAndClickActions(mCodeInput3);
@@ -125,7 +130,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
 
     private void setKeyboardAndClickActions(final TextInputEditText editText) {
         editText.setOnFocusChangeListener(new CodeInputListener());
-        OSUtil.setKeyboardDoneAction(editText, new OSUtil.KeyboardInterface() {
+        Utils.setKeyboardDoneAction(editText, new Utils.KeyboardInterface() {
             @Override
             public void keyboardDoneAction() {
                 editText.setFocusable(false);

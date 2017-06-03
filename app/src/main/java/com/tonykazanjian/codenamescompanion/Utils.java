@@ -12,7 +12,7 @@ import android.widget.TextView;
  * @author Tony Kazanjian
  */
 
-public class OSUtil {
+public class Utils {
 
     /**
      * Handles the logic for overriding a hardware keyboard's return key, and a software keyboard's
@@ -47,5 +47,9 @@ public class OSUtil {
      */
     public interface KeyboardInterface {
         void keyboardDoneAction();
+    }
+
+    public static class Constants {
+        public static boolean sIsItemDragging = false;
     }
 }

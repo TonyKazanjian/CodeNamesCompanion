@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 
 import com.tonykazanjian.codenamescompanion.LinearLayoutAbsListView;
 import com.tonykazanjian.codenamescompanion.PassObject;
+import com.tonykazanjian.codenamescompanion.Utils;
 import com.tonykazanjian.codenamescompanion.WordCard;
 import com.tonykazanjian.codenamescompanion.adapter.GridViewAdapter;
 import com.tonykazanjian.codenamescompanion.adapter.ItemBaseAdapter;
@@ -34,6 +35,8 @@ public class ListViewDragListener implements View.OnDragListener {
 
     @Override
     public boolean onDrag(View view, DragEvent dragEvent) {
+
+        Utils.Constants.sIsItemDragging = true;
         PassObject passObject = (PassObject) dragEvent.getLocalState();
         View listView = passObject.view;
         WordCard passedWord = passObject.mWordCard;
@@ -43,6 +46,7 @@ public class ListViewDragListener implements View.OnDragListener {
         switch (dragEvent.getAction()) {
 
             case DragEvent.ACTION_DROP:
+                Utils.Constants.sIsItemDragging = false;
 
                 srcAdapter = (ItemBaseAdapter) (oldParent.getAdapter());
                 LinearLayoutAbsListView newParent = (LinearLayoutAbsListView)view;
