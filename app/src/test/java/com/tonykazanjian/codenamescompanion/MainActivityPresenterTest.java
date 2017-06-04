@@ -43,7 +43,7 @@ public class MainActivityPresenterTest {
     @Test
     public void checkIfCardsAreDisplayed() {
         mainActivityPresenter.showCards(new ArrayList<WordCard>());
-        Assert.assertEquals(9, mainActivityPresenter.getCardCount());
+        Assert.assertEquals(3, mainActivityPresenter.getCardCount());
     }
 
     @Test
@@ -59,5 +59,17 @@ public class MainActivityPresenterTest {
         Assert.assertTrue(mainActivityPresenter.removeItemFromList(mainActivityPresenter.getWordCards(),
                 mainActivityPresenter.getWordCards().get(0)));
         Assert.assertEquals(8, mainActivityPresenter.getCardCount());
+    }
+
+    @Test
+    public void checkGridIsEmpty() {
+        checkIfCardsAreDisplayed();
+        int i = 2;
+        while (mainActivityPresenter.getCardCount() > 0) {
+            mainActivityPresenter.removeItemFromList(mainActivityPresenter.getWordCards(),
+                    mainActivityPresenter.getWordCards().get(i));
+            i--;
+        }
+        Assert.assertTrue(mainActivityPresenter.getCardCount() == 0);
     }
 }
