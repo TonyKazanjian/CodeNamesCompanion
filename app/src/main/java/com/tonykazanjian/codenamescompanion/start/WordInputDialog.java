@@ -1,4 +1,4 @@
-package com.tonykazanjian.codenamescompanion.main;
+package com.tonykazanjian.codenamescompanion.start;
 
 import android.app.Dialog;
 import android.content.DialogInterface;
@@ -16,8 +16,6 @@ import android.widget.Toast;
 
 import com.tonykazanjian.codenamescompanion.R;
 import com.tonykazanjian.codenamescompanion.WordCard;
-import com.tonykazanjian.codenamescompanion.start.WordInputPresenter;
-import com.tonykazanjian.codenamescompanion.start.WordInputView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -105,7 +103,7 @@ public class WordInputDialog extends DialogFragment implements WordInputView {
                 button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        onStartBtnPressed();
+                        mWordInputPresenter.startGame();
                     }
                 });
             }
@@ -122,7 +120,7 @@ public class WordInputDialog extends DialogFragment implements WordInputView {
         checkForText(textInputEditTexts, strings);
 
         mWordInputPresenter.setWordText(strings);
-        if (isGameReady()) {
+        if (mWordInputPresenter.isGameReady()) {
             mWordInputListener = (WordInputListener) getActivity();
             mWordInputListener.onWordListComplete(mWordInputPresenter.getWordCards());
             dismiss();
@@ -131,12 +129,6 @@ public class WordInputDialog extends DialogFragment implements WordInputView {
             Toast.makeText(getContext(), "You must have at least 8 words to start the game.", Toast.LENGTH_SHORT).show();
             mWordInputPresenter.getWordCards().clear();
         }
-    }
-
-    @Override
-    public boolean isGameReady() {
-
-        return mWordInputPresenter.getWordCards().size()>=8;
     }
 
     private void checkForText(TextInputEditText[] textInputEditTexts, List<String> strings) {

@@ -34,6 +34,10 @@ public class WordInputPresenter {
         return mWordCards;
     }
 
+    public boolean isGameReady() {
+        return mWordCards.size() >= 8;
+    }
+
     public void clearWords(){
         mWordCards.clear();
     }

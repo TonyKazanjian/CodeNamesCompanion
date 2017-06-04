@@ -5,15 +5,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.tonykazanjian.codenamescompanion.R;
 import com.tonykazanjian.codenamescompanion.WordCard;
 import com.tonykazanjian.codenamescompanion.listeners.ItemDragListener;
-import com.tonykazanjian.codenamescompanion.listeners.ListViewDragListener;
-
-import org.askerov.dynamicgrid.BaseDynamicGridAdapter;
 
 import java.util.List;
 

@@ -19,6 +19,7 @@ import com.tonykazanjian.codenamescompanion.adapter.ItemListAdapter;
 import com.tonykazanjian.codenamescompanion.listeners.GridItemLongClickListener;
 import com.tonykazanjian.codenamescompanion.listeners.ListItemLongClickListener;
 import com.tonykazanjian.codenamescompanion.listeners.ListViewDragListener;
+import com.tonykazanjian.codenamescompanion.start.WordInputDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,9 +56,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
 
         setContentView(R.layout.activity_main);
         init();
-//        WordInputDialog wordInputDialog =  WordInputDialog.newInstance();
-//        wordInputDialog.setCancelable(false);
-//        wordInputDialog.show(getSupportFragmentManager(), "TAG");
+        WordInputDialog wordInputDialog =  WordInputDialog.newInstance();
+        wordInputDialog.setCancelable(false);
+        wordInputDialog.show(getSupportFragmentManager(), "TAG");
     }
 
     private void init() {
@@ -113,19 +114,11 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
                 view.setFocusableInTouchMode(true);
             }
         });
-//        mCodeInput2.setFocusableInTouchMode(true);
 
         setKeyboardAndClickActions(mCodeInput1);
         setKeyboardAndClickActions(mCodeInput2);
         setKeyboardAndClickActions(mCodeInput3);
         setKeyboardAndClickActions(mCodeInput4);
-
-//        mCodeInputLayout1.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                mCodeInput1.setFocusableInTouchMode(true);
-//            }
-//        });
     }
 
     private void setKeyboardAndClickActions(final TextInputEditText editText) {
@@ -169,35 +162,35 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
 
     @Override
     public void onWordListComplete(List<WordCard> wordCards) {
-        WordCard card1 = new WordCard();
-        card1.setWord("Dog");
-        wordCards.add(card1);
-        WordCard card2 = new WordCard();
-        card2.setWord("Car");
-        wordCards.add(card2);
-        WordCard card3 = new WordCard();
-        card3.setWord("Donkey");
-        wordCards.add(card3);
-
-        WordCard card4 = new WordCard();
-        card4.setWord("Keyboard");
-        wordCards.add(card4);
-        WordCard card5 = new WordCard();
-        card5.setWord("Sky");
-        wordCards.add(card5);
-        WordCard card6 = new WordCard();
-        card6.setWord("Orange");
-        wordCards.add(card6);
-
-        WordCard card7 = new WordCard();
-        card7.setWord("Apple");
-        wordCards.add(card7);
-        WordCard card8 = new WordCard();
-        card8.setWord("Cloud");
-        wordCards.add(card8);
-        WordCard card9 = new WordCard();
-        card9.setWord("Street");
-        wordCards.add(card9);
+//        WordCard card1 = new WordCard();
+//        card1.setWord("Dog");
+//        wordCards.add(card1);
+//        WordCard card2 = new WordCard();
+//        card2.setWord("Car");
+//        wordCards.add(card2);
+//        WordCard card3 = new WordCard();
+//        card3.setWord("Donkey");
+//        wordCards.add(card3);
+//
+//        WordCard card4 = new WordCard();
+//        card4.setWord("Keyboard");
+//        wordCards.add(card4);
+//        WordCard card5 = new WordCard();
+//        card5.setWord("Sky");
+//        wordCards.add(card5);
+//        WordCard card6 = new WordCard();
+//        card6.setWord("Orange");
+//        wordCards.add(card6);
+//
+//        WordCard card7 = new WordCard();
+//        card7.setWord("Apple");
+//        wordCards.add(card7);
+//        WordCard card8 = new WordCard();
+//        card8.setWord("Cloud");
+//        wordCards.add(card8);
+//        WordCard card9 = new WordCard();
+//        card9.setWord("Street");
+//        wordCards.add(card9);
 
         mMainActivityPresenter.showCards(wordCards); //creates and sets GridViewAdapter
     }

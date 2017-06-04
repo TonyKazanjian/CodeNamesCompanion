@@ -7,9 +7,6 @@ import android.widget.BaseAdapter;
 
 import com.tonykazanjian.codenamescompanion.WordCard;
 
-import org.askerov.dynamicgrid.AbstractDynamicGridAdapter;
-import org.askerov.dynamicgrid.BaseDynamicGridAdapter;
-
 import java.util.List;
 
 /**

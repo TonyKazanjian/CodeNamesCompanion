@@ -12,10 +12,7 @@ import com.tonykazanjian.codenamescompanion.LinearLayoutAbsListView;
 import com.tonykazanjian.codenamescompanion.PassObject;
 import com.tonykazanjian.codenamescompanion.Utils;
 import com.tonykazanjian.codenamescompanion.WordCard;
-import com.tonykazanjian.codenamescompanion.adapter.GridViewAdapter;
 import com.tonykazanjian.codenamescompanion.adapter.ItemBaseAdapter;
-
-import org.askerov.dynamicgrid.DynamicGridView;
 
 import java.util.List;
 
