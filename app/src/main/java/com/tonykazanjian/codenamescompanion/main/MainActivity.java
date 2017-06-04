@@ -58,9 +58,9 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
 
         setContentView(R.layout.activity_main);
         init();
-//        WordInputDialog wordInputDialog =  WordInputDialog.newInstance();
-//        wordInputDialog.setCancelable(false);
-//        wordInputDialog.show(getSupportFragmentManager(), "TAG");
+        WordInputDialog wordInputDialog =  WordInputDialog.newInstance();
+        wordInputDialog.setCancelable(false);
+        wordInputDialog.show(getSupportFragmentManager(), "TAG");
     }
 
     private void init() {
