@@ -1,14 +1,11 @@
 package com.tonykazanjian.codenamescompanion.listeners;
 
-import android.support.v7.widget.CardView;
-import android.util.Log;
+import android.support.annotation.Nullable;
 import android.view.DragEvent;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.BaseAdapter;
-import android.widget.GridView;
 
-import com.tonykazanjian.codenamescompanion.LinearLayoutAbsListView;
 import com.tonykazanjian.codenamescompanion.PassObject;
 import com.tonykazanjian.codenamescompanion.Utils;
 import com.tonykazanjian.codenamescompanion.WordCard;
@@ -20,7 +17,7 @@ import java.util.List;
  * @author Tony Kazanjian
  */
 
-public class ItemDragListener implements View.OnDragListener {
+public class ItemDragListener implements View.OnDragListener{
     private WordCard mWordCard;
     private BaseAdapter srcAdapter;
     private BaseAdapter destAdapter;
@@ -57,7 +54,7 @@ public class ItemDragListener implements View.OnDragListener {
      * ignore
      */
                     if(srcList != destList || removeLocation != insertLocation){
-                        if(removeItemToList(srcList, passedWord)){
+                        if(removeItemFromList(srcList, passedWord)){
                             destList.add(insertLocation, passedWord);
                         }
 
@@ -70,7 +67,7 @@ public class ItemDragListener implements View.OnDragListener {
         return true;
     }
 
-    private boolean removeItemToList(List<WordCard> l, WordCard it){
+    private boolean removeItemFromList(List<WordCard> l, WordCard it){
         return l.remove(it);
     }
 

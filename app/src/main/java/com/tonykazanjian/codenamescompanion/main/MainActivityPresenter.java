@@ -68,4 +68,16 @@ public class MainActivityPresenter {
         return l.remove(it);
     }
 
+    public boolean addItemToGrid(List<WordCard> l, WordCard it) {
+        mMainActivityView.removeEmptyState();
+        return l.add(it);
+    }
+
+    public boolean removeItemFromGrid(List<WordCard> l, WordCard it) {
+        if (l.size() == 1) {
+            mMainActivityView.showEmptyState();
+        }
+        return l.remove(it);
+    }
+
 }

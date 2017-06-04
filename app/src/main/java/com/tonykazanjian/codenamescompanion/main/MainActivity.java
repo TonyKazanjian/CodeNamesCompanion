@@ -8,6 +8,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 
 import com.tonykazanjian.codenamescompanion.LinearLayoutAbsListView;
@@ -18,13 +19,13 @@ import com.tonykazanjian.codenamescompanion.WordCard;
 import com.tonykazanjian.codenamescompanion.adapter.ItemListAdapter;
 import com.tonykazanjian.codenamescompanion.listeners.GridItemLongClickListener;
 import com.tonykazanjian.codenamescompanion.listeners.ListItemLongClickListener;
-import com.tonykazanjian.codenamescompanion.listeners.ListViewDragListener;
+import com.tonykazanjian.codenamescompanion.listeners.ViewDragListener;
 import com.tonykazanjian.codenamescompanion.start.WordInputDialog;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements MainActivityView, WordInputDialog.WordInputListener {
+public class MainActivity extends AppCompatActivity implements MainActivityView, WordInputDialog.WordInputListener{
 
     private MainActivityPresenter mMainActivityPresenter;
     private GridViewAdapter mGridViewAdapter;
@@ -49,6 +50,7 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
     TextInputEditText mCodeInput4;
     TextInputLayout mCodeInputLayout1;
     TextInputLayout mCodeInputLayout2;
+    LinearLayout mGridEmptyStateLl;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -70,20 +72,22 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
         mListView4 = (ListView) findViewById(R.id.listview4);
         mGridView = (GridView) findViewById(R.id.card_grid);
 
+        mGridEmptyStateLl = (LinearLayout) findViewById(R.id.grid_empty_state_ll);
+
         mCodePanel1 = (LinearLayoutAbsListView) findViewById(R.id.code_panel1);
-        mCodePanel1.setOnDragListener(new ListViewDragListener(mMainActivityPresenter));
+        mCodePanel1.setOnDragListener(new ViewDragListener(mMainActivityPresenter));
         mCodePanel1.setAbsListView(mListView1);
         mCodePanel2 = (LinearLayoutAbsListView) findViewById(R.id.code_panel2);
-        mCodePanel2.setOnDragListener(new ListViewDragListener(mMainActivityPresenter));
+        mCodePanel2.setOnDragListener(new ViewDragListener(mMainActivityPresenter));
         mCodePanel2.setAbsListView(mListView2);
         mCodePanel3 = (LinearLayoutAbsListView) findViewById(R.id.code_panel3);
-        mCodePanel3.setOnDragListener(new ListViewDragListener(mMainActivityPresenter));
+        mCodePanel3.setOnDragListener(new ViewDragListener(mMainActivityPresenter));
         mCodePanel3.setAbsListView(mListView3);
         mCodePanel4 = (LinearLayoutAbsListView) findViewById(R.id.code_panel4);
-        mCodePanel4.setOnDragListener(new ListViewDragListener(mMainActivityPresenter));
+        mCodePanel4.setOnDragListener(new ViewDragListener(mMainActivityPresenter));
         mCodePanel4.setAbsListView(mListView4);
         mGridPanel = (LinearLayoutAbsListView) findViewById(R.id.grid_panel);
-        mGridPanel.setOnDragListener(new ListViewDragListener(mMainActivityPresenter));
+        mGridPanel.setOnDragListener(new ViewDragListener(mMainActivityPresenter));
         mGridPanel.setAbsListView(mGridView);
 
         mGridView.setOnItemLongClickListener(new GridItemLongClickListener(mMainActivityPresenter));
@@ -155,15 +159,21 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
     }
 
     @Override
-    public void onCodeWordEnterClick() {
-
-
+    public void onWordListComplete(List<WordCard> wordCards) {
+        mMainActivityPresenter.showCards(wordCards); //creates and sets GridViewAdapter
     }
 
     @Override
-    public void onWordListComplete(List<WordCard> wordCards) {
+    public void showEmptyState() {
+        mGridEmptyStateLl.setVisibility(View.VISIBLE);
+        mGridPanel.setMinimumHeight(Utils.dp2Pixel(82, this));
+    }
 
-        mMainActivityPresenter.showCards(wordCards); //creates and sets GridViewAdapter
+    @Override
+    public void removeEmptyState() {
+        if (mGridEmptyStateLl.getVisibility() == View.VISIBLE) {
+            mGridEmptyStateLl.setVisibility(View.GONE);
+        }
     }
 
     private class CodeInputListener implements View.OnFocusChangeListener {

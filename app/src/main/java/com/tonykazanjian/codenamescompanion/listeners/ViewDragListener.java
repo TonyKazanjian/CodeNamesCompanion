@@ -21,7 +21,7 @@ import java.util.List;
  * @author Tony Kazanjian
  */
 
-public class ListViewDragListener implements View.OnDragListener {
+public class ViewDragListener implements View.OnDragListener {
 
     private BaseAdapter srcAdapter;
     private BaseAdapter destAdapter;
@@ -29,7 +29,7 @@ public class ListViewDragListener implements View.OnDragListener {
 
     private MainActivityPresenter mMainActivityPresenter;
 
-    public ListViewDragListener(MainActivityPresenter mainActivityPresenter) {
+    public ViewDragListener(MainActivityPresenter mainActivityPresenter) {
         mMainActivityPresenter = mainActivityPresenter;
     }
 
@@ -53,9 +53,7 @@ public class ListViewDragListener implements View.OnDragListener {
                 destAdapter = (ItemBaseAdapter) newParent.mAbsListView.getAdapter();
                 destList = ((ItemBaseAdapter)destAdapter).getWordCards();
 
-                if(mMainActivityPresenter.removeItemFromList(srcList, passedWord)){
-                    mMainActivityPresenter.addItemToList(destList, passedWord);
-                }
+                swapItems(srcList, passedWord);
 
                 srcAdapter.notifyDataSetChanged();
                 destAdapter.notifyDataSetChanged();
@@ -66,5 +64,19 @@ public class ListViewDragListener implements View.OnDragListener {
                 break;
         }
         return true;
+    }
+
+    private void swapItems(List<WordCard> srcList, WordCard passedWord) {
+        if (srcAdapter instanceof GridViewAdapter) {
+            if(mMainActivityPresenter.removeItemFromGrid(srcList, passedWord)){
+                mMainActivityPresenter.addItemToList(destList, passedWord);
+            }
+        } else if (destAdapter instanceof GridViewAdapter) {
+            if(mMainActivityPresenter.removeItemFromList(srcList, passedWord)){
+                mMainActivityPresenter.addItemToGrid(destList, passedWord);
+            }
+        } else if(mMainActivityPresenter.removeItemFromList(srcList, passedWord)){
+            mMainActivityPresenter.addItemToList(destList, passedWord);
+        }
     }
 }

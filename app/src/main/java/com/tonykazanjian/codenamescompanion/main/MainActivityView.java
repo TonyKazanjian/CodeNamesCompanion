@@ -11,5 +11,6 @@ import java.util.List;
 public interface MainActivityView {
 
     void onCardsDisplayed(List<WordCard> cards);
-    void onCodeWordEnterClick();
+    void showEmptyState();
+    void removeEmptyState();
 }

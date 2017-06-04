@@ -49,6 +49,11 @@ public class Utils {
         void keyboardDoneAction();
     }
 
+    public static int dp2Pixel(int sizeInDp, Context context) {
+        float d = context.getResources().getDisplayMetrics().density;
+        return (int)(sizeInDp * d); // dp to pixels
+    }
+
     public static class Constants {
         public static boolean sIsItemDragging = false;
     }
