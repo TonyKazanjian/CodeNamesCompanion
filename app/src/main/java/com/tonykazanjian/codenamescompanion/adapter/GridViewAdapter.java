@@ -19,9 +19,6 @@ import java.util.List;
 
 public class GridViewAdapter extends ItemBaseAdapter {
 
-    List<WordCard> mWordCards;
-    Context mContext;
-
     public GridViewAdapter(Context context, List<WordCard> words) {
         super(context, words);
         mWordCards = words;
@@ -56,7 +53,7 @@ public class GridViewAdapter extends ItemBaseAdapter {
 
         TextView mCardText;
 
-        public CardHolder(View itemView) {
+        CardHolder(View itemView) {
             super(itemView);
             mCardText = (TextView) itemView.findViewById(R.id.card_text);
         }

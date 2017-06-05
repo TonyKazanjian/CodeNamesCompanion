@@ -5,6 +5,7 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.GridView;
@@ -52,15 +53,15 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
     TextInputLayout mCodeInputLayout2;
     LinearLayout mGridEmptyStateLl;
 
+    MenuItem mNewGameItem;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
         init();
-        WordInputDialog wordInputDialog =  WordInputDialog.newInstance();
-        wordInputDialog.setCancelable(false);
-        wordInputDialog.show(getSupportFragmentManager(), "TAG");
+        initDialog();
     }
 
     private void init() {
@@ -138,16 +139,17 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-//        MenuInflater inflater = getMenuInflater();
-//        inflater.inflate(R.menu.menu_main, menu);
-//        mStopEditBtn = menu.findItem(R.id.stop_edit_btn);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_main, menu);
+        mNewGameItem = menu.findItem(R.id.new_game_btn);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-
+            case R.id.new_game_btn:
+                initDialog();
         }
         return true;
     }
@@ -174,6 +176,30 @@ public class MainActivity extends AppCompatActivity implements MainActivityView,
         if (mGridEmptyStateLl.getVisibility() == View.VISIBLE) {
             mGridEmptyStateLl.setVisibility(View.GONE);
         }
+    }
+
+    public void initDialog() {
+        clearEditTexts();
+        removeAllCards();
+        WordInputDialog wordInputDialog =  WordInputDialog.newInstance();
+        wordInputDialog.setCancelable(false);
+        wordInputDialog.show(getSupportFragmentManager(), "TAG");
+    }
+
+    public void removeAllCards(){
+        mGridEmptyStateLl.setVisibility(View.GONE);
+        mGridViewAdapter.clearWordCards();
+        mItemListAdapter1.clearWordCards();
+        mItemListAdapter2.clearWordCards();
+        mItemListAdapter3.clearWordCards();
+        mItemListAdapter4.clearWordCards();
+    }
+
+    public void clearEditTexts(){
+        mCodeInput1.getText().clear();
+        mCodeInput2.getText().clear();
+        mCodeInput3.getText().clear();
+        mCodeInput4.getText().clear();
     }
 
     private class CodeInputListener implements View.OnFocusChangeListener {

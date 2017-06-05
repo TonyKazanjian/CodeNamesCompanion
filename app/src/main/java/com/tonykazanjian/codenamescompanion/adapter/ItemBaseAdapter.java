@@ -42,6 +42,10 @@ public class ItemBaseAdapter extends BaseAdapter {
         return mWordCards;
     }
 
+    public void clearWordCards() {
+        mWordCards.clear();
+    }
+
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
         return null;
