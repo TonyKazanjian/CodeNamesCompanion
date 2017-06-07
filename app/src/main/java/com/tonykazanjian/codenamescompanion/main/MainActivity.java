@@ -1,213 +1,155 @@
 package com.tonykazanjian.codenamescompanion.main;
 
-import android.support.design.widget.TextInputEditText;
-import android.support.design.widget.TextInputLayout;
+import android.content.res.Configuration;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.GridView;
-import android.widget.LinearLayout;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.tonykazanjian.codenamescompanion.LinearLayoutAbsListView;
-import com.tonykazanjian.codenamescompanion.Utils;
-import com.tonykazanjian.codenamescompanion.adapter.GridViewAdapter;
 import com.tonykazanjian.codenamescompanion.R;
-import com.tonykazanjian.codenamescompanion.WordCard;
-import com.tonykazanjian.codenamescompanion.adapter.ItemListAdapter;
-import com.tonykazanjian.codenamescompanion.listeners.GridItemLongClickListener;
-import com.tonykazanjian.codenamescompanion.listeners.ListItemLongClickListener;
-import com.tonykazanjian.codenamescompanion.listeners.ViewDragListener;
-import com.tonykazanjian.codenamescompanion.start.WordInputDialog;
 
-import java.util.ArrayList;
-import java.util.List;
+public class MainActivity extends AppCompatActivity {
+    public static final int GAME_POSITION = 0;
+    public static final int SCOREBOARD_POSITION = 1;
+    public static final int RED_THEME_POSITION = 2;
+    public static final int BLUE_THEME_POSITION = 3;
 
-public class MainActivity extends AppCompatActivity implements MainActivityView, WordInputDialog.WordInputListener{
+    private Fragment mSelectedFragment;
 
-    private MainActivityPresenter mMainActivityPresenter;
-    private GridViewAdapter mGridViewAdapter;
-    private GridView mGridView;
+    private DrawerLayout mDrawerLayout;
+    private ActionBarDrawerToggle mDrawerToggle;
 
-    ListView mListView1;
-    ListView mListView2;
-    ListView mListView3;
-    ListView mListView4;
-    ItemListAdapter mItemListAdapter1;
-    ItemListAdapter mItemListAdapter2;
-    ItemListAdapter mItemListAdapter3;
-    ItemListAdapter mItemListAdapter4;
-    LinearLayoutAbsListView mCodePanel1;
-    LinearLayoutAbsListView mCodePanel2;
-    LinearLayoutAbsListView mCodePanel3;
-    LinearLayoutAbsListView mCodePanel4;
-    LinearLayoutAbsListView mGridPanel;
-    TextInputEditText mCodeInput1;
-    TextInputEditText mCodeInput2;
-    TextInputEditText mCodeInput3;
-    TextInputEditText mCodeInput4;
-    TextInputLayout mCodeInputLayout1;
-    TextInputLayout mCodeInputLayout2;
-    LinearLayout mGridEmptyStateLl;
-
-    MenuItem mNewGameItem;
+    private ListView mDrawerList;
+    private String[] mFragmentTitles;
+    private CharSequence mDrawerTitle;
+    private CharSequence mTitle;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
-        init();
-        initDialog();
+
+        mTitle = mDrawerTitle = getTitle();
+        mFragmentTitles = getResources().getStringArray(R.array.drawer_title_array);
+        mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
+        mDrawerList = (ListView)findViewById(R.id.left_drawer);
+
+        // set a custom shadow that overlays the main content when the drawer opens
+        //TODO - set drawer shadow
+//        mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+        mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, mFragmentTitles));
+        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
+
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.drawer_open, R.string.drawer_close) {
+            public void onDrawerClosed(View view) {
+                getSupportActionBar().setTitle(mTitle);
+                invalidateOptionsMenu();
+            }
+
+            public void onDrawerOpened(View drawerView) {
+                getSupportActionBar().setTitle(mDrawerTitle);
+                invalidateOptionsMenu();
+            }
+        };
+        mDrawerLayout.addDrawerListener(mDrawerToggle);
+
+        if (savedInstanceState == null) {
+            selectItem(0);
+        }
+        
     }
 
-    private void init() {
-        mMainActivityPresenter = new MainActivityPresenter(this);
-
-        mListView1 = (ListView) findViewById(R.id.listview1);
-        mListView2 = (ListView) findViewById(R.id.listview2);
-        mListView3 = (ListView) findViewById(R.id.listview3);
-        mListView4 = (ListView) findViewById(R.id.listview4);
-        mGridView = (GridView) findViewById(R.id.card_grid);
-
-        mGridEmptyStateLl = (LinearLayout) findViewById(R.id.grid_empty_state_ll);
-
-        mCodePanel1 = (LinearLayoutAbsListView) findViewById(R.id.code_panel1);
-        mCodePanel1.setOnDragListener(new ViewDragListener(mMainActivityPresenter));
-        mCodePanel1.setAbsListView(mListView1);
-        mCodePanel2 = (LinearLayoutAbsListView) findViewById(R.id.code_panel2);
-        mCodePanel2.setOnDragListener(new ViewDragListener(mMainActivityPresenter));
-        mCodePanel2.setAbsListView(mListView2);
-        mCodePanel3 = (LinearLayoutAbsListView) findViewById(R.id.code_panel3);
-        mCodePanel3.setOnDragListener(new ViewDragListener(mMainActivityPresenter));
-        mCodePanel3.setAbsListView(mListView3);
-        mCodePanel4 = (LinearLayoutAbsListView) findViewById(R.id.code_panel4);
-        mCodePanel4.setOnDragListener(new ViewDragListener(mMainActivityPresenter));
-        mCodePanel4.setAbsListView(mListView4);
-        mGridPanel = (LinearLayoutAbsListView) findViewById(R.id.grid_panel);
-        mGridPanel.setOnDragListener(new ViewDragListener(mMainActivityPresenter));
-        mGridPanel.setAbsListView(mGridView);
-
-        mGridView.setOnItemLongClickListener(new GridItemLongClickListener(mMainActivityPresenter));
-
-        onWordListComplete(new ArrayList<WordCard>());
-
-        mItemListAdapter1 = new ItemListAdapter(this, new ArrayList<WordCard>());
-        mItemListAdapter2 = new ItemListAdapter(this, new ArrayList<WordCard>());
-        mListView1.setAdapter(mItemListAdapter1);
-        mListView1.setOnItemLongClickListener(new ListItemLongClickListener());
-        mListView2.setAdapter(mItemListAdapter2);
-        mListView2.setOnItemLongClickListener(new ListItemLongClickListener());
-        mItemListAdapter3 = new ItemListAdapter(this, new ArrayList<WordCard>());
-        mItemListAdapter4 = new ItemListAdapter(this, new ArrayList<WordCard>());
-        mListView3.setAdapter(mItemListAdapter3);
-        mListView3.setOnItemLongClickListener(new ListItemLongClickListener());
-        mListView4.setAdapter(mItemListAdapter4);
-        mListView4.setOnItemLongClickListener(new ListItemLongClickListener());
-
-        mCodeInput1 = (TextInputEditText) findViewById(R.id.code_input_1);
-        mCodeInput2 = (TextInputEditText) findViewById(R.id.code_input_2);
-        mCodeInput3 = (TextInputEditText) findViewById(R.id.code_input_3);
-        mCodeInput4 = (TextInputEditText) findViewById(R.id.code_input_4);
-
-        mCodeInput1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                view.setFocusableInTouchMode(true);
-            }
-        });
-
-        setKeyboardAndClickActions(mCodeInput1);
-        setKeyboardAndClickActions(mCodeInput2);
-        setKeyboardAndClickActions(mCodeInput3);
-        setKeyboardAndClickActions(mCodeInput4);
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        mDrawerToggle.syncState();
     }
 
-    private void setKeyboardAndClickActions(final TextInputEditText editText) {
-        editText.setOnFocusChangeListener(new CodeInputListener());
-        Utils.setKeyboardDoneAction(editText, new Utils.KeyboardInterface() {
-            @Override
-            public void keyboardDoneAction() {
-                editText.setFocusable(false);
-            }
-        }, this);
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        // Pass any configuration change to the drawer toggls
+        mDrawerToggle.onConfigurationChanged(newConfig);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_main, menu);
-        mNewGameItem = menu.findItem(R.id.new_game_btn);
-        return true;
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    /* Called whenever we call invalidateOptionsMenu() */
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        // If the nav drawer is open, hide action items related to the content view
+        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+        menu.findItem(R.id.action_new_game).setVisible(!drawerOpen);
+        menu.findItem(R.id.action_timer).setVisible(!drawerOpen);
+        return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.new_game_btn:
-                initDialog();
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        // The action bar home/up action should open or close the drawer.
+        // ActionBarDrawerToggle will take care of this.
+        if (mDrawerToggle.onOptionsItemSelected(menuItem)) {
+            return true;
         }
-        return true;
+        return super.onOptionsItemSelected(menuItem);
     }
-
-    @Override
-    public void onCardsDisplayed(List<WordCard> cards) {
-        mGridViewAdapter = new GridViewAdapter(this, cards);
-        mGridView.setAdapter(mGridViewAdapter);
-    }
-
-    @Override
-    public void onWordListComplete(List<WordCard> wordCards) {
-        mMainActivityPresenter.showCards(wordCards); //creates and sets GridViewAdapter
-    }
-
-    @Override
-    public void showEmptyState() {
-        mGridEmptyStateLl.setVisibility(View.VISIBLE);
-        mGridPanel.setMinimumHeight(Utils.dp2Pixel(82, this));
-    }
-
-    @Override
-    public void removeEmptyState() {
-        if (mGridEmptyStateLl.getVisibility() == View.VISIBLE) {
-            mGridEmptyStateLl.setVisibility(View.GONE);
-        }
-    }
-
-    public void initDialog() {
-        clearEditTexts();
-        removeAllCards();
-        WordInputDialog wordInputDialog =  WordInputDialog.newInstance();
-        wordInputDialog.setCancelable(false);
-        wordInputDialog.show(getSupportFragmentManager(), "TAG");
-    }
-
-    public void removeAllCards(){
-        mGridEmptyStateLl.setVisibility(View.GONE);
-        mGridViewAdapter.clearWordCards();
-        mItemListAdapter1.clearWordCards();
-        mItemListAdapter2.clearWordCards();
-        mItemListAdapter3.clearWordCards();
-        mItemListAdapter4.clearWordCards();
-    }
-
-    public void clearEditTexts(){
-        mCodeInput1.getText().clear();
-        mCodeInput2.getText().clear();
-        mCodeInput3.getText().clear();
-        mCodeInput4.getText().clear();
-    }
-
-    private class CodeInputListener implements View.OnFocusChangeListener {
+    
+    private class DrawerItemClickListener implements ListView.OnItemClickListener {
 
         @Override
-        public void onFocusChange(View view, boolean b) {
-            view.setFocusable(true);
-            view.setFocusableInTouchMode(true);
+        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+            selectItem(i);
+            
         }
     }
+
+    private void selectItem(int i) {
+        switch (i) {
+            case GAME_POSITION:
+                mSelectedFragment = GameFragment.newInstance();
+                break;
+            case SCOREBOARD_POSITION:
+                //TODO - create scoreboard fragment
+                break;
+            case BLUE_THEME_POSITION:
+                //TODO - create blue theme
+                break;
+            case RED_THEME_POSITION:
+                //TODO - create red theme
+                break;
+        }
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction().replace(R.id.content_frame, mSelectedFragment).commit();
+
+        mDrawerList.setItemChecked(i, true);
+        setTitle(mFragmentTitles[i]);
+    }
+
+    @Override
+    public void setTitle(CharSequence title) {
+        mTitle = title;
+        getSupportActionBar().setTitle(mTitle);
+    }
+
 }

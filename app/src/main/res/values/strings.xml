@@ -1,4 +1,12 @@
 <resources>
-    <string name="app_name">CodeNamesCompanion</string>
+    <string name="app_name">Codenames Companion</string>
     <string name="bottom_panel_title">Codenames</string>
+    <string-array name="drawer_title_array">
+        <item>Board</item>
+        <item>Scoreboard</item>
+        <item>Red</item>
+        <item>Blue</item>
+    </string-array>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
 </resources>

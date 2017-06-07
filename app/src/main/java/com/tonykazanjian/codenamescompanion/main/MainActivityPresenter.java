@@ -20,15 +20,15 @@ public class MainActivityPresenter {
     public void showCards(List<WordCard> cards){
         mWordCards = cards;
 
-//        WordCard card1 = new WordCard();
-//        card1.setWord("Dog");
-//        cards.add(card1);
-//        WordCard card2 = new WordCard();
-//        card2.setWord("Car");
-//        cards.add(card2);
-//        WordCard card3 = new WordCard();
-//        card3.setWord("Donkey");
-//        cards.add(card3);
+        WordCard card1 = new WordCard();
+        card1.setWord("Dog");
+        cards.add(card1);
+        WordCard card2 = new WordCard();
+        card2.setWord("Car");
+        cards.add(card2);
+        WordCard card3 = new WordCard();
+        card3.setWord("Donkey");
+        cards.add(card3);
 //
 ////        WordCard card4 = new WordCard();
 ////        card4.setWord("Keyboard");
