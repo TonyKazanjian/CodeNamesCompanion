@@ -4,8 +4,7 @@
     <string-array name="drawer_title_array">
         <item>Board</item>
         <item>Scoreboard</item>
-        <item>Set red color</item>
-        <item>Set blue color</item>
+        <item>Settings</item>
     </string-array>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>

@@ -23,7 +23,7 @@ public class MainActivity extends AppCompatActivity {
     public static final int GAME_POSITION = 0;
     public static final int SCOREBOARD_POSITION = 1;
     public static final int RED_THEME_POSITION = 2;
-    public static final int BLUE_THEME_POSITION = 3;
+    public static final int SETTINGS_POSITION = 3;
 
     private Fragment mSelectedFragment;
 
@@ -124,11 +124,8 @@ public class MainActivity extends AppCompatActivity {
             case SCOREBOARD_POSITION:
                 //TODO - create scoreboard fragment
                 break;
-            case BLUE_THEME_POSITION:
-                //TODO - create blue theme
-                break;
-            case RED_THEME_POSITION:
-                //TODO - create red theme
+            case SETTINGS_POSITION:
+                //TODO - create settings fragment
                 break;
         }
 
