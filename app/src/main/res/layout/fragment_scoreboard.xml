@@ -34,6 +34,7 @@
         <NumberPicker
             android:id="@+id/blue_score"
             android:layout_width="wrap_content"
+            android:descendantFocusability="blocksDescendants"
             android:layout_height="0dp"
             android:layout_weight="1"/>
     </LinearLayout>
@@ -67,6 +68,7 @@
             android:id="@+id/red_score"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
+            android:descendantFocusability="blocksDescendants"
             android:layout_weight="1"/>
     </LinearLayout>
 

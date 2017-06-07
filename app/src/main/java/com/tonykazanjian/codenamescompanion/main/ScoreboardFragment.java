@@ -3,19 +3,26 @@ package com.tonykazanjian.codenamescompanion.main;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.NumberPicker;
 
 import com.tonykazanjian.codenamescompanion.R;
+import com.tonykazanjian.codenamescompanion.UserPreferences;
 
 /**
  * @author Tony Kazanjian
  */
 
 public class ScoreboardFragment extends Fragment {
+
+    private NumberPicker mBlueTeamPicker;
+    private NumberPicker mRedTeamPicker;
+
+    private int bluePoints;
+    private int redPoints;
 
     public static ScoreboardFragment newInstance() {
         return new ScoreboardFragment();
@@ -28,6 +35,41 @@ public class ScoreboardFragment extends Fragment {
         setHasOptionsMenu(false);
 
         View rootView = inflater.inflate(R.layout.fragment_scoreboard, container, false);
+        mBlueTeamPicker = (NumberPicker)rootView.findViewById(R.id.blue_score);
+        mRedTeamPicker = (NumberPicker)rootView.findViewById(R.id.red_score);
+
+        initPickers();
+        setPickerValue();
+
+        mBlueTeamPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker numberPicker, int i, int i1) {
+                bluePoints = i1;
+                UserPreferences.setBlueScore(getContext(), bluePoints);
+            }
+        });
+        mRedTeamPicker.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+            @Override
+            public void onValueChange(NumberPicker numberPicker, int i, int i1) {
+                redPoints = i1;
+                UserPreferences.setRedScore(getContext(), redPoints);
+            }
+        });
         return rootView;
+    }
+
+    private void initPickers() {
+        mBlueTeamPicker.setMinValue(0);
+        mBlueTeamPicker.setMaxValue(100);
+        mRedTeamPicker.setMinValue(0);
+        mRedTeamPicker.setMaxValue(100);
+
+        mBlueTeamPicker.setWrapSelectorWheel(true);
+        mRedTeamPicker.setWrapSelectorWheel(true);
+    }
+
+    private void setPickerValue(){
+        mBlueTeamPicker.setValue(UserPreferences.getBlueScore(getContext()));
+        mRedTeamPicker.setValue(UserPreferences.getRedScore(getContext()));
     }
 }
