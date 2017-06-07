@@ -89,8 +89,12 @@ public class MainActivity extends AppCompatActivity {
     public boolean onPrepareOptionsMenu(Menu menu) {
         // If the nav drawer is open, hide action items related to the content view
         boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
-        menu.findItem(R.id.action_new_game).setVisible(!drawerOpen);
-        menu.findItem(R.id.action_timer).setVisible(!drawerOpen);
+        MenuItem newGameItem = menu.findItem(R.id.action_new_game);
+        MenuItem timerItem = menu.findItem(R.id.action_timer);
+        if (newGameItem != null && timerItem != null) {
+            menu.findItem(R.id.action_new_game).setVisible(!drawerOpen);
+            menu.findItem(R.id.action_timer).setVisible(!drawerOpen);
+        }
         return super.onPrepareOptionsMenu(menu);
     }
 
@@ -116,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
                 mSelectedFragment = GameFragment.newInstance();
                 break;
             case SCOREBOARD_POSITION:
-                //TODO - create scoreboard fragment
+                mSelectedFragment = ScoreboardFragment.newInstance();
                 break;
             case SETTINGS_POSITION:
                 //TODO - create settings fragment
