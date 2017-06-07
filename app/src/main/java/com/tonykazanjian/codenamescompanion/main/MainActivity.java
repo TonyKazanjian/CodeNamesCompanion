@@ -23,8 +23,7 @@ import com.tonykazanjian.codenamescompanion.R;
 public class MainActivity extends AppCompatActivity {
     public static final int GAME_POSITION = 0;
     public static final int SCOREBOARD_POSITION = 1;
-    public static final int RED_THEME_POSITION = 2;
-    public static final int SETTINGS_POSITION = 3;
+    public static final int SETTINGS_POSITION = 2;
 
     private Fragment mSelectedFragment;
 
@@ -46,10 +45,7 @@ public class MainActivity extends AppCompatActivity {
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         mDrawerList = (ListView)findViewById(R.id.left_drawer);
 
-        // set a custom shadow that overlays the main content when the drawer opens
-        //TODO - set drawer shadow
-//        mDrawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
-        mDrawerList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item, mFragmentTitles));
+        mDrawerList.setAdapter(new ArrayAdapter<>(this, R.layout.drawer_list_item, mFragmentTitles));
         mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -102,10 +98,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem menuItem) {
         // The action bar home/up action should open or close the drawer.
         // ActionBarDrawerToggle will take care of this.
-        if (mDrawerToggle.onOptionsItemSelected(menuItem)) {
-            return true;
-        }
-        return super.onOptionsItemSelected(menuItem);
+        return mDrawerToggle.onOptionsItemSelected(menuItem) || super.onOptionsItemSelected(menuItem);
     }
     
     private class DrawerItemClickListener implements ListView.OnItemClickListener {

@@ -33,9 +33,9 @@ import java.util.List;
  * @author Tony Kazanjian
  */
 
-public class GameFragment extends Fragment implements MainActivityView, WordInputDialog.WordInputListener{
+public class GameFragment extends Fragment implements GameView, WordInputDialog.WordInputListener{
 
-    private MainActivityPresenter mMainActivityPresenter;
+    private GamePresenter mGamePresenter;
     private GridViewAdapter mGridViewAdapter;
     private GridView mGridView;
 
@@ -89,7 +89,7 @@ public class GameFragment extends Fragment implements MainActivityView, WordInpu
 //    }
 
     private void init(View rootView) {
-        mMainActivityPresenter = new MainActivityPresenter(this);
+        mGamePresenter = new GamePresenter(this);
 
         mListView1 = (ListView) rootView.findViewById(R.id.listview1);
         mListView2 = (ListView) rootView.findViewById(R.id.listview2);
@@ -100,22 +100,22 @@ public class GameFragment extends Fragment implements MainActivityView, WordInpu
         mGridEmptyStateLl = (LinearLayout) rootView.findViewById(R.id.grid_empty_state_ll);
 
         mCodePanel1 = (LinearLayoutAbsListView) rootView.findViewById(R.id.code_panel1);
-        mCodePanel1.setOnDragListener(new ViewDragListener(mMainActivityPresenter));
+        mCodePanel1.setOnDragListener(new ViewDragListener(mGamePresenter));
         mCodePanel1.setAbsListView(mListView1);
         mCodePanel2 = (LinearLayoutAbsListView) rootView.findViewById(R.id.code_panel2);
-        mCodePanel2.setOnDragListener(new ViewDragListener(mMainActivityPresenter));
+        mCodePanel2.setOnDragListener(new ViewDragListener(mGamePresenter));
         mCodePanel2.setAbsListView(mListView2);
         mCodePanel3 = (LinearLayoutAbsListView) rootView.findViewById(R.id.code_panel3);
-        mCodePanel3.setOnDragListener(new ViewDragListener(mMainActivityPresenter));
+        mCodePanel3.setOnDragListener(new ViewDragListener(mGamePresenter));
         mCodePanel3.setAbsListView(mListView3);
         mCodePanel4 = (LinearLayoutAbsListView) rootView.findViewById(R.id.code_panel4);
-        mCodePanel4.setOnDragListener(new ViewDragListener(mMainActivityPresenter));
+        mCodePanel4.setOnDragListener(new ViewDragListener(mGamePresenter));
         mCodePanel4.setAbsListView(mListView4);
         mGridPanel = (LinearLayoutAbsListView) rootView.findViewById(R.id.grid_panel);
-        mGridPanel.setOnDragListener(new ViewDragListener(mMainActivityPresenter));
+        mGridPanel.setOnDragListener(new ViewDragListener(mGamePresenter));
         mGridPanel.setAbsListView(mGridView);
 
-        mGridView.setOnItemLongClickListener(new GridItemLongClickListener(mMainActivityPresenter));
+        mGridView.setOnItemLongClickListener(new GridItemLongClickListener(mGamePresenter));
 
         onWordListComplete(new ArrayList<WordCard>());
 
@@ -186,7 +186,7 @@ public class GameFragment extends Fragment implements MainActivityView, WordInpu
 
     @Override
     public void onWordListComplete(List<WordCard> wordCards) {
-        mMainActivityPresenter.showCards(wordCards); //creates and sets GridViewAdapter
+        mGamePresenter.showCards(wordCards); //creates and sets GridViewAdapter
     }
 
     @Override

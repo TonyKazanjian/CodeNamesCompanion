@@ -8,13 +8,13 @@ import java.util.List;
  * @author Tony Kazanjian
  */
 
-public class MainActivityPresenter {
+public class GamePresenter {
 
-    private MainActivityView mMainActivityView;
+    private GameView mGameView;
     private List<WordCard> mWordCards;
 
-    public MainActivityPresenter(MainActivityView mainActivityView) {
-        mMainActivityView = mainActivityView;
+    public GamePresenter(GameView gameView) {
+        mGameView = gameView;
     }
 
     public void showCards(List<WordCard> cards){
@@ -49,7 +49,7 @@ public class MainActivityPresenter {
 ////        WordCard card9 = new WordCard();
 ////        card9.setWord("Street");
 ////        wordCards.add(card9);
-        mMainActivityView.onCardsDisplayed(cards);
+        mGameView.onCardsDisplayed(cards);
     }
 
     public int getCardCount() {
@@ -69,13 +69,13 @@ public class MainActivityPresenter {
     }
 
     public boolean addItemToGrid(List<WordCard> l, WordCard it) {
-        mMainActivityView.removeEmptyState();
+        mGameView.removeEmptyState();
         return l.add(it);
     }
 
     public boolean removeItemFromGrid(List<WordCard> l, WordCard it) {
         if (l.size() == 1) {
-            mMainActivityView.showEmptyState();
+            mGameView.showEmptyState();
         }
         return l.remove(it);
     }

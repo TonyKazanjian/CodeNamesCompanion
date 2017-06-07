@@ -7,7 +7,7 @@ import android.widget.AdapterView;
 import com.tonykazanjian.codenamescompanion.PassObject;
 import com.tonykazanjian.codenamescompanion.WordCard;
 import com.tonykazanjian.codenamescompanion.adapter.GridViewAdapter;
-import com.tonykazanjian.codenamescompanion.main.MainActivityPresenter;
+import com.tonykazanjian.codenamescompanion.main.GamePresenter;
 
 import java.util.List;
 
@@ -17,10 +17,10 @@ import java.util.List;
 
 public class GridItemLongClickListener implements AdapterView.OnItemLongClickListener {
 
-    private MainActivityPresenter mMainActivityPresenter;
+    private GamePresenter mGamePresenter;
 
-    public GridItemLongClickListener(MainActivityPresenter mainActivityPresenter) {
-        mMainActivityPresenter = mainActivityPresenter;
+    public GridItemLongClickListener(GamePresenter gamePresenter) {
+        mGamePresenter = gamePresenter;
     }
 
     @Override

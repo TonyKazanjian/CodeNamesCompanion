@@ -8,7 +8,7 @@ import java.util.List;
  * @author Tony Kazanjian
  */
 
-public interface MainActivityView {
+public interface GameView {
 
     void onCardsDisplayed(List<WordCard> cards);
     void showEmptyState();

@@ -1,6 +1,5 @@
 package com.tonykazanjian.codenamescompanion.listeners;
 
-import android.util.Log;
 import android.view.DragEvent;
 import android.view.View;
 import android.widget.AbsListView;
@@ -12,8 +11,7 @@ import com.tonykazanjian.codenamescompanion.Utils;
 import com.tonykazanjian.codenamescompanion.WordCard;
 import com.tonykazanjian.codenamescompanion.adapter.GridViewAdapter;
 import com.tonykazanjian.codenamescompanion.adapter.ItemBaseAdapter;
-import com.tonykazanjian.codenamescompanion.adapter.ItemListAdapter;
-import com.tonykazanjian.codenamescompanion.main.MainActivityPresenter;
+import com.tonykazanjian.codenamescompanion.main.GamePresenter;
 
 import java.util.List;
 
@@ -27,10 +25,10 @@ public class ViewDragListener implements View.OnDragListener {
     private BaseAdapter destAdapter;
     private List<WordCard> destList;
 
-    private MainActivityPresenter mMainActivityPresenter;
+    private GamePresenter mGamePresenter;
 
-    public ViewDragListener(MainActivityPresenter mainActivityPresenter) {
-        mMainActivityPresenter = mainActivityPresenter;
+    public ViewDragListener(GamePresenter gamePresenter) {
+        mGamePresenter = gamePresenter;
     }
 
     @Override
@@ -68,15 +66,15 @@ public class ViewDragListener implements View.OnDragListener {
 
     private void swapItems(List<WordCard> srcList, WordCard passedWord) {
         if (srcAdapter instanceof GridViewAdapter) {
-            if(mMainActivityPresenter.removeItemFromGrid(srcList, passedWord)){
-                mMainActivityPresenter.addItemToList(destList, passedWord);
+            if(mGamePresenter.removeItemFromGrid(srcList, passedWord)){
+                mGamePresenter.addItemToList(destList, passedWord);
             }
         } else if (destAdapter instanceof GridViewAdapter) {
-            if(mMainActivityPresenter.removeItemFromList(srcList, passedWord)){
-                mMainActivityPresenter.addItemToGrid(destList, passedWord);
+            if(mGamePresenter.removeItemFromList(srcList, passedWord)){
+                mGamePresenter.addItemToGrid(destList, passedWord);
             }
-        } else if(mMainActivityPresenter.removeItemFromList(srcList, passedWord)){
-            mMainActivityPresenter.addItemToList(destList, passedWord);
+        } else if(mGamePresenter.removeItemFromList(srcList, passedWord)){
+            mGamePresenter.addItemToList(destList, passedWord);
         }
     }
 }
