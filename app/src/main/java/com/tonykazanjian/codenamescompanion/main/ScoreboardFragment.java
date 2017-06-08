@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.NumberPicker;
 
 import com.tonykazanjian.codenamescompanion.R;
@@ -37,6 +38,7 @@ public class ScoreboardFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_scoreboard, container, false);
         mBlueTeamPicker = (NumberPicker)rootView.findViewById(R.id.blue_score);
         mRedTeamPicker = (NumberPicker)rootView.findViewById(R.id.red_score);
+        Button clearScoresBtn = (Button) rootView.findViewById(R.id.clear_btn);
 
         initPickers();
         setPickerValue();
@@ -55,6 +57,16 @@ public class ScoreboardFragment extends Fragment {
                 UserPreferences.setRedScore(getContext(), redPoints);
             }
         });
+
+        clearScoresBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mBlueTeamPicker.setValue(0);
+                UserPreferences.setBlueScore(getContext(), 0);
+                mRedTeamPicker.setValue(0);
+                UserPreferences.setRedScore(getContext(), 0);
+            }
+        });
         return rootView;
     }
 
@@ -63,6 +75,9 @@ public class ScoreboardFragment extends Fragment {
         mBlueTeamPicker.setMaxValue(100);
         mRedTeamPicker.setMinValue(0);
         mRedTeamPicker.setMaxValue(100);
+
+        mBlueTeamPicker.setValue(UserPreferences.getBlueScore(getContext()));
+        mRedTeamPicker.setValue(UserPreferences.getRedScore(getContext()));
 
         mBlueTeamPicker.setWrapSelectorWheel(true);
         mRedTeamPicker.setWrapSelectorWheel(true);
