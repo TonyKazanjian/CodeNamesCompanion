@@ -55,6 +55,6 @@ public class Utils {
     }
 
     public static class Constants {
-        public static boolean sIsItemDragging = false;
+        public static int MAX_SCORE = 10;
     }
 }

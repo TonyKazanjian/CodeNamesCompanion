@@ -12,6 +12,7 @@ import android.widget.NumberPicker;
 
 import com.tonykazanjian.codenamescompanion.R;
 import com.tonykazanjian.codenamescompanion.UserPreferences;
+import com.tonykazanjian.codenamescompanion.Utils;
 
 /**
  * @author Tony Kazanjian
@@ -72,9 +73,9 @@ public class ScoreboardFragment extends Fragment {
 
     private void initPickers() {
         mBlueTeamPicker.setMinValue(0);
-        mBlueTeamPicker.setMaxValue(100);
+        mBlueTeamPicker.setMaxValue(Utils.Constants.MAX_SCORE);
         mRedTeamPicker.setMinValue(0);
-        mRedTeamPicker.setMaxValue(100);
+        mRedTeamPicker.setMaxValue(Utils.Constants.MAX_SCORE);
 
         mBlueTeamPicker.setValue(UserPreferences.getBlueScore(getContext()));
         mRedTeamPicker.setValue(UserPreferences.getRedScore(getContext()));
