@@ -7,7 +7,7 @@ import android.widget.BaseAdapter;
 
 import com.tonykazanjian.codenamescompanion.LinearLayoutAbsListView;
 import com.tonykazanjian.codenamescompanion.PassObject;
-import com.tonykazanjian.codenamescompanion.Utils;
+import com.tonykazanjian.codenamescompanion.UserPreferences;
 import com.tonykazanjian.codenamescompanion.WordCard;
 import com.tonykazanjian.codenamescompanion.adapter.GridViewAdapter;
 import com.tonykazanjian.codenamescompanion.adapter.ItemBaseAdapter;
@@ -74,5 +74,8 @@ public class ViewDragListener implements View.OnDragListener {
         } else if(mGamePresenter.removeItemFromList(srcList, passedWord)){
             mGamePresenter.addItemToList(destList, passedWord);
         }
+
+        UserPreferences.setSrcWordList(srcList);
+        UserPreferences.setDestWordList(destList);
     }
 }

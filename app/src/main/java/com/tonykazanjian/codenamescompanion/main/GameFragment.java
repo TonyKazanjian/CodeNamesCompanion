@@ -1,6 +1,8 @@
 package com.tonykazanjian.codenamescompanion.main;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
@@ -17,6 +19,7 @@ import android.widget.ListView;
 
 import com.tonykazanjian.codenamescompanion.LinearLayoutAbsListView;
 import com.tonykazanjian.codenamescompanion.R;
+import com.tonykazanjian.codenamescompanion.UserPreferences;
 import com.tonykazanjian.codenamescompanion.Utils;
 import com.tonykazanjian.codenamescompanion.WordCard;
 import com.tonykazanjian.codenamescompanion.adapter.GridViewAdapter;
@@ -34,6 +37,13 @@ import java.util.List;
  */
 
 public class GameFragment extends Fragment implements GameView, WordInputDialog.WordInputListener{
+
+    public static String CODE_WORD_KEY_1 = "code_word_key_1";
+    public static String CODE_WORD_KEY_2 = "code_word_key_2";
+    public static String CODE_WORD_KEY_3 = "code_word_key_3";
+    public static String CODE_WORD_KEY_4 = "code_word_key_4";
+
+    public static final String TAG = GameFragment.class.getName();
 
     private GamePresenter mGamePresenter;
     private GridViewAdapter mGridViewAdapter;
@@ -62,8 +72,31 @@ public class GameFragment extends Fragment implements GameView, WordInputDialog.
 
     MenuItem mNewGameItem;
 
+    Bundle mBundle = new Bundle();
+
+    List<WordCard> mWordCards = new ArrayList<>();
+
     public static GameFragment newInstance(){
+//        GameFragment gameFragment = new GameFragment();
+//        Bundle args = new Bundle();
+//        outState.putString(CODE_WORD_KEY_1, mCodeInput1.getText().toString());
+//        outState.putString(CODE_WORD_KEY_2, mCodeInput2.getText().toString());
+//        outState.putString(CODE_WORD_KEY_3, mCodeInput3.getText().toString());
+//        outState.putString(CODE_WORD_KEY_4, mCodeInput4.getText().toString());
         return new GameFragment();
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (savedInstanceState != null) {
+            mBundle = savedInstanceState;
+        } else {
+            mBundle = new Bundle();
+        }
+//        if (savedInstanceState == null || savedInstanceState.isEmpty()) {
+//            initDialog();
+//        }
     }
 
     @Nullable
@@ -74,19 +107,28 @@ public class GameFragment extends Fragment implements GameView, WordInputDialog.
 
         View rootView = inflater.inflate(R.layout.fragment_game, container, false);
         init(rootView);
-//        initDialog();
+
+        if (UserPreferences.getGridWordList(mBundle) == null){
+            initDialog();
+        } else {
+            onWordListComplete(UserPreferences.getGridWordList(mBundle));
+        }
 
         return rootView;
     }
 
 //    @Override
-//    public void onCreate(Bundle savedInstanceState) {
-//        super.onCreate(savedInstanceState);
-//
-//        setContentView(R.layout.fragment_game);
-//        init();
-//        initDialog();
+//    public void onDestroy() {
+//        super.onDestroy();
+////        mBundle.putParcelableArrayList(UserPreferences.SRC_WORD_CARDS_KEY, (ArrayList<? extends Parcelable>) mWordCards);
 //    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setRetainInstance(true);
+    }
 
     private void init(View rootView) {
         mGamePresenter = new GamePresenter(this);
@@ -117,7 +159,7 @@ public class GameFragment extends Fragment implements GameView, WordInputDialog.
 
         mGridView.setOnItemLongClickListener(new GridItemLongClickListener(mGamePresenter));
 
-        onWordListComplete(new ArrayList<WordCard>());
+//        onWordListComplete(new ArrayList<WordCard>());
 
         mItemListAdapter1 = new ItemListAdapter(getContext(), new ArrayList<WordCard>());
         mItemListAdapter2 = new ItemListAdapter(getContext(), new ArrayList<WordCard>());
@@ -160,6 +202,38 @@ public class GameFragment extends Fragment implements GameView, WordInputDialog.
         }, getContext());
     }
 
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            //Restore the fragment's state here
+//            mCodeInput1.setText(savedInstanceState.getString(CODE_WORD_KEY_1));
+//            mCodeInput2.setText(savedInstanceState.getString(CODE_WORD_KEY_2));
+//            mCodeInput3.setText(savedInstanceState.getString(CODE_WORD_KEY_3));
+//            mCodeInput4.setText(savedInstanceState.getString(CODE_WORD_KEY_4));
+        }
+    }
+
+//    @Override
+//    public void onDestroy() {
+//
+//        super.onDestroy();
+//    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+//        outState.putParcelableArrayList(UserPreferences.SRC_WORD_CARDS_KEY, (ArrayList<? extends Parcelable>) mWordCards);
+//        outState.putString(CODE_WORD_KEY_1, mCodeInput1.getText().toString());
+//        outState.putString(CODE_WORD_KEY_2, mCodeInput2.getText().toString());
+//        outState.putString(CODE_WORD_KEY_3, mCodeInput3.getText().toString());
+//        outState.putString(CODE_WORD_KEY_4, mCodeInput4.getText().toString());
+
+        //Save the fragment's state here
+    }
+
+
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
@@ -180,12 +254,14 @@ public class GameFragment extends Fragment implements GameView, WordInputDialog.
 
     @Override
     public void onCardsDisplayed(List<WordCard> cards) {
+        cards = UserPreferences.getGridWordList(mBundle);
         mGridViewAdapter = new GridViewAdapter(getContext(), cards);
         mGridView.setAdapter(mGridViewAdapter);
     }
 
     @Override
     public void onWordListComplete(List<WordCard> wordCards) {
+        UserPreferences.setGridWordList(mBundle, wordCards);
         mGamePresenter.showCards(wordCards); //creates and sets GridViewAdapter
     }
 

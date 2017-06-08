@@ -4,6 +4,7 @@ import android.content.res.Configuration;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -40,6 +41,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Opens on game fragment
+        if (mSelectedFragment == null) {
+            mSelectedFragment = GameFragment.newInstance();
+        }
+
+        if (savedInstanceState != null) {
+            //Restore the fragment's instance
+//            mContent = getSupportFragmentManager().getFragment(savedInstanceState, "myFragmentName");
+        }
+
         mTitle = mDrawerTitle = getTitle();
         mFragmentTitles = getResources().getStringArray(R.array.drawer_title_array);
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
@@ -68,6 +79,14 @@ public class MainActivity extends AppCompatActivity {
             selectItem(0);
         }
         
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        //Save the fragment's instance
+//        getSupportFragmentManager().putFragment(outState, "myFragmentName", mContent);
     }
 
     @Override
@@ -104,7 +123,12 @@ public class MainActivity extends AppCompatActivity {
         // ActionBarDrawerToggle will take care of this.
         return mDrawerToggle.onOptionsItemSelected(menuItem) || super.onOptionsItemSelected(menuItem);
     }
-    
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
 
         @Override
@@ -117,21 +141,35 @@ public class MainActivity extends AppCompatActivity {
     private void selectItem(int i) {
         switch (i) {
             case GAME_POSITION:
-                mSelectedFragment = GameFragment.newInstance();
+                setGameFragment();
                 break;
             case SCOREBOARD_POSITION:
-                mSelectedFragment = ScoreboardFragment.newInstance();
+                setScoreboardFragment();
                 break;
             case SETTINGS_POSITION:
                 //TODO - create settings fragment
                 break;
         }
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content_frame, mSelectedFragment).commit();
-
         mDrawerList.setItemChecked(i, true);
         setTitle(mFragmentTitles[i]);
+    }
+
+    private void setGameFragment() {
+        GameFragment gameFragment = (GameFragment)getSupportFragmentManager().findFragmentByTag(GameFragment.TAG);
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        if (gameFragment == null) {
+            gameFragment = GameFragment.newInstance();
+        }
+        transaction.replace(R.id.content_frame, gameFragment, GameFragment.TAG);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
+    private void setScoreboardFragment() {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.content_frame, ScoreboardFragment.newInstance(), null);
+        transaction.commit();
     }
 
     @Override

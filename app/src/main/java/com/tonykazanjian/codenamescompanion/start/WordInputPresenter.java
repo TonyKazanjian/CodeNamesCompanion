@@ -35,7 +35,8 @@ public class WordInputPresenter {
     }
 
     public boolean isGameReady() {
-        return mWordCards.size() >= 8;
+        //TODO - always change back to 8
+        return mWordCards.size() >= 0;
     }
 
     public void clearWords(){
