@@ -121,7 +121,7 @@ public class WordInputDialog extends DialogFragment implements WordInputView {
 
         mWordInputPresenter.setWordText(strings);
         if (mWordInputPresenter.isGameReady()) {
-            mWordInputListener = (WordInputListener) getActivity();
+            mWordInputListener = (WordInputListener) getParentFragment();
             mWordInputListener.onWordListComplete(mWordInputPresenter.getWordCards());
             dismiss();
 
