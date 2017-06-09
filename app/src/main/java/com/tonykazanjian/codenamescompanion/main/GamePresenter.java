@@ -17,7 +17,7 @@ public class GamePresenter {
         mGameView = gameView;
     }
 
-    public void showCards(List<WordCard> cards){
+    public void showGridCards(List<WordCard> cards){
         mWordCards = cards;
 
 //        WordCard card1 = new WordCard();
@@ -30,15 +30,15 @@ public class GamePresenter {
 //        card3.setWord("Donkey");
 //        cards.add(card3);
 //
-////        WordCard card4 = new WordCard();
-////        card4.setWord("Keyboard");
-////        wordCards.add(card4);
-////        WordCard card5 = new WordCard();
-////        card5.setWord("Sky");
-////        wordCards.add(card5);
-////        WordCard card6 = new WordCard();
-////        card6.setWord("Orange");
-////        wordCards.add(card6);
+//        WordCard card4 = new WordCard();
+//        card4.setWord("Keyboard");
+//        cards.add(card4);
+//        WordCard card5 = new WordCard();
+//        card5.setWord("Sky");
+//        cards.add(card5);
+//        WordCard card6 = new WordCard();
+//        card6.setWord("Orange");
+//        cards.add(card6);
 ////
 ////        WordCard card7 = new WordCard();
 ////        card7.setWord("Apple");
@@ -49,7 +49,7 @@ public class GamePresenter {
 ////        WordCard card9 = new WordCard();
 ////        card9.setWord("Street");
 ////        wordCards.add(card9);
-        mGameView.onCardsDisplayed(cards);
+        mGameView.onGridCardsDisplayed(cards);
     }
 
     public int getCardCount() {

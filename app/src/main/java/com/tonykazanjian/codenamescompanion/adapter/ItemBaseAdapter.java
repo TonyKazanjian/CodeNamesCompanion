@@ -7,6 +7,7 @@ import android.widget.BaseAdapter;
 
 import com.tonykazanjian.codenamescompanion.WordCard;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**

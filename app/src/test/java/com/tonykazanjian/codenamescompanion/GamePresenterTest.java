@@ -42,7 +42,7 @@ public class GamePresenterTest {
 
     @Test
     public void checkIfCardsAreDisplayed() {
-        mGamePresenter.showCards(new ArrayList<WordCard>());
+        mGamePresenter.showGridCards(new ArrayList<WordCard>());
         Assert.assertEquals(3, mGamePresenter.getCardCount());
     }
 

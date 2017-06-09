@@ -41,14 +41,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Opens on game fragment
-        if (mSelectedFragment == null) {
-            mSelectedFragment = GameFragment.newInstance();
-        }
-
         if (savedInstanceState != null) {
             //Restore the fragment's instance
-//            mContent = getSupportFragmentManager().getFragment(savedInstanceState, "myFragmentName");
+            mSelectedFragment = getSupportFragmentManager().getFragment(savedInstanceState, GameFragment.TAG);
         }
 
         mTitle = mDrawerTitle = getTitle();
@@ -86,7 +81,9 @@ public class MainActivity extends AppCompatActivity {
         super.onSaveInstanceState(outState);
 
         //Save the fragment's instance
-//        getSupportFragmentManager().putFragment(outState, "myFragmentName", mContent);
+        if (mSelectedFragment != null) {
+            getSupportFragmentManager().putFragment(outState, GameFragment.TAG, mSelectedFragment);
+        }
     }
 
     @Override
@@ -162,13 +159,14 @@ public class MainActivity extends AppCompatActivity {
             gameFragment = GameFragment.newInstance();
         }
         transaction.replace(R.id.content_frame, gameFragment, GameFragment.TAG);
-        transaction.addToBackStack(null);
+        transaction.addToBackStack(GameFragment.TAG);
         transaction.commit();
     }
 
     private void setScoreboardFragment() {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.content_frame, ScoreboardFragment.newInstance(), null);
+        transaction.addToBackStack(null);
         transaction.commit();
     }
 
@@ -177,5 +175,6 @@ public class MainActivity extends AppCompatActivity {
         mTitle = title;
         getSupportActionBar().setTitle(mTitle);
     }
+
 
 }

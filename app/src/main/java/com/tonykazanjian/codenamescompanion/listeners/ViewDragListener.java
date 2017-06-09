@@ -74,8 +74,5 @@ public class ViewDragListener implements View.OnDragListener {
         } else if(mGamePresenter.removeItemFromList(srcList, passedWord)){
             mGamePresenter.addItemToList(destList, passedWord);
         }
-
-        UserPreferences.setSrcWordList(srcList);
-        UserPreferences.setDestWordList(destList);
     }
 }
