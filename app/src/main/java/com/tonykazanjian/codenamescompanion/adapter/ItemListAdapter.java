@@ -2,6 +2,7 @@ package com.tonykazanjian.codenamescompanion.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,38 +26,42 @@ public class ItemListAdapter extends ItemBaseAdapter {
     }
 
     @Override
-    public View getView(final int position, View convertView, ViewGroup parent) {
-        View rowView = convertView;
+    public View getView(final int i, View convertView, ViewGroup parent) {
+        ViewHolder viewHolder;
 
         // reuse views
-        if (rowView == null) {
-            LayoutInflater inflater = ((Activity) mContext).getLayoutInflater();
-
-            rowView = inflater.inflate(R.layout.item_word, null);
-
-           ViewHolder viewHolder = new ViewHolder();
-            viewHolder.text = (TextView) rowView.findViewById(R.id.word_text);
-            viewHolder.mCloseBtn =  (ImageView)rowView.findViewById(R.id.close_btn);
-            rowView.setTag(viewHolder);
+        if (convertView == null) {
+            convertView = LayoutInflater.from(mContext).inflate(R.layout.item_word, null);
+            viewHolder = new ViewHolder(convertView);
+            convertView.setTag(viewHolder);
         } else {
-            ViewHolder holder = (ViewHolder) rowView.getTag();
-            holder.text.setText(mWordCards.get(position).getWord());
-            holder.mCloseBtn.setOnClickListener(new View.OnClickListener() {
+            viewHolder = (ViewHolder) convertView.getTag();
+        }
+
+        if (i <= mWordCards.size()-1){
+            viewHolder.text.setText(mWordCards.get(i).getWord());
+            viewHolder.mCloseBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mWordCards.remove(position);
+                    mWordCards.remove(i);
                     notifyDataSetChanged();
                 }
             });
-            rowView.setOnDragListener(new ItemDragListener(mWordCards.get(position)));
+            convertView.setOnDragListener(new ItemDragListener(mWordCards.get(i)));
         }
 
-        return rowView;
+        return convertView;
     }
 
-    static class ViewHolder {
+    private class ViewHolder extends RecyclerView.ViewHolder {
         TextView text;
         ImageView mCloseBtn;
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+            text = (TextView) itemView.findViewById(R.id.word_text);
+            mCloseBtn = (ImageView)itemView.findViewById(R.id.close_btn);
+        }
     }
 
 
