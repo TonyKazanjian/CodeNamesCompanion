@@ -39,11 +39,6 @@ import java.util.List;
 
 public class GameFragment extends Fragment implements GameView, WordInputDialog.WordInputListener{
 
-    public static String CODE_WORD_KEY_1 = "code_word_key_1";
-    public static String CODE_WORD_KEY_2 = "code_word_key_2";
-    public static String CODE_WORD_KEY_3 = "code_word_key_3";
-    public static String CODE_WORD_KEY_4 = "code_word_key_4";
-
     public static final String TAG = GameFragment.class.getName();
 
     private GamePresenter mGamePresenter;
@@ -67,13 +62,9 @@ public class GameFragment extends Fragment implements GameView, WordInputDialog.
     TextInputEditText mCodeInput2;
     TextInputEditText mCodeInput3;
     TextInputEditText mCodeInput4;
-    TextInputLayout mCodeInputLayout1;
-    TextInputLayout mCodeInputLayout2;
     LinearLayout mGridEmptyStateLl;
 
     MenuItem mNewGameItem;
-
-    Bundle mBundle = new Bundle();
 
     List<WordCard> mGridList;
     List<WordCard> mPanel1List;
@@ -97,6 +88,10 @@ public class GameFragment extends Fragment implements GameView, WordInputDialog.
         if (savedInstanceState != null) {
             //Restore the fragment's state here
             mGridList = (List<WordCard>) savedInstanceState.getSerializable(UserPreferences.GRID_WORDS_KEY);
+            mPanel1List = (List<WordCard>) savedInstanceState.getSerializable(UserPreferences.CODE_PANEL_1_WORDS_KEY);
+            mPanel2List = (List<WordCard>) savedInstanceState.getSerializable(UserPreferences.CODE_PANEL_2_WORDS_KEY);
+            mPanel3List = (List<WordCard>) savedInstanceState.getSerializable(UserPreferences.CODE_PANEL_3_WORDS_KEY);
+            mPanel4List = (List<WordCard>) savedInstanceState.getSerializable(UserPreferences.CODE_PANEL_4_WORDS_KEY);
         }
 
         if (mGridList == null) {
