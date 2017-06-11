@@ -8,10 +8,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.bcgdv.asia.lib.ticktock.TickTockView;
 import com.tonykazanjian.codenamescompanion.R;
 
-import java.util.Calendar;
+import java.util.concurrent.TimeUnit;
 
 /**
  * @author Tony Kazanjian
@@ -25,10 +24,19 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
     Button mPauseButton;
     Button mResetButton;
 
-    CountDownTimer mCountDownTimer;
+    MyCountDownTimer mCountDownTimer;
 
-    int mMinutes;
-    int mSeconds;
+    // TODO - should be received in broadcast from service
+    long mMinutes;
+    long mSeconds;
+    long mTimeLeft;
+
+    // TODO - service variable
+    public boolean sIsStarted = false;
+
+    //TODO - should come from SharedPreferences.
+    int setMinutes = (2 * 1000) * 60; // 2 minutes
+    int setSeconds = (20 * 1000); // 20 seconds
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,17 +48,11 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
         mPauseButton = (Button) findViewById(R.id.pause_btn);
         mResetButton = (Button) findViewById(R.id.reset_btn);
 
-        //TODO - get start time from shared prefs
-        mTimerPresenter = new TimerPresenter(this, 10000);
+        mTimerPresenter = new TimerPresenter(this, (setMinutes + setSeconds));
 
         mTimerPresenter.setTimer();
 
-        mStartButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mTimerPresenter.startTimer();
-            }
-        });
+        mStartButton.setOnClickListener(new StartPauseClickListener());
 
         mPauseButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,57 +64,67 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
         });
     }
 
-
-
     @Override
     public void onTimerSet(long timeRemaining) {
         mSeconds = (int) (timeRemaining / 1000) % 60;
         mMinutes = (int) ((timeRemaining / (1000 * 60)) % 60);
 
         mTimerText.setText(String.format("%02d:%02d", mMinutes, mSeconds));
-//        mTimer.setOnTickListener(new TickTockView.OnTickListener() {
-//            @Override
-//            public String getText(long timeRemaining) {
-//                int seconds = (int) (timeRemaining / 1000) % 60;
-//                int minutes = (int) ((timeRemaining / (1000 * 60)) % 60);
-//                int hours = (int) ((timeRemaining / (1000 * 60 * 60)) % 24);
-//                int days = (int) (timeRemaining / (1000 * 60 * 60 * 24));
-//                boolean hasDays = days > 0;
-//                return String.format("%1$02d%4$s %2$02d%5$s %3$02d%6$s",
-//                        hasDays ? days : hours,
-//                        hasDays ? hours : minutes,
-//                        hasDays ? minutes : seconds,
-//                        hasDays ? "d" : "h",
-//                        hasDays ? "h" : "m",
-//                        hasDays ? "m" : "s");
-//            }
-//        });
     }
 
     @Override
-    public boolean onTimerStarted() {
-        mCountDownTimer = new CountDownTimer(40000, 1000) {
-            @Override
-            public void onTick(long l) {
-                mSeconds = (int) (l/1000);
-                mTimerText.setText(String.format("%02d:%02d", mMinutes, mSeconds));
-            }
-
-            @Override
-            public void onFinish() {
-
-            }
-        }.start();
-        return true;
+    public void onTimerStarted() {
+        mCountDownTimer = new MyCountDownTimer(setMinutes + setSeconds-1, 1000);
+        mCountDownTimer.start();
+        sIsStarted = true;
     }
 
     @Override
-    public boolean onTimerStopped() {
-        return false;
+    public void onTimerResumed() {
+        mCountDownTimer = new MyCountDownTimer(mTimeLeft, 1000);
+        mCountDownTimer.start();
+    }
+
+    @Override
+    public void onTimerStopped() {
+
     }
 
     @Override
     public void onTimerReset() {
 
+    }
+
+    private class MyCountDownTimer extends android.os.CountDownTimer {
+
+        public MyCountDownTimer(long millisInFuture, long countDownInterval) {
+            super(millisInFuture, countDownInterval);
+        }
+
+        @Override
+        public void onTick(long millisUntilFinished) {
+            mTimeLeft = millisUntilFinished;
+            mTimerText.setText(String.format("%02d:%02d", TimeUnit.MILLISECONDS.toMinutes(mTimeLeft) -
+                            TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(mTimeLeft)),
+                    TimeUnit.MILLISECONDS.toSeconds(mTimeLeft) -
+                            TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(mTimeLeft))));
+        }
+
+        @Override
+        public void onFinish() {
+
+        }
+    }
+
+    private class StartPauseClickListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View view) {
+            if (!sIsStarted) {
+                mTimerPresenter.startTimer();
+            } else {
+                mTimerPresenter.resumeTimer();
+            }
+        }
     }
 }

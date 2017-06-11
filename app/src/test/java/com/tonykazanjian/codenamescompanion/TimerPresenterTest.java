@@ -29,7 +29,7 @@ public class TimerPresenterTest {
     @Before
     public void setUp() throws Exception {
         mTimerView = mock(TimerView.class);
-        mTimerPresenter = new TimerPresenter(mTimerView);
+        mTimerPresenter = new TimerPresenter(mTimerView, (1000 * 60) + 10000);
     }
 
     @After

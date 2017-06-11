@@ -18,7 +18,11 @@ public class TimerPresenter {
         mTimerView.onTimerSet(mStartTime);
     }
 
-    public boolean startTimer() {
-        return !mTimerView.onTimerStarted();
+    public void startTimer() {
+        mTimerView.onTimerStarted();
+    }
+
+    public void resumeTimer() {
+        mTimerView.onTimerResumed();
     }
 }
