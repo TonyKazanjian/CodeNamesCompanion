@@ -8,6 +8,6 @@ public interface TimerView {
     void onTimerSet(long timeRemaining);
     void onTimerStarted();
     void onTimerResumed();
-    void onTimerStopped();
+    void onTimerPaused();
     void onTimerReset();
 }
