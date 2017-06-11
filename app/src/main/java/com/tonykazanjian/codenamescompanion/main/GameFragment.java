@@ -120,8 +120,25 @@ public class GameFragment extends Fragment implements GameView, WordInputDialog.
         }
     }
 
+    private void setListenersAndListViews() {
+        LinearLayoutAbsListView[] linearLayoutAbsListViews = {mCodePanel1, mCodePanel2, mCodePanel3, mCodePanel4};
+        ListView[] listViews = {mListView1, mListView2, mListView3, mListView4};
+        for (int i = 0; i < linearLayoutAbsListViews.length; i++) {
+            linearLayoutAbsListViews[i].setOnDragListener(new ViewDragListener(mGamePresenter));
+            linearLayoutAbsListViews[i].setAbsListView(listViews[i]);
+        }
+    }
+
+    private void setupGridView(){
+        mGridPanel.setOnDragListener(new ViewDragListener(mGamePresenter));
+        mGridPanel.setAbsListView(mGridView);
+        mGridView.setOnItemLongClickListener(new GridItemLongClickListener(mGamePresenter));
+    }
+
     private void init(View rootView) {
         mGamePresenter = new GamePresenter(this);
+
+        mGridEmptyStateLl = (LinearLayout) rootView.findViewById(R.id.grid_empty_state_ll);
 
         mListView1 = (ListView) rootView.findViewById(R.id.listview1);
         mListView2 = (ListView) rootView.findViewById(R.id.listview2);
@@ -129,25 +146,14 @@ public class GameFragment extends Fragment implements GameView, WordInputDialog.
         mListView4 = (ListView) rootView.findViewById(R.id.listview4);
         mGridView = (GridView) rootView.findViewById(R.id.card_grid);
 
-        mGridEmptyStateLl = (LinearLayout) rootView.findViewById(R.id.grid_empty_state_ll);
-
         mCodePanel1 = (LinearLayoutAbsListView) rootView.findViewById(R.id.code_panel1);
-        mCodePanel1.setOnDragListener(new ViewDragListener(mGamePresenter));
-        mCodePanel1.setAbsListView(mListView1);
         mCodePanel2 = (LinearLayoutAbsListView) rootView.findViewById(R.id.code_panel2);
-        mCodePanel2.setOnDragListener(new ViewDragListener(mGamePresenter));
-        mCodePanel2.setAbsListView(mListView2);
         mCodePanel3 = (LinearLayoutAbsListView) rootView.findViewById(R.id.code_panel3);
-        mCodePanel3.setOnDragListener(new ViewDragListener(mGamePresenter));
-        mCodePanel3.setAbsListView(mListView3);
         mCodePanel4 = (LinearLayoutAbsListView) rootView.findViewById(R.id.code_panel4);
-        mCodePanel4.setOnDragListener(new ViewDragListener(mGamePresenter));
-        mCodePanel4.setAbsListView(mListView4);
         mGridPanel = (LinearLayoutAbsListView) rootView.findViewById(R.id.grid_panel);
-        mGridPanel.setOnDragListener(new ViewDragListener(mGamePresenter));
-        mGridPanel.setAbsListView(mGridView);
 
-        mGridView.setOnItemLongClickListener(new GridItemLongClickListener(mGamePresenter));
+        setupGridView();
+        setListenersAndListViews();
 
         if (mGridList != null) {
             onWordListComplete(mGridList);
@@ -187,13 +193,6 @@ public class GameFragment extends Fragment implements GameView, WordInputDialog.
         mCodeInput2 = (TextInputEditText) rootView.findViewById(R.id.code_input_2);
         mCodeInput3 = (TextInputEditText) rootView.findViewById(R.id.code_input_3);
         mCodeInput4 = (TextInputEditText) rootView.findViewById(R.id.code_input_4);
-
-        mCodeInput1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                view.setFocusableInTouchMode(true);
-            }
-        });
 
         setKeyboardAndClickActions(mCodeInput1);
         setKeyboardAndClickActions(mCodeInput2);

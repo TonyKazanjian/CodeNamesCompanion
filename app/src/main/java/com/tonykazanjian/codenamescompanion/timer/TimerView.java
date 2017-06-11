@@ -5,7 +5,7 @@ package com.tonykazanjian.codenamescompanion.timer;
  */
 
 public interface TimerView {
-    void onTimerSet();
+    void onTimerSet(long timeRemaining);
     boolean onTimerStarted();
     boolean onTimerStopped();
     void onTimerReset();
