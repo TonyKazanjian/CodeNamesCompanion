@@ -51,6 +51,12 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
         mTimerPresenter.setTimer();
 
         mStartPauseButton.setOnClickListener(new StartPauseClickListener());
+        mResetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mTimerPresenter.resetTimer();
+            }
+        });
     }
 
     @Override
@@ -87,7 +93,8 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
 
     @Override
     public void onTimerReset() {
-
+        mCountDownTimer.cancel();
+        mTimerPresenter.setTimer();
     }
 
     private class MyCountDownTimer extends android.os.CountDownTimer {

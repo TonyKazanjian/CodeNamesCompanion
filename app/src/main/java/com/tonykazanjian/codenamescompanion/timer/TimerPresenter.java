@@ -29,4 +29,8 @@ public class TimerPresenter {
     public void pauseTimer() {
         mTimerView.onTimerPaused();
     }
+
+    public void resetTimer() {
+        mTimerView.onTimerReset();
+    }
 }
