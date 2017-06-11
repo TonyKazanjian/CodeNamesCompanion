@@ -120,21 +120,6 @@ public class GameFragment extends Fragment implements GameView, WordInputDialog.
         }
     }
 
-    private void setListenersAndListViews() {
-        LinearLayoutAbsListView[] linearLayoutAbsListViews = {mCodePanel1, mCodePanel2, mCodePanel3, mCodePanel4};
-        ListView[] listViews = {mListView1, mListView2, mListView3, mListView4};
-        for (int i = 0; i < linearLayoutAbsListViews.length; i++) {
-            linearLayoutAbsListViews[i].setOnDragListener(new ViewDragListener(mGamePresenter));
-            linearLayoutAbsListViews[i].setAbsListView(listViews[i]);
-        }
-    }
-
-    private void setupGridView(){
-        mGridPanel.setOnDragListener(new ViewDragListener(mGamePresenter));
-        mGridPanel.setAbsListView(mGridView);
-        mGridView.setOnItemLongClickListener(new GridItemLongClickListener(mGamePresenter));
-    }
-
     private void init(View rootView) {
         mGamePresenter = new GamePresenter(this);
 
@@ -152,8 +137,9 @@ public class GameFragment extends Fragment implements GameView, WordInputDialog.
         mCodePanel4 = (LinearLayoutAbsListView) rootView.findViewById(R.id.code_panel4);
         mGridPanel = (LinearLayoutAbsListView) rootView.findViewById(R.id.grid_panel);
 
-        setupGridView();
-        setListenersAndListViews();
+        setupGridView(mGridPanel, mGamePresenter, mGridView);
+        setListenersAndListViews(new LinearLayoutAbsListView[]{mCodePanel1, mCodePanel2, mCodePanel3, mCodePanel4},
+                mGamePresenter, new ListView[]{mListView1, mListView2, mListView3, mListView4});
 
         if (mGridList != null) {
             onWordListComplete(mGridList);
@@ -180,34 +166,49 @@ public class GameFragment extends Fragment implements GameView, WordInputDialog.
         mItemListAdapter3 = new ItemListAdapter(getContext(), mPanel3List);
         mItemListAdapter4 = new ItemListAdapter(getContext(), mPanel4List);
 
-        mListView1.setAdapter(mItemListAdapter1);
-        mListView1.setOnItemLongClickListener(new ListItemLongClickListener());
-        mListView2.setAdapter(mItemListAdapter2);
-        mListView2.setOnItemLongClickListener(new ListItemLongClickListener());
-        mListView3.setAdapter(mItemListAdapter3);
-        mListView3.setOnItemLongClickListener(new ListItemLongClickListener());
-        mListView4.setAdapter(mItemListAdapter4);
-        mListView4.setOnItemLongClickListener(new ListItemLongClickListener());
+        setListAdaptersAndListeners(new ListView[]{mListView1, mListView2, mListView3, mListView4},
+                new ItemListAdapter[]{mItemListAdapter1, mItemListAdapter2, mItemListAdapter3, mItemListAdapter4});
 
         mCodeInput1 = (TextInputEditText) rootView.findViewById(R.id.code_input_1);
         mCodeInput2 = (TextInputEditText) rootView.findViewById(R.id.code_input_2);
         mCodeInput3 = (TextInputEditText) rootView.findViewById(R.id.code_input_3);
         mCodeInput4 = (TextInputEditText) rootView.findViewById(R.id.code_input_4);
 
-        setKeyboardAndClickActions(mCodeInput1);
-        setKeyboardAndClickActions(mCodeInput2);
-        setKeyboardAndClickActions(mCodeInput3);
-        setKeyboardAndClickActions(mCodeInput4);
+        setKeyboardAndClickActions(new TextInputEditText[]{mCodeInput1, mCodeInput2, mCodeInput3, mCodeInput4});
     }
 
-    private void setKeyboardAndClickActions(final TextInputEditText editText) {
-        editText.setOnFocusChangeListener(new CodeInputListener());
-        Utils.setKeyboardDoneAction(editText, new Utils.KeyboardInterface() {
-            @Override
-            public void keyboardDoneAction() {
-                editText.setFocusable(false);
-            }
-        }, getContext());
+    private void setListAdaptersAndListeners(ListView[] listViews, ItemListAdapter[] listAdapters){
+        for (int i = 0; i < listViews.length; i++) {
+            listViews[i].setAdapter(listAdapters[i]);
+            listViews[i].setOnItemLongClickListener(new ListItemLongClickListener());
+        }
+
+    }
+
+    private void setListenersAndListViews(LinearLayoutAbsListView[] linearLayoutAbsListViews, GamePresenter gamePresenter,
+                                          ListView[] listViews) {
+        for (int i = 0; i < linearLayoutAbsListViews.length; i++) {
+            linearLayoutAbsListViews[i].setOnDragListener(new ViewDragListener(gamePresenter));
+            linearLayoutAbsListViews[i].setAbsListView(listViews[i]);
+        }
+    }
+
+    private void setupGridView(LinearLayoutAbsListView gridPanel, GamePresenter gamePresenter, GridView gridView){
+        gridPanel.setOnDragListener(new ViewDragListener(gamePresenter));
+        gridPanel.setAbsListView(gridView);
+        gridView.setOnItemLongClickListener(new GridItemLongClickListener(gamePresenter));
+    }
+    private void setKeyboardAndClickActions(TextInputEditText[] textInputEditTexts) {
+
+        for (final TextInputEditText editText : textInputEditTexts){
+            editText.setOnFocusChangeListener(new CodeInputListener());
+            Utils.setKeyboardDoneAction(editText, new Utils.KeyboardInterface() {
+                @Override
+                public void keyboardDoneAction() {
+                    editText.setFocusable(false);
+                }
+            }, getContext());
+        }
     }
 
     @Override
