@@ -26,9 +26,11 @@ public class ViewDragListener implements View.OnDragListener {
     private List<WordCard> destList;
 
     private GamePresenter mGamePresenter;
+    private TextInputFocusListener mTextInputFocusListener;
 
-    public ViewDragListener(GamePresenter gamePresenter) {
+    public ViewDragListener(GamePresenter gamePresenter, TextInputFocusListener textInputFocusListener) {
         mGamePresenter = gamePresenter;
+        mTextInputFocusListener = textInputFocusListener;
     }
 
     @Override
@@ -42,7 +44,12 @@ public class ViewDragListener implements View.OnDragListener {
 
         switch (dragEvent.getAction()) {
 
+            case DragEvent.ACTION_DRAG_STARTED:
+                mTextInputFocusListener.onViewDrag(false);
+                break;
+
             case DragEvent.ACTION_DROP:
+                mTextInputFocusListener.onViewDrag(true);
 
                 srcAdapter = (ItemBaseAdapter) (oldParent.getAdapter());
                 LinearLayoutAbsListView newParent = (LinearLayoutAbsListView)view;
@@ -74,5 +81,9 @@ public class ViewDragListener implements View.OnDragListener {
         } else if(mGamePresenter.removeItemFromList(srcList, passedWord)){
             mGamePresenter.addItemToList(destList, passedWord);
         }
+    }
+
+    public interface TextInputFocusListener{
+        void onViewDrag(boolean hasFocus);
     }
 }

@@ -1,10 +1,8 @@
 package com.tonykazanjian.codenamescompanion.main;
 
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
-import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -37,7 +35,8 @@ import java.util.List;
  * @author Tony Kazanjian
  */
 
-public class GameFragment extends Fragment implements GameView, WordInputDialog.WordInputListener{
+public class GameFragment extends Fragment implements GameView, WordInputDialog.WordInputListener,
+        ViewDragListener.TextInputFocusListener{
 
     public static final String TAG = GameFragment.class.getName();
 
@@ -63,6 +62,8 @@ public class GameFragment extends Fragment implements GameView, WordInputDialog.
     TextInputEditText mCodeInput3;
     TextInputEditText mCodeInput4;
     LinearLayout mGridEmptyStateLl;
+
+    TextInputEditText[] mTextInputEditTexts;
 
     MenuItem mNewGameItem;
 
@@ -174,7 +175,8 @@ public class GameFragment extends Fragment implements GameView, WordInputDialog.
         mCodeInput3 = (TextInputEditText) rootView.findViewById(R.id.code_input_3);
         mCodeInput4 = (TextInputEditText) rootView.findViewById(R.id.code_input_4);
 
-        setKeyboardAndClickActions(new TextInputEditText[]{mCodeInput1, mCodeInput2, mCodeInput3, mCodeInput4});
+        setTextInputAndKeyboardInteraction(mTextInputEditTexts = new TextInputEditText[]
+                {mCodeInput1, mCodeInput2, mCodeInput3, mCodeInput4});
     }
 
     private void setListAdaptersAndListeners(ListView[] listViews, ItemListAdapter[] listAdapters){
@@ -188,19 +190,20 @@ public class GameFragment extends Fragment implements GameView, WordInputDialog.
     private void setListenersAndListViews(LinearLayoutAbsListView[] linearLayoutAbsListViews, GamePresenter gamePresenter,
                                           ListView[] listViews) {
         for (int i = 0; i < linearLayoutAbsListViews.length; i++) {
-            linearLayoutAbsListViews[i].setOnDragListener(new ViewDragListener(gamePresenter));
+            linearLayoutAbsListViews[i].setOnDragListener(new ViewDragListener(gamePresenter, this));
             linearLayoutAbsListViews[i].setAbsListView(listViews[i]);
         }
     }
 
     private void setupGridView(LinearLayoutAbsListView gridPanel, GamePresenter gamePresenter, GridView gridView){
-        gridPanel.setOnDragListener(new ViewDragListener(gamePresenter));
+        gridPanel.setOnDragListener(new ViewDragListener(gamePresenter, this));
         gridPanel.setAbsListView(gridView);
         gridView.setOnItemLongClickListener(new GridItemLongClickListener(gamePresenter));
     }
-    private void setKeyboardAndClickActions(TextInputEditText[] textInputEditTexts) {
+    private void setTextInputAndKeyboardInteraction(TextInputEditText[] textInputEditTexts) {
 
         for (final TextInputEditText editText : textInputEditTexts){
+            editText.setFocusable(false);
             editText.setOnFocusChangeListener(new CodeInputListener());
             Utils.setKeyboardDoneAction(editText, new Utils.KeyboardInterface() {
                 @Override
@@ -297,12 +300,19 @@ public class GameFragment extends Fragment implements GameView, WordInputDialog.
         }
     }
 
+    @Override
+    public void onViewDrag(boolean hasFocus) {
+        for (TextInputEditText editText : mTextInputEditTexts) {
+            editText.setFocusable(hasFocus);
+            editText.setFocusableInTouchMode(hasFocus);
+        }
+    }
+
     private class CodeInputListener implements View.OnFocusChangeListener {
 
         @Override
         public void onFocusChange(View view, boolean b) {
             view.setFocusable(true);
-            view.setFocusableInTouchMode(true);
         }
     }
 }
