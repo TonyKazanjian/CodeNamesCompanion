@@ -29,13 +29,13 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
     long mSeconds;
     long mTimeLeft;
 
-    // TODO - service variable
+    // TODO - service variables
     public boolean sIsTicking = false;
     public boolean sIsStarted = false;
 
     //TODO - should come from SharedPreferences.
-    int setMinutes = (2 * 1000) * 60; // 2 minutes
-    int setSeconds = (20 * 1000); // 20 seconds
+    int setMinutes = 0;
+    int setSeconds = (10 * 1000); // 20 seconds
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -46,7 +46,7 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
         mStartPauseButton = (Button) findViewById(R.id.start_btn);
         mResetButton = (Button) findViewById(R.id.reset_btn);
 
-        mTimerPresenter = new TimerPresenter(this, (setMinutes + setSeconds));
+        mTimerPresenter = new TimerPresenter(this, (10000));
 
         mTimerPresenter.setTimer();
 
@@ -65,6 +65,7 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
         mMinutes = (int) ((timeRemaining / (1000 * 60)) % 60);
 
         mTimerText.setText(String.format("%02d:%02d", mMinutes, mSeconds));
+        mStartPauseButton.setText("Start");
     }
 
     @Override
@@ -73,7 +74,7 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
         mCountDownTimer.start();
         sIsTicking = true;
         sIsStarted = true;
-        mStartPauseButton.setText("Pause");
+        setButtonText();
     }
 
     @Override
@@ -81,20 +82,31 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
         mCountDownTimer = new MyCountDownTimer(mTimeLeft, 1000);
         mCountDownTimer.start();
         sIsTicking = true;
-        mStartPauseButton.setText("Pause");
+        setButtonText();
     }
 
     @Override
     public void onTimerPaused() {
         mCountDownTimer.cancel();
         sIsTicking = false;
-        mStartPauseButton.setText("Start");
+        setButtonText();
     }
 
     @Override
     public void onTimerReset() {
         mCountDownTimer.cancel();
         mTimerPresenter.setTimer();
+        sIsStarted = false;
+        sIsTicking = false;
+        setButtonText();
+    }
+
+    private void setButtonText() {
+        if (sIsTicking) {
+            mStartPauseButton.setText("Pause");
+        } else {
+            mStartPauseButton.setText("Start");
+        }
     }
 
     private class MyCountDownTimer extends android.os.CountDownTimer {
@@ -114,7 +126,8 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
 
         @Override
         public void onFinish() {
-
+            mTimerPresenter.resetTimer();
+            //TODO - notify user
         }
     }
 
