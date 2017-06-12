@@ -92,6 +92,8 @@ public class WordInputDialog extends DialogFragment implements WordInputView {
                 .setView(mRootView)
                 .setTitle("Put your words in!")
                 .setPositiveButton("Start game", null)
+                .setNegativeButton("Cancel", null)
+                .setCancelable(true)
                 .create();
     }
 
@@ -99,11 +101,18 @@ public class WordInputDialog extends DialogFragment implements WordInputView {
         dialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialogInterface) {
-                Button button = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
-                button.setOnClickListener(new View.OnClickListener() {
+                Button start = dialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                Button cancel = dialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+                start.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
                         mWordInputPresenter.startGame();
+                    }
+                });
+                cancel.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        dialog.cancel();
                     }
                 });
             }

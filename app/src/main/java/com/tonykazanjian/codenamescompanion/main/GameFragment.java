@@ -248,6 +248,9 @@ public class GameFragment extends Fragment implements GameView, WordInputDialog.
 
     @Override
     public void onGridCardsDisplayed(List<WordCard> cards) {
+        clearEditTexts(mTextInputEditTexts);
+        removeAllCards(new ItemBaseAdapter[]{mGridViewAdapter, mItemListAdapter1, mItemListAdapter2,
+                mItemListAdapter3, mItemListAdapter4});
         mGridList = cards;
         mGridViewAdapter = new GridViewAdapter(getContext(), cards);
         mGridView.setAdapter(mGridViewAdapter);
@@ -275,27 +278,23 @@ public class GameFragment extends Fragment implements GameView, WordInputDialog.
     }
 
     public void initDialog() {
-        clearEditTexts(new TextInputEditText[]{mCodeInput1, mCodeInput2, mCodeInput3, mCodeInput4});
-        removeAllCards(new ItemBaseAdapter[]{mGridViewAdapter, mItemListAdapter1, mItemListAdapter2,
-        mItemListAdapter3, mItemListAdapter4});
         WordInputDialog wordInputDialog =  WordInputDialog.newInstance();
-        wordInputDialog.setCancelable(false);
         wordInputDialog.show(getChildFragmentManager(), "TAG");
     }
 
     public void removeAllCards(ItemBaseAdapter[] adapters){
         mGridEmptyStateLl.setVisibility(View.GONE);
-        for (int i = 0; i < adapters.length-1; i++) {
-            if (adapters[i] != null) {
-                adapters[i].clearWordCards();
+        for (ItemBaseAdapter itemBaseAdapter : adapters){
+            if (itemBaseAdapter != null) {
+                itemBaseAdapter.clearWordCards();
             }
         }
     }
 
     public void clearEditTexts(TextInputEditText[] textInputEditTexts){
-        for (int i = 0; i < textInputEditTexts.length -1; i++){
-            if (textInputEditTexts[i] != null){
-                textInputEditTexts[i].getText().clear();
+        for (TextInputEditText textInputEditText : textInputEditTexts) {
+            if (textInputEditText != null) {
+                textInputEditText.getText().clear();
             }
         }
     }
