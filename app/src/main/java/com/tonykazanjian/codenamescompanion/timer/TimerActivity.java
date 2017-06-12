@@ -1,8 +1,14 @@
 package com.tonykazanjian.codenamescompanion.timer;
 
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -23,6 +29,7 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
     Button mResetButton;
 
     MyCountDownTimer mCountDownTimer;
+    TimerService mTimerService;
 
     // TODO - should be received in broadcast from service
     long mMinutes;
@@ -36,6 +43,20 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
     //TODO - should come from SharedPreferences.
     int setMinutes = 0;
     int setSeconds = (10 * 1000); // 20 seconds
+
+    private ServiceConnection mServiceConnection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+            TimerService.TimerBinder binder = (TimerService.TimerBinder) iBinder;
+            mTimerService = binder.getService();
+            Log.i(this.getClass().getCanonicalName(), "service connected");
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName componentName) {
+            mTimerService = null;
+        }
+    };
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,6 +81,21 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        Intent intent = new Intent(this, TimerService.class);
+        bindService(intent, mServiceConnection, Context.BIND_AUTO_CREATE);
+        Log.i(this.getClass().getCanonicalName(), "Service is bound");
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unbindService(mServiceConnection);
+        Log.i(this.getClass().getSimpleName(), "Service is unbound");
+    }
+
+    @Override
     public void onTimerSet(long timeRemaining) {
         mSeconds = (int) (timeRemaining / 1000) % 60;
         mMinutes = (int) ((timeRemaining / (1000 * 60)) % 60);
@@ -75,6 +111,7 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
         sIsTicking = true;
         sIsStarted = true;
         setButtonText();
+        startService(new Intent(this, TimerService.class));
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.tonykazanjian.codenamescompanion.main;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
@@ -26,6 +27,7 @@ import com.tonykazanjian.codenamescompanion.listeners.GridItemLongClickListener;
 import com.tonykazanjian.codenamescompanion.listeners.ListItemLongClickListener;
 import com.tonykazanjian.codenamescompanion.listeners.ViewDragListener;
 import com.tonykazanjian.codenamescompanion.start.WordInputDialog;
+import com.tonykazanjian.codenamescompanion.timer.TimerActivity;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -242,6 +244,9 @@ public class GameFragment extends Fragment implements GameView, WordInputDialog.
         switch (item.getItemId()) {
             case R.id.action_new_game:
                 initDialog();
+                break;
+            case R.id.action_timer:
+                startActivity(new Intent(getContext(), TimerActivity.class));
         }
         return true;
     }
