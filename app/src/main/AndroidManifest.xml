@@ -27,7 +27,15 @@
             <!--</intent-filter>-->
         </activity>
 
-        <service android:name=".timer.TimerService"/>
+        <service android:name=".timer.TimerService"
+                android:enabled="true">
+            <intent-filter>
+                <action android:name="com.tonykazanjian.codenamescompanion.action.ACTION_START"/>
+                <action android:name="com.tonykazanjian.codenamescompanion.action.ACTION_PAUSE"/>
+                <action android:name="com.tonykazanjian.codenamescompanion.action.ACTION_RESUME"/>
+                <action android:name="com.tonykazanjian.codenamescompanion.action.ACTION_RESET"/>
+            </intent-filter>
+        </service>
 
     </application>
 
