@@ -12,11 +12,8 @@ import android.support.annotation.Nullable;
 
 public class TimerService extends Service {
 
-    public static final String MINUTES_EXTRA = "minutes_extra";
-    public static final String SECONDS_EXTRA = "seconds_extra";
     public static final String TIME_LEFT_EXTRA = "time_left_extra";
-    public static final String BROADCAST_MSG_EXTRA = "broadcast_msg_extra";
-    public static final String BROADCAST_MSG_INTENT_FILTER = "broadcast_message_intent_filter";
+    public static final String TIMER_TICK_INTENT_FILTER = "timer_tick_intent_filter";
 
     public static final String ACTION_START = "com.tonykazanjian.codenamescompanion.action.ACTION_START";
     public static final String ACTION_PAUSE = "com.tonykazanjian.codenamescompanion.action.ACTION_PAUSE";
@@ -25,19 +22,19 @@ public class TimerService extends Service {
 
     private final IBinder mTimerBinder = new TimerBinder();
 
+    long mTimeLeft;
+
     MyCountDownTimer mMyCountDownTimer;
 
     @Override
     public void onCreate() {
         super.onCreate();
         //TODO - get start time from shared prefs
-        mMyCountDownTimer = new MyCountDownTimer(10000, 1000);
+        mMyCountDownTimer = new MyCountDownTimer(1000 * 120, 1000);
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        long minutes = intent.getIntExtra(MINUTES_EXTRA, 0);
-        long seconds = intent.getIntExtra(SECONDS_EXTRA, 0);
 
         switch (intent.getAction()) {
             case ACTION_START:
@@ -47,10 +44,12 @@ public class TimerService extends Service {
                 mMyCountDownTimer.cancel();
                 break;
             case ACTION_RESUME:
+                mMyCountDownTimer = new MyCountDownTimer(mTimeLeft, 1000);
                 mMyCountDownTimer.start();
                 break;
             case ACTION_RESET:
                 mMyCountDownTimer.cancel();
+                mMyCountDownTimer = new MyCountDownTimer(1000 * 120, 1000);
                 break;
         }
 
@@ -81,7 +80,8 @@ public class TimerService extends Service {
 
         @Override
         public void onTick(long millisUntilFinished) {
-            Intent intent = new Intent(BROADCAST_MSG_INTENT_FILTER);
+            mTimeLeft = millisUntilFinished;
+            Intent intent = new Intent(TIMER_TICK_INTENT_FILTER);
             intent.putExtra(TIME_LEFT_EXTRA, millisUntilFinished);
             sendBroadcast(intent);
         }

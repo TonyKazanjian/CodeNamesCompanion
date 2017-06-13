@@ -31,19 +31,11 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
     Button mResetButton;
 
     TimerService mTimerService;
-    TimerReceiver mTimerReceiver;
-
-    // TODO - should be received in broadcast from service
-    long mMinutes;
-    long mSeconds;
+    TimerTickReceiver mTimerTickReceiver;
 
     // TODO - service variables
     public boolean sIsTicking = false;
     public boolean sIsStarted = false;
-
-    //TODO - should come from SharedPreferences.
-    int setMinutes = 0;
-    int setSeconds = (10 * 1000); // 20 seconds
 
     private ServiceConnection mServiceConnection = new ServiceConnection() {
         @Override
@@ -87,8 +79,8 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
         Intent intent = new Intent(this, TimerService.class);
         bindService(intent, mServiceConnection, Context.BIND_AUTO_CREATE);
         Log.i(this.getClass().getCanonicalName(), "Service is bound");
-        mTimerReceiver = new TimerReceiver();
-        registerReceiver(mTimerReceiver, new IntentFilter(TimerService.BROADCAST_MSG_INTENT_FILTER));
+        mTimerTickReceiver = new TimerTickReceiver();
+        registerReceiver(mTimerTickReceiver, new IntentFilter(TimerService.TIMER_TICK_INTENT_FILTER));
     }
 
 
@@ -99,20 +91,15 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
         super.onDestroy();
         unbindService(mServiceConnection);
         Log.i(this.getClass().getSimpleName(), "Service is unbound");
-        if (mTimerReceiver != null) {
-            unregisterReceiver(mTimerReceiver);
+        if (mTimerTickReceiver != null) {
+            unregisterReceiver(mTimerTickReceiver);
         }
     }
 
     @Override
     public void onTimerSet(long timeRemaining) {
-        mSeconds = (int) (timeRemaining / 1000) % 60;
-        mMinutes = (int) ((timeRemaining / (1000 * 60)) % 60);
-
-        mTimerText.setText(String.format("%02d:%02d", mMinutes, mSeconds));
+        setTimerText(1000 * 120);
         Intent timerIntent = new Intent(this, TimerService.class);
-        timerIntent.putExtra(TimerService.MINUTES_EXTRA, mMinutes);
-        timerIntent.putExtra(TimerService.SECONDS_EXTRA, mSeconds);
         timerIntent.setAction(TimerService.ACTION_RESET);
         startService(timerIntent);
         mStartPauseButton.setText("Start");
@@ -124,8 +111,6 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
         sIsStarted = true;
         setButtonText();
         Intent timerIntent = new Intent(this, TimerService.class);
-        timerIntent.putExtra(TimerService.MINUTES_EXTRA, setMinutes);
-        timerIntent.putExtra(TimerService.SECONDS_EXTRA, setSeconds);
         timerIntent.setAction(TimerService.ACTION_START);
         startService(timerIntent);
     }
@@ -142,7 +127,6 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
 
     @Override
     public void onTimerPaused() {
-//        mCountDownTimer.cancel();
         Intent pauseIntent = new Intent(this, TimerService.class);
         pauseIntent.setAction(TimerService.ACTION_PAUSE);
         startService(pauseIntent);
@@ -152,7 +136,6 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
 
     @Override
     public void onTimerReset() {
-//        mCountDownTimer.cancel();
         mTimerPresenter.setTimer();
         sIsStarted = false;
         sIsTicking = false;
@@ -182,15 +165,19 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
         }
     }
 
-    private class TimerReceiver extends BroadcastReceiver {
+    private void setTimerText(long timeLeft){
+        mTimerText.setText(String.format("%02d:%02d", TimeUnit.MILLISECONDS.toMinutes(timeLeft) -
+                        TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(timeLeft)),
+                TimeUnit.MILLISECONDS.toSeconds(timeLeft) -
+                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(timeLeft))));
+    }
+
+    private class TimerTickReceiver extends BroadcastReceiver {
 
         @Override
         public void onReceive(Context context, Intent intent) {
             long timeLeft = intent.getLongExtra(TimerService.TIME_LEFT_EXTRA, 0);
-            mTimerText.setText(String.format("%02d:%02d", TimeUnit.MILLISECONDS.toMinutes(timeLeft) -
-                            TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(timeLeft)),
-                    TimeUnit.MILLISECONDS.toSeconds(timeLeft) -
-                            TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(timeLeft))));
+            setTimerText(timeLeft-1);
         }
     }
 }
