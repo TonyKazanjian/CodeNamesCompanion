@@ -7,15 +7,13 @@ package com.tonykazanjian.codenamescompanion.timer;
 public class TimerPresenter {
 
     TimerView mTimerView;
-    int mStartTime;
 
-    public TimerPresenter(TimerView timerView, int startTime) {
+    public TimerPresenter(TimerView timerView) {
         mTimerView = timerView;
-        mStartTime = startTime;
     }
 
-    public void setTimer(){
-        mTimerView.onTimerSet(mStartTime);
+    public void setTimer(long startTime){
+        mTimerView.onTimerSet(startTime);
     }
 
     public void startTimer() {

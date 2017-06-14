@@ -55,6 +55,7 @@ public class SettingsFragment extends Fragment implements SettingsView {
         mEightCheckBox = (CheckBox) rootview.findViewById(R.id.checkbox_eight);
         mNineCheckBox = (CheckBox) rootview.findViewById(R.id.checkbox_nine);
         setupTimeSpinner(mBaseTimeSpinner);
+        mBaseTimeSpinner.setSelection(UserPreferences.getSpinnerPosition(getContext()));
     }
 
     private void setupTimeSpinner(Spinner timeSpinner) {
@@ -76,10 +77,6 @@ public class SettingsFragment extends Fragment implements SettingsView {
         }
         timeValues.recycle();
 
-//        int timeOptionsAmount = 5;
-//        for (int i = 0; i <= timeOptionsAmount; i++){
-//            baseTimeOptions.add(i);
-//        }
         ArrayAdapter timeSpinnerAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_dropdown_item,
                 getResources().getStringArray(R.array.base_time_array));
         timeSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -89,6 +86,7 @@ public class SettingsFragment extends Fragment implements SettingsView {
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 adapterView.getItemAtPosition(i);
                 mSettingsPresenter.pickTime((int) timeMap[i]);
+                UserPreferences.setSpinnerPosition(getContext(), i);
             }
 
             @Override

@@ -62,9 +62,9 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
         mStartPauseButton = (Button) findViewById(R.id.start_btn);
         mResetButton = (Button) findViewById(R.id.reset_btn);
 
-        mTimerPresenter = new TimerPresenter(this, (UserPreferences.getBaseTime(this)));
+        mTimerPresenter = new TimerPresenter(this);
 
-        mTimerPresenter.setTimer();
+        mTimerPresenter.setTimer(UserPreferences.getBaseTime(this));
 
         mStartPauseButton.setOnClickListener(new StartPauseClickListener());
         mResetButton.setOnClickListener(new View.OnClickListener() {
@@ -143,7 +143,7 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
 
     @Override
     public void onTimerReset() {
-        mTimerPresenter.setTimer();
+        mTimerPresenter.setTimer(UserPreferences.getBaseTime(this));
         sIsStarted = false;
         sIsTicking = false;
         setButtonText();

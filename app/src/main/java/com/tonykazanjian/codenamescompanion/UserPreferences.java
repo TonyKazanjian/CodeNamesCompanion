@@ -18,6 +18,7 @@ public class UserPreferences {
     private static String BLUE_POINTS_KEY = "blue_points_key";
     private static String RED_POINTS_KEY = "red_points_key";
     private static String BASE_TIME_KEY = "base_time_key";
+    private static String SPINNER_POSITION = "spinner_position";
 
     public static String CODE_PANEL_1_WORDS_KEY = "code_panel_1_words_key";
     public static String CODE_PANEL_2_WORDS_KEY = "code_panel_2_words_key";
@@ -47,6 +48,14 @@ public class UserPreferences {
 
     public static int getBaseTime(Context context) {
         return getSharedPreferences(context).getInt(BASE_TIME_KEY, 0);
+    }
+
+    public static void setSpinnerPosition(Context context, int spinnerPosition) {
+        getSharedPreferences(context).edit().putInt(SPINNER_POSITION, spinnerPosition).apply();
+    }
+
+    public static int getSpinnerPosition(Context context){
+        return getSharedPreferences(context).getInt(SPINNER_POSITION, 0);
     }
 
     private static SharedPreferences getSharedPreferences(Context context) {
