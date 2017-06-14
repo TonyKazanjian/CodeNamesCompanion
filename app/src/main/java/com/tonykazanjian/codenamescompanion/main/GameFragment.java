@@ -2,8 +2,10 @@ package com.tonykazanjian.codenamescompanion.main;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -91,10 +93,6 @@ public class GameFragment extends Fragment implements GameView, WordInputDialog.
         if (savedInstanceState != null) {
             //Restore the fragment's state here
             mGridList = (List<WordCard>) savedInstanceState.getSerializable(UserPreferences.GRID_WORDS_KEY);
-            mPanel1List = (List<WordCard>) savedInstanceState.getSerializable(UserPreferences.CODE_PANEL_1_WORDS_KEY);
-            mPanel2List = (List<WordCard>) savedInstanceState.getSerializable(UserPreferences.CODE_PANEL_2_WORDS_KEY);
-            mPanel3List = (List<WordCard>) savedInstanceState.getSerializable(UserPreferences.CODE_PANEL_3_WORDS_KEY);
-            mPanel4List = (List<WordCard>) savedInstanceState.getSerializable(UserPreferences.CODE_PANEL_4_WORDS_KEY);
         }
 
         if (mGridList == null) {
@@ -126,13 +124,13 @@ public class GameFragment extends Fragment implements GameView, WordInputDialog.
     private void init(View rootView) {
         mGamePresenter = new GamePresenter(this);
 
-        mGridEmptyStateLl = (LinearLayout) rootView.findViewById(R.id.grid_empty_state_ll);
-
         mListView1 = (ListView) rootView.findViewById(R.id.listview1);
         mListView2 = (ListView) rootView.findViewById(R.id.listview2);
         mListView3 = (ListView) rootView.findViewById(R.id.listview3);
         mListView4 = (ListView) rootView.findViewById(R.id.listview4);
         mGridView = (GridView) rootView.findViewById(R.id.card_grid);
+
+        mGridEmptyStateLl = (LinearLayout) rootView.findViewById(R.id.grid_empty_state_ll);
 
         mCodePanel1 = (LinearLayoutAbsListView) rootView.findViewById(R.id.code_panel1);
         mCodePanel2 = (LinearLayoutAbsListView) rootView.findViewById(R.id.code_panel2);
@@ -145,7 +143,7 @@ public class GameFragment extends Fragment implements GameView, WordInputDialog.
                 mGamePresenter, new ListView[]{mListView1, mListView2, mListView3, mListView4});
 
         if (mGridList != null) {
-            onWordListComplete(mGridList);
+            mGamePresenter.showGridCards(mGridList);
         }
 
         if (mPanel1List == null) {
@@ -186,7 +184,6 @@ public class GameFragment extends Fragment implements GameView, WordInputDialog.
             listViews[i].setAdapter(listAdapters[i]);
             listViews[i].setOnItemLongClickListener(new ListItemLongClickListener());
         }
-
     }
 
     private void setListenersAndListViews(LinearLayoutAbsListView[] linearLayoutAbsListViews, GamePresenter gamePresenter,
@@ -202,6 +199,7 @@ public class GameFragment extends Fragment implements GameView, WordInputDialog.
         gridPanel.setAbsListView(gridView);
         gridView.setOnItemLongClickListener(new GridItemLongClickListener(gamePresenter));
     }
+
     private void setTextInputAndKeyboardInteraction(TextInputEditText[] textInputEditTexts) {
 
         for (final TextInputEditText editText : textInputEditTexts){
@@ -253,9 +251,6 @@ public class GameFragment extends Fragment implements GameView, WordInputDialog.
 
     @Override
     public void onGridCardsDisplayed(List<WordCard> cards) {
-        clearEditTexts(mTextInputEditTexts);
-        removeAllCards(new ItemBaseAdapter[]{mGridViewAdapter, mItemListAdapter1, mItemListAdapter2,
-                mItemListAdapter3, mItemListAdapter4});
         mGridList = cards;
         mGridViewAdapter = new GridViewAdapter(getContext(), cards);
         mGridView.setAdapter(mGridViewAdapter);
@@ -266,6 +261,9 @@ public class GameFragment extends Fragment implements GameView, WordInputDialog.
     @Override
     public void onWordListComplete(List<WordCard> wordCards) {
         mGridList = wordCards;
+        clearEditTexts(mTextInputEditTexts);
+        removeAllCards(new ItemBaseAdapter[]{mGridViewAdapter, mItemListAdapter1, mItemListAdapter2,
+                mItemListAdapter3, mItemListAdapter4});
         mGamePresenter.showGridCards(wordCards); //creates and sets GridViewAdapter
     }
 
@@ -284,22 +282,25 @@ public class GameFragment extends Fragment implements GameView, WordInputDialog.
 
     public void initDialog() {
         WordInputDialog wordInputDialog =  WordInputDialog.newInstance();
+        wordInputDialog.setCancelable(false);
         wordInputDialog.show(getChildFragmentManager(), "TAG");
     }
 
     public void removeAllCards(ItemBaseAdapter[] adapters){
         mGridEmptyStateLl.setVisibility(View.GONE);
-        for (ItemBaseAdapter itemBaseAdapter : adapters){
-            if (itemBaseAdapter != null) {
-                itemBaseAdapter.clearWordCards();
+
+        for (int i = 0; i < adapters.length-1; i++) {
+            if (adapters[i] != null) {
+                adapters[i].clearWordCards();
+                adapters[i].notifyDataSetChanged();
             }
         }
     }
 
     public void clearEditTexts(TextInputEditText[] textInputEditTexts){
-        for (TextInputEditText textInputEditText : textInputEditTexts) {
-            if (textInputEditText != null) {
-                textInputEditText.getText().clear();
+        for (int i = 0; i < textInputEditTexts.length -1; i++){
+            if (textInputEditTexts[i] != null){
+                textInputEditTexts[i].getText().clear();
             }
         }
     }
@@ -317,6 +318,7 @@ public class GameFragment extends Fragment implements GameView, WordInputDialog.
         @Override
         public void onFocusChange(View view, boolean b) {
             view.setFocusable(true);
+            view.setFocusableInTouchMode(true);
         }
     }
 }
