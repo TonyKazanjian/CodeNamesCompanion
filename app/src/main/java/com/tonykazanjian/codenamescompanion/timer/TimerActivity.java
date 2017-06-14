@@ -32,6 +32,7 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
 
     TimerService mTimerService;
     TimerTickReceiver mTimerTickReceiver;
+    TimerFinishedReceiver mTimerFinishedReceiver;
 
     // TODO - service variables
     public boolean sIsTicking = false;
@@ -60,7 +61,7 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
         mStartPauseButton = (Button) findViewById(R.id.start_btn);
         mResetButton = (Button) findViewById(R.id.reset_btn);
 
-        mTimerPresenter = new TimerPresenter(this, (10000));
+        mTimerPresenter = new TimerPresenter(this, (5000));
 
         mTimerPresenter.setTimer();
 
@@ -81,6 +82,8 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
         Log.i(this.getClass().getCanonicalName(), "Service is bound");
         mTimerTickReceiver = new TimerTickReceiver();
         registerReceiver(mTimerTickReceiver, new IntentFilter(TimerService.TIMER_TICK_INTENT_FILTER));
+        mTimerFinishedReceiver = new TimerFinishedReceiver();
+        registerReceiver(mTimerFinishedReceiver, new IntentFilter(TimerService.TIMER_FINISHED_INTENT_FILTER));
     }
 
 
@@ -94,11 +97,14 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
         if (mTimerTickReceiver != null) {
             unregisterReceiver(mTimerTickReceiver);
         }
+        if (mTimerFinishedReceiver != null) {
+            unregisterReceiver(mTimerFinishedReceiver);
+        }
     }
 
     @Override
     public void onTimerSet(long timeRemaining) {
-        setTimerText(1000 * 120);
+        setTimerText(1000 * 5);
         Intent timerIntent = new Intent(this, TimerService.class);
         timerIntent.setAction(TimerService.ACTION_RESET);
         startService(timerIntent);
@@ -178,6 +184,14 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
         public void onReceive(Context context, Intent intent) {
             long timeLeft = intent.getLongExtra(TimerService.TIME_LEFT_EXTRA, 0);
             setTimerText(timeLeft-1);
+        }
+    }
+
+    private class TimerFinishedReceiver extends BroadcastReceiver {
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            mTimerPresenter.resetTimer();
         }
     }
 }
