@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.tonykazanjian.codenamescompanion.R;
+import com.tonykazanjian.codenamescompanion.UserPreferences;
 
 import java.util.concurrent.TimeUnit;
 
@@ -61,7 +62,7 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
         mStartPauseButton = (Button) findViewById(R.id.start_btn);
         mResetButton = (Button) findViewById(R.id.reset_btn);
 
-        mTimerPresenter = new TimerPresenter(this, (5000));
+        mTimerPresenter = new TimerPresenter(this, (UserPreferences.getBaseTime(this)));
 
         mTimerPresenter.setTimer();
 
@@ -104,7 +105,7 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
 
     @Override
     public void onTimerSet(long timeRemaining) {
-        setTimerText(1000 * 5);
+        setTimerText(UserPreferences.getBaseTime(this));
         Intent timerIntent = new Intent(this, TimerService.class);
         timerIntent.setAction(TimerService.ACTION_RESET);
         startService(timerIntent);

@@ -9,6 +9,8 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 
+import com.tonykazanjian.codenamescompanion.UserPreferences;
+
 /**
  * @author Tony Kazanjian
  */
@@ -35,7 +37,7 @@ public class TimerService extends Service {
     public void onCreate() {
         super.onCreate();
         //TODO - get start time from shared prefs
-        mMyCountDownTimer = new MyCountDownTimer(1000 * 5, 1000);
+        mMyCountDownTimer = new MyCountDownTimer(UserPreferences.getBaseTime(getApplicationContext()), 1000);
     }
 
     @Override
@@ -54,7 +56,7 @@ public class TimerService extends Service {
                 break;
             case ACTION_RESET:
                 mMyCountDownTimer.cancel();
-                mMyCountDownTimer = new MyCountDownTimer(1000 * 5, 1000);
+                mMyCountDownTimer = new MyCountDownTimer(UserPreferences.getBaseTime(getApplicationContext()), 1000);
                 break;
         }
 

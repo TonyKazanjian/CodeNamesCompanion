@@ -17,6 +17,7 @@ public class UserPreferences {
 
     private static String BLUE_POINTS_KEY = "blue_points_key";
     private static String RED_POINTS_KEY = "red_points_key";
+    private static String BASE_TIME_KEY = "base_time_key";
 
     public static String CODE_PANEL_1_WORDS_KEY = "code_panel_1_words_key";
     public static String CODE_PANEL_2_WORDS_KEY = "code_panel_2_words_key";
@@ -25,20 +26,30 @@ public class UserPreferences {
     public static String GRID_WORDS_KEY = "grid_word_key";
 
     public static void setBlueScore(Context context, int bluePoints){
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        sharedPreferences.edit().putInt(BLUE_POINTS_KEY, bluePoints).apply();
+        getSharedPreferences(context).edit().putInt(BLUE_POINTS_KEY, bluePoints).apply();
     }
 
     public static void setRedScore(Context context, int redPoints){
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context);
-        sharedPreferences.edit().putInt(RED_POINTS_KEY, redPoints).apply();
+        getSharedPreferences(context).edit().putInt(RED_POINTS_KEY, redPoints).apply();
     }
 
     public static int getBlueScore(Context context){
-        return PreferenceManager.getDefaultSharedPreferences(context).getInt(BLUE_POINTS_KEY, 0);
+        return getSharedPreferences(context).getInt(BLUE_POINTS_KEY, 0);
     }
 
     public static int getRedScore(Context context){
-        return PreferenceManager.getDefaultSharedPreferences(context).getInt(RED_POINTS_KEY, 0);
+        return getSharedPreferences(context).getInt(RED_POINTS_KEY, 0);
+    }
+
+    public static void setBaseTime(Context context, int time){
+        getSharedPreferences(context).edit().putInt(BASE_TIME_KEY, time).apply();
+    }
+
+    public static int getBaseTime(Context context) {
+        return getSharedPreferences(context).getInt(BASE_TIME_KEY, 0);
+    }
+
+    private static SharedPreferences getSharedPreferences(Context context) {
+        return PreferenceManager.getDefaultSharedPreferences(context);
     }
 }

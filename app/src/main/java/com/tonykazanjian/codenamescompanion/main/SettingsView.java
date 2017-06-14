@@ -7,6 +7,6 @@ import java.util.List;
  */
 
 public interface SettingsView {
-    void onBaseTimePicked(List<Integer> timeList);
+    void onBaseTimePicked(int pickedTime);
     void onCardNumberPicked();
 }

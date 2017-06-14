@@ -8,6 +8,9 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /**
  * @author Tony Kazanjian
  */
@@ -56,5 +59,54 @@ public class Utils {
 
     public static class Constants {
         public static int MAX_SCORE = 10;
+    }
+
+    public static class TimeUtil {
+        public static final long SECOND = 1000;
+        public static final long MINUTE = 1000 * 60;
+
+        public static long getFiftySeconds(){
+            return SECOND * 50;
+        }
+
+        public static long getSeventyFiveSeconds(){
+            return SECOND * 75;
+        }
+
+        public static long getNinetySeconds(){
+            return SECOND * 90;
+        }
+
+        public static long getTwoMinutes() {
+            return MINUTE * 2;
+        }
+
+        public static long getThreeMinutes() {
+            return MINUTE * 3;
+        }
+
+//        public enum TimeUnitEnum implements TimeUnit {
+//            UNITS(R.string.fifty_seconds, R.string.seventyfive_seconds, R.string.ninety_seconds,
+//                    R.string.two_minutes, R.string.three_minutes);
+//
+//            private final int mUnits;
+//
+//
+//
+//            TimeUnitEnum(int units) {
+//                mUnits = units;
+//            }
+//
+//
+//            @Override
+//            public TimeUnit[] getSettingsValues() {
+//                ArrayList<TimeUnitEnum> timeUnitList = new ArrayList<>(Arrays.asList(TimeUnitEnum.values()));
+//                return new TimeUnit[0];
+//            }
+//        }
+//
+//        protected interface TimeUnit {
+//            TimeUnit[] getSettingsValues();
+//        }
     }
 }
