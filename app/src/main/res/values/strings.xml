@@ -6,6 +6,17 @@
         <item>Scoreboard</item>
         <item>Settings</item>
     </string-array>
+    <string-array name="base_time_array">
+        <item>50 seconds</item>
+        <item>75 seconds</item>
+        <item>90 seconds</item>
+        <item>2 minutes</item>
+        <item>3 minutes</item>
+    </string-array>
     <string name="drawer_open">Open navigation drawer</string>
     <string name="drawer_close">Close navigation drawer</string>
+    <string name="card_settings_prompt">Number of cards</string>
+    <string name="time_settings_prompt">Base Time</string>
+    <string name="checkbox_eight">Eight</string>
+    <string name="checkbox_nine">Nine</string>
 </resources>

@@ -144,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
                 setScoreboardFragment();
                 break;
             case SETTINGS_POSITION:
-                //TODO - create settings fragment
+                setSettingsFragment();
                 break;
         }
 
@@ -166,6 +166,13 @@ public class MainActivity extends AppCompatActivity {
     private void setScoreboardFragment() {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
         transaction.replace(R.id.content_frame, ScoreboardFragment.newInstance(), null);
+        transaction.addToBackStack(null);
+        transaction.commit();
+    }
+
+    private void setSettingsFragment() {
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+        transaction.replace(R.id.content_frame, SettingsFragment.newInstance(), null);
         transaction.addToBackStack(null);
         transaction.commit();
     }
