@@ -177,6 +177,8 @@ public class GameFragment extends Fragment implements GameView, WordInputDialog.
 
         setTextInputAndKeyboardInteraction(mTextInputEditTexts = new TextInputEditText[]
                 {mCodeInput1, mCodeInput2, mCodeInput3, mCodeInput4});
+
+        showEmptyState();
     }
 
     private void setListAdaptersAndListeners(ListView[] listViews, ItemListAdapter[] listAdapters){
