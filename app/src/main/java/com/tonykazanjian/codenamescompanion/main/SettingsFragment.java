@@ -3,6 +3,7 @@ package com.tonykazanjian.codenamescompanion.main;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -14,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Spinner;
 
 import com.tonykazanjian.codenamescompanion.R;
@@ -30,8 +32,7 @@ import java.util.List;
 public class SettingsFragment extends Fragment implements SettingsView {
 
     Spinner mBaseTimeSpinner;
-    RadioButton mEightCheckBox;
-    RadioButton mNineCheckBox;
+    RadioGroup mRadioGroup;
 
     SettingsPresenter mSettingsPresenter;
 
@@ -54,10 +55,10 @@ public class SettingsFragment extends Fragment implements SettingsView {
         mSettingsPresenter = new SettingsPresenter(this);
 
         mBaseTimeSpinner = (Spinner) rootview.findViewById(R.id.time_setting_spinner);
-        mEightCheckBox = (RadioButton) rootview.findViewById(R.id.radioButtonEight);
-        mNineCheckBox = (RadioButton) rootview.findViewById(R.id.radioButtonNine);
+        mRadioGroup = (RadioGroup) rootview.findViewById(R.id.radioButtonGroup);
         setupTimeSpinner(mBaseTimeSpinner);
         mBaseTimeSpinner.setSelection(UserPreferences.getSpinnerPosition(getContext()));
+        setRadioGroup();
     }
 
     private void setupTimeSpinner(Spinner timeSpinner) {
@@ -98,11 +99,12 @@ public class SettingsFragment extends Fragment implements SettingsView {
         });
     }
 
-    private void setCheckBox(){
-        mEightCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+    private void setRadioGroup(){
+        mRadioGroup.check(UserPreferences.getCheckedButton(getContext()));
+        mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
-            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-
+            public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
+                UserPreferences.setCheckedButton(getContext(), i);
             }
         });
     }

@@ -20,6 +20,7 @@ public class UserPreferences {
     private static String BASE_TIME_KEY = "base_time_key";
     private static String SPINNER_POSITION = "spinner_position";
     private static String CARD_NUMBER = "card_number";
+    private static String CHECKED_BUTTON = "checked_button";
 
     public static String CODE_PANEL_1_WORDS_KEY = "code_panel_1_words_key";
     public static String CODE_PANEL_2_WORDS_KEY = "code_panel_2_words_key";
@@ -65,6 +66,14 @@ public class UserPreferences {
 
     public static int getCardNumber(Context context){
         return getSharedPreferences(context).getInt(CARD_NUMBER, 0);
+    }
+
+    public static void setCheckedButton(Context context, int buttonId){
+        getSharedPreferences(context).edit().putInt(CHECKED_BUTTON, buttonId).apply();
+    }
+
+    public static int getCheckedButton(Context context) {
+        return getSharedPreferences(context).getInt(CHECKED_BUTTON, 0);
     }
 
     private static SharedPreferences getSharedPreferences(Context context) {
