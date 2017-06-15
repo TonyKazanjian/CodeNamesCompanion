@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface SettingsView {
     void onBaseTimePicked(int pickedTime);
-    void onCardNumberPicked();
+    void onCardNumberPicked(int pickedNumber);
 }

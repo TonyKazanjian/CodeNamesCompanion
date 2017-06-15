@@ -19,6 +19,7 @@ public class UserPreferences {
     private static String RED_POINTS_KEY = "red_points_key";
     private static String BASE_TIME_KEY = "base_time_key";
     private static String SPINNER_POSITION = "spinner_position";
+    private static String CARD_NUMBER = "card_number";
 
     public static String CODE_PANEL_1_WORDS_KEY = "code_panel_1_words_key";
     public static String CODE_PANEL_2_WORDS_KEY = "code_panel_2_words_key";
@@ -56,6 +57,14 @@ public class UserPreferences {
 
     public static int getSpinnerPosition(Context context){
         return getSharedPreferences(context).getInt(SPINNER_POSITION, 0);
+    }
+
+    public static void setCardNumber(Context context, int cardNumber) {
+        getSharedPreferences(context).edit().putInt(CARD_NUMBER, cardNumber).apply();
+    }
+
+    public static int getCardNumber(Context context){
+        return getSharedPreferences(context).getInt(CARD_NUMBER, 0);
     }
 
     private static SharedPreferences getSharedPreferences(Context context) {

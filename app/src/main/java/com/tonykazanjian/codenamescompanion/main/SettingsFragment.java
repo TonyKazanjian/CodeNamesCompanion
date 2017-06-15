@@ -12,6 +12,8 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.RadioButton;
 import android.widget.Spinner;
 
 import com.tonykazanjian.codenamescompanion.R;
@@ -28,8 +30,8 @@ import java.util.List;
 public class SettingsFragment extends Fragment implements SettingsView {
 
     Spinner mBaseTimeSpinner;
-    CheckBox mEightCheckBox;
-    CheckBox mNineCheckBox;
+    RadioButton mEightCheckBox;
+    RadioButton mNineCheckBox;
 
     SettingsPresenter mSettingsPresenter;
 
@@ -52,8 +54,8 @@ public class SettingsFragment extends Fragment implements SettingsView {
         mSettingsPresenter = new SettingsPresenter(this);
 
         mBaseTimeSpinner = (Spinner) rootview.findViewById(R.id.time_setting_spinner);
-        mEightCheckBox = (CheckBox) rootview.findViewById(R.id.checkbox_eight);
-        mNineCheckBox = (CheckBox) rootview.findViewById(R.id.checkbox_nine);
+        mEightCheckBox = (RadioButton) rootview.findViewById(R.id.radioButtonEight);
+        mNineCheckBox = (RadioButton) rootview.findViewById(R.id.radioButtonNine);
         setupTimeSpinner(mBaseTimeSpinner);
         mBaseTimeSpinner.setSelection(UserPreferences.getSpinnerPosition(getContext()));
     }
@@ -96,13 +98,22 @@ public class SettingsFragment extends Fragment implements SettingsView {
         });
     }
 
+    private void setCheckBox(){
+        mEightCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+
+            }
+        });
+    }
+
     @Override
     public void onBaseTimePicked(int pickedTime) {
         UserPreferences.setBaseTime(getContext(), pickedTime);
     }
 
     @Override
-    public void onCardNumberPicked() {
+    public void onCardNumberPicked(int pickedNumber) {
 
     }
 }

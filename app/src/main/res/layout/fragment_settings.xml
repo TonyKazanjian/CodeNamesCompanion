@@ -50,19 +50,28 @@
             android:paddingBottom="14dp"
             android:text="@string/card_settings_prompt"/>
 
-        <CheckBox
-            android:id="@+id/checkbox_eight"
+        <RadioGroup
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/checkbox_eight"/>
+            android:orientation="horizontal">
 
-        <CheckBox
-            android:id="@+id/checkbox_nine"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:text="@string/checkbox_nine"/>
+            <RadioButton
+                android:id="@+id/radioButtonEight"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/checkbox_eight"/>
+
+            <RadioButton
+                android:id="@+id/radioButtonNine"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:text="@string/checkbox_nine"/>
+        </RadioGroup>
+
 
     </LinearLayout>
+
+
 
 </LinearLayout>
