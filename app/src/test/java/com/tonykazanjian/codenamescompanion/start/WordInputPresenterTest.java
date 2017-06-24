@@ -35,15 +35,6 @@ public class WordInputPresenterTest {
     private WordInputPresenter mWordInputPresenter;
 
     @Mock
-    private Context mContext;
-
-    @Mock
-    private SharedPreferences mSharedPreferences;
-
-    @Mock
-    private SharedPreferences.Editor mEditor;
-
-    @Mock
     private WordInputView mWordInputView;
 
     List<WordCard> mWordCardList;
@@ -53,9 +44,6 @@ public class WordInputPresenterTest {
         mWordInputView = mock(WordInputView.class);
         mWordCardList = new ArrayList<>();
         mWordInputPresenter = new WordInputPresenter(mWordCardList, mWordInputView);
-        mContext = Mockito.mock(Context.class);
-        mSharedPreferences = Mockito.mock(SharedPreferences.class);
-        mEditor = Mockito.mock(SharedPreferences.Editor.class);
     }
 
     @After
@@ -106,23 +94,23 @@ public class WordInputPresenterTest {
         Assert.assertTrue(mWordInputPresenter.getWordCards().size()>=7);
     }
 
-    @Test
-    public void givenPrefsIsEightWords() throws Exception{
-        Mockito.when(mSharedPreferences.getInt(anyString(), anyInt())).thenReturn(8);
-//        Mockito.when(mEditor.putInt(UserPreferences.CARD_NUMBER,8)).thenReturn(mEditor);
-//        String cardNumber = UserPreferences.CARD_NUMBER;
-//        mEditor.putInt(cardNumber,8).apply();
-        int wordAmount =  mSharedPreferences.getInt(UserPreferences.CARD_NUMBER, 0);
-//        Mockito.when(mContext.getSharedPreferences(anyString(), anyInt()).edit().putInt(UserPreferences.CARD_NUMBER, 8).commit());
-//        int wordAmount = mSharedPreferences.getInt(anyString(), anyInt());
-//        int wordAmount = mWordInputPresenter.getWordAmountPrefs();
-        Assert.assertEquals(8, wordAmount);
-    }
-
-    @Test
-    public void whenSharedPrefsForWordCountIsSet(){
-        Mockito.when(mContext.getSharedPreferences(anyString(), anyInt())).thenReturn(mSharedPreferences);
-    }
+//    @Test
+//    public void givenPrefsIsEightWords() throws Exception{
+//        Mockito.when(mSharedPreferences.getInt(anyString(), anyInt())).thenReturn(8);
+////        Mockito.when(mEditor.putInt(UserPreferences.CARD_NUMBER,8)).thenReturn(mEditor);
+////        String cardNumber = UserPreferences.CARD_NUMBER;
+////        mEditor.putInt(cardNumber,8).apply();
+//        int wordAmount =  mSharedPreferences.getInt(UserPreferences.CARD_NUMBER, 0);
+////        Mockito.when(mContext.getSharedPreferences(anyString(), anyInt()).edit().putInt(UserPreferences.CARD_NUMBER, 8).commit());
+////        int wordAmount = mSharedPreferences.getInt(anyString(), anyInt());
+////        int wordAmount = mWordInputPresenter.getWordAmountPrefs();
+//        Assert.assertEquals(8, wordAmount);
+//    }
+//
+//    @Test
+//    public void whenSharedPrefsForWordCountIsSet(){
+//        Mockito.when(mContext.getSharedPreferences(anyString(), anyInt())).thenReturn(mSharedPreferences);
+//    }
 
     @Test
     public void givenPrefsIsNineWords(){

@@ -107,10 +107,10 @@ public class SettingsFragment extends Fragment implements SettingsView {
                 UserPreferences.setCheckedButton(getContext(), i);
                 switch (i){
                     case R.id.radioButtonEight:
-//                        UserPreferences.setCardNumber(getContext(), 8);
+                        mSettingsPresenter.pickCardNumber(8);
                         break;
                     case R.id.radioButtonNine:
-//                        UserPreferences.setCardNumber(getContext(), 9);
+                        mSettingsPresenter.pickCardNumber(9);
                         break;
                 }
             }
@@ -124,6 +124,6 @@ public class SettingsFragment extends Fragment implements SettingsView {
 
     @Override
     public void onCardNumberPicked(int pickedNumber) {
-
+        UserPreferences.setCardNumber(getContext(), pickedNumber);
     }
 }

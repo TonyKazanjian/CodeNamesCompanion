@@ -84,29 +84,5 @@ public class Utils {
         public static long getThreeMinutes() {
             return MINUTE * 3;
         }
-
-//        public enum TimeUnitEnum implements TimeUnit {
-//            UNITS(R.string.fifty_seconds, R.string.seventyfive_seconds, R.string.ninety_seconds,
-//                    R.string.two_minutes, R.string.three_minutes);
-//
-//            private final int mUnits;
-//
-//
-//
-//            TimeUnitEnum(int units) {
-//                mUnits = units;
-//            }
-//
-//
-//            @Override
-//            public TimeUnit[] getSettingsValues() {
-//                ArrayList<TimeUnitEnum> timeUnitList = new ArrayList<>(Arrays.asList(TimeUnitEnum.values()));
-//                return new TimeUnit[0];
-//            }
-//        }
-//
-//        protected interface TimeUnit {
-//            TimeUnit[] getSettingsValues();
-//        }
     }
 }
