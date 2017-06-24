@@ -6,4 +6,5 @@ package com.tonykazanjian.codenamescompanion.start;
 
 public interface WordInputView {
     void onStartBtnPressed();
+    int onWordAmountSet();
 }

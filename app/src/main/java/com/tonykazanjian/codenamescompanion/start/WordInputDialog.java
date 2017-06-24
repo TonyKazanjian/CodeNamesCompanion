@@ -15,6 +15,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.tonykazanjian.codenamescompanion.R;
+import com.tonykazanjian.codenamescompanion.UserPreferences;
 import com.tonykazanjian.codenamescompanion.WordCard;
 
 import java.util.ArrayList;
@@ -48,6 +49,7 @@ public class WordInputDialog extends DialogFragment implements WordInputView {
 
     WordInputPresenter mWordInputPresenter;
     WordInputListener mWordInputListener;
+    TextInputEditText[] mTextInputEditTexts;
 
     public WordInputDialog() {
     }
@@ -80,6 +82,7 @@ public class WordInputDialog extends DialogFragment implements WordInputView {
         mWordInputEditText9 = (TextInputEditText)mRootView.findViewById(R.id.word_input_9);
 
         mWordInputPresenter = new WordInputPresenter(new ArrayList<WordCard>(), this);
+        mWordInputPresenter.getWordAmountPrefs();
 
         AlertDialog dialog = createDialog();
         setupDialog(dialog);
@@ -140,10 +143,20 @@ public class WordInputDialog extends DialogFragment implements WordInputView {
         }
     }
 
+    @Override
+    public int onWordAmountSet() {
+        int wordAmount = UserPreferences.getCardNumber(getContext());
+        if (wordAmount < 9) {
+            mWordInputLayout5.setVisibility(View.GONE);
+        }
+        return wordAmount;
+    }
+
     private void checkForText(TextInputEditText[] textInputEditTexts, List<String> strings) {
 
         int i = 0;
-        while (i <=8) {
+        //TODO - get shared pref value
+        while (i <= UserPreferences.getCardNumber(getContext())) {
             if (!TextUtils.isEmpty(textInputEditTexts[i].getText().toString())) {
                 strings.add(textInputEditTexts[i].getText().toString());
             }

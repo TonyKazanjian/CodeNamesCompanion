@@ -39,6 +39,10 @@ public class WordInputPresenter {
         return mWordCards.size() >= 0;
     }
 
+    public int getWordAmountPrefs(){
+        return mWordInputView.onWordAmountSet();
+    }
+
     public void clearWords(){
         mWordCards.clear();
     }
