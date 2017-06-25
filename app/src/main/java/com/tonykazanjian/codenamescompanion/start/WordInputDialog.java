@@ -155,8 +155,7 @@ public class WordInputDialog extends DialogFragment implements WordInputView {
     private void checkForText(TextInputEditText[] textInputEditTexts, List<String> strings) {
 
         int i = 0;
-        //TODO - get shared pref value
-        while (i <= UserPreferences.getCardNumber(getContext())) {
+        while (i <= UserPreferences.getCardNumber(getContext())-1) {
             if (!TextUtils.isEmpty(textInputEditTexts[i].getText().toString())) {
                 strings.add(textInputEditTexts[i].getText().toString());
             }
