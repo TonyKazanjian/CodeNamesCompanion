@@ -177,8 +177,6 @@ public class GameFragment extends Fragment implements GameView, WordInputDialog.
 
         setTextInputAndKeyboardInteraction(mTextInputEditTexts = new TextInputEditText[]
                 {mCodeInput1, mCodeInput2, mCodeInput3, mCodeInput4});
-
-        showEmptyState();
     }
 
     private void setListAdaptersAndListeners(ListView[] listViews, ItemListAdapter[] listAdapters){
@@ -271,7 +269,9 @@ public class GameFragment extends Fragment implements GameView, WordInputDialog.
 
     @Override
     public void showEmptyState() {
-        mGridEmptyStateLl.setVisibility(View.VISIBLE);
+        if (mGridEmptyStateLl.getVisibility() == View.GONE) {
+            mGridEmptyStateLl.setVisibility(View.VISIBLE);
+        }
         mGridPanel.setMinimumHeight(Utils.dp2Pixel(82, getContext()));
     }
 
@@ -291,7 +291,7 @@ public class GameFragment extends Fragment implements GameView, WordInputDialog.
     public void removeAllCards(ItemBaseAdapter[] adapters){
         mGridEmptyStateLl.setVisibility(View.GONE);
 
-        for (int i = 0; i < adapters.length-1; i++) {
+        for (int i = 0; i < adapters.length; i++) {
             if (adapters[i] != null) {
                 adapters[i].clearWordCards();
                 adapters[i].notifyDataSetChanged();
@@ -300,7 +300,7 @@ public class GameFragment extends Fragment implements GameView, WordInputDialog.
     }
 
     public void clearEditTexts(TextInputEditText[] textInputEditTexts){
-        for (int i = 0; i < textInputEditTexts.length -1; i++){
+        for (int i = 0; i < textInputEditTexts.length; i++){
             if (textInputEditTexts[i] != null){
                 textInputEditTexts[i].getText().clear();
             }

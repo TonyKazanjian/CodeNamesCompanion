@@ -24,5 +24,6 @@
     <string name="ninety_seconds">90 seconds</string>
     <string name="two_minutes">2 minutes</string>
     <string name="three_minutes">3 minutes</string>
+    <string name="word_input_error">You must have at least %1$d words to start the game.</string>
 
 </resources>

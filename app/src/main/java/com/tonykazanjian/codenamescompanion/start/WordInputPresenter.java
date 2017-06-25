@@ -1,5 +1,7 @@
 package com.tonykazanjian.codenamescompanion.start;
 
+import com.tonykazanjian.codenamescompanion.CodeNamesCompanionApplication;
+import com.tonykazanjian.codenamescompanion.UserPreferences;
 import com.tonykazanjian.codenamescompanion.WordCard;
 
 import java.util.List;
@@ -34,9 +36,8 @@ public class WordInputPresenter {
         return mWordCards;
     }
 
-    public boolean isGameReady() {
-        //TODO - always change back to 8
-        return mWordCards.size() >= 0;
+    public boolean isGameReady(int setAmount) {
+        return mWordCards.size() == setAmount;
     }
 
     public int getWordAmountPrefs(){

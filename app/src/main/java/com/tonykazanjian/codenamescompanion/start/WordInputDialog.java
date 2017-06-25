@@ -49,7 +49,6 @@ public class WordInputDialog extends DialogFragment implements WordInputView {
 
     WordInputPresenter mWordInputPresenter;
     WordInputListener mWordInputListener;
-    TextInputEditText[] mTextInputEditTexts;
 
     public WordInputDialog() {
     }
@@ -124,21 +123,18 @@ public class WordInputDialog extends DialogFragment implements WordInputView {
 
     @Override
     public void onStartBtnPressed() {
-
         List<String> strings = new ArrayList<>();
-        TextInputEditText[] textInputEditTexts = {mWordInputEditText1, mWordInputEditText2,
-                mWordInputEditText3, mWordInputEditText4, mWordInputEditText5, mWordInputEditText6,
-                mWordInputEditText7, mWordInputEditText8, mWordInputEditText9};
-        checkForText(textInputEditTexts, strings);
+        addTextToWordList(getTextInputEditTextList(), strings);
 
         mWordInputPresenter.setWordText(strings);
-        if (mWordInputPresenter.isGameReady()) {
+        int cardNumber = UserPreferences.getCardNumber(getContext());
+        if (mWordInputPresenter.isGameReady(cardNumber)) {
             mWordInputListener = (WordInputListener) getParentFragment();
             mWordInputListener.onWordListComplete(mWordInputPresenter.getWordCards());
             dismiss();
-
         } else {
-            Toast.makeText(getContext(), "You must have at least 8 words to start the game.", Toast.LENGTH_SHORT).show();
+            String errorString = getString(R.string.word_input_error, UserPreferences.getCardNumber(getContext()));
+            Toast.makeText(getContext(), errorString, Toast.LENGTH_SHORT).show();
             mWordInputPresenter.getWordCards().clear();
         }
     }
@@ -152,14 +148,30 @@ public class WordInputDialog extends DialogFragment implements WordInputView {
         return wordAmount;
     }
 
-    private void checkForText(TextInputEditText[] textInputEditTexts, List<String> strings) {
+    private List<TextInputEditText> getTextInputEditTextList() {
+        List<TextInputEditText> textInputEditTextList = new ArrayList<>();
+        textInputEditTextList.add(mWordInputEditText1);
+        textInputEditTextList.add(mWordInputEditText2);
+        textInputEditTextList.add(mWordInputEditText3);
+        textInputEditTextList.add(mWordInputEditText4);
+        textInputEditTextList.add(mWordInputEditText5);
+        textInputEditTextList.add(mWordInputEditText6);
+        textInputEditTextList.add(mWordInputEditText7);
+        textInputEditTextList.add(mWordInputEditText8);
+        textInputEditTextList.add(mWordInputEditText9);
+        return textInputEditTextList;
+    }
 
-        int i = 0;
-        while (i <= UserPreferences.getCardNumber(getContext())-1) {
-            if (!TextUtils.isEmpty(textInputEditTexts[i].getText().toString())) {
-                strings.add(textInputEditTexts[i].getText().toString());
+    private void addTextToWordList(List<TextInputEditText> textInputEditTexts, List<String> strings) {
+        int wordAmount = UserPreferences.getCardNumber(getContext());
+        if (wordAmount == 8) {
+            textInputEditTexts.remove(mWordInputEditText5);
+        }
+
+        for (int i = 0; i < textInputEditTexts.size(); i++){
+            if (!TextUtils.isEmpty(textInputEditTexts.get(i).getText().toString())) {
+                strings.add(textInputEditTexts.get(i).getText().toString());
             }
-            i++;
         }
     }
 
