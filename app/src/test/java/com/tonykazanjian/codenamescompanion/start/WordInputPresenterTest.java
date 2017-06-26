@@ -1,12 +1,5 @@
 package com.tonykazanjian.codenamescompanion.start;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
-import android.util.Log;
-
-import com.tonykazanjian.codenamescompanion.CodeNamesCompanionApplication;
-import com.tonykazanjian.codenamescompanion.UserPreferences;
 import com.tonykazanjian.codenamescompanion.WordCard;
 
 import org.junit.After;
@@ -15,15 +8,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
-import org.mockito.stubbing.OngoingStubbing;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.mockito.Matchers.anyInt;
-import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.mock;
 
 /**
@@ -90,30 +79,8 @@ public class WordInputPresenterTest {
         wordStrings.add("Cat");
         wordStrings.add("Dog");
         wordStrings.add("Fish");
+        mWordInputPresenter.setWordText(wordStrings);
 
-        Assert.assertTrue(mWordInputPresenter.getWordCards().size()>=7);
-    }
-
-//    @Test
-//    public void givenPrefsIsEightWords() throws Exception{
-//        Mockito.when(mSharedPreferences.getInt(anyString(), anyInt())).thenReturn(8);
-////        Mockito.when(mEditor.putInt(UserPreferences.CARD_NUMBER,8)).thenReturn(mEditor);
-////        String cardNumber = UserPreferences.CARD_NUMBER;
-////        mEditor.putInt(cardNumber,8).apply();
-//        int wordAmount =  mSharedPreferences.getInt(UserPreferences.CARD_NUMBER, 0);
-////        Mockito.when(mContext.getSharedPreferences(anyString(), anyInt()).edit().putInt(UserPreferences.CARD_NUMBER, 8).commit());
-////        int wordAmount = mSharedPreferences.getInt(anyString(), anyInt());
-////        int wordAmount = mWordInputPresenter.getWordAmountPrefs();
-//        Assert.assertEquals(8, wordAmount);
-//    }
-//
-//    @Test
-//    public void whenSharedPrefsForWordCountIsSet(){
-//        Mockito.when(mContext.getSharedPreferences(anyString(), anyInt())).thenReturn(mSharedPreferences);
-//    }
-
-    @Test
-    public void givenPrefsIsNineWords(){
-        Assert.assertTrue(mWordInputPresenter.getWordAmountPrefs() == 9);
+        Assert.assertTrue(mWordInputPresenter.isGameReady(mWordCardList.size()));
     }
 }

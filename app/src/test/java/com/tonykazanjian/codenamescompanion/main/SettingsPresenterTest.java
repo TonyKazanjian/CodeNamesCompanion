@@ -5,8 +5,6 @@ import android.content.SharedPreferences;
 
 import com.tonykazanjian.codenamescompanion.UserPreferences;
 import com.tonykazanjian.codenamescompanion.Utils;
-import com.tonykazanjian.codenamescompanion.start.WordInputPresenter;
-import com.tonykazanjian.codenamescompanion.start.WordInputView;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -17,13 +15,9 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.runners.MockitoJUnitRunner;
 
-import java.util.ArrayList;
-
-import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Matchers.anyLong;
 import static org.mockito.Matchers.anyString;
-import static org.mockito.Mockito.mock;
 
 /**
  * @author Tony Kazanjian

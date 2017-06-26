@@ -124,10 +124,10 @@ public class WordInputDialog extends DialogFragment implements WordInputView {
     @Override
     public void onStartBtnPressed() {
         List<String> strings = new ArrayList<>();
-        addTextToWordList(getTextInputEditTextList(), strings);
+        addTextToWordList(getTextInputEditTextList(), strings, UserPreferences.getCardNumber(getContext()));
 
         mWordInputPresenter.setWordText(strings);
-        int cardNumber = UserPreferences.getCardNumber(getContext());
+        int cardNumber = mWordInputPresenter.getWordAmountPrefs();
         if (mWordInputPresenter.isGameReady(cardNumber)) {
             mWordInputListener = (WordInputListener) getParentFragment();
             mWordInputListener.onWordListComplete(mWordInputPresenter.getWordCards());
@@ -162,8 +162,7 @@ public class WordInputDialog extends DialogFragment implements WordInputView {
         return textInputEditTextList;
     }
 
-    private void addTextToWordList(List<TextInputEditText> textInputEditTexts, List<String> strings) {
-        int wordAmount = UserPreferences.getCardNumber(getContext());
+    private void addTextToWordList(List<TextInputEditText> textInputEditTexts, List<String> strings, int wordAmount) {
         if (wordAmount == 8) {
             textInputEditTexts.remove(mWordInputEditText5);
         }
