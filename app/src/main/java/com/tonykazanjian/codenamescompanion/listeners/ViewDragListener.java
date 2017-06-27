@@ -12,6 +12,7 @@ import com.tonykazanjian.codenamescompanion.WordCard;
 import com.tonykazanjian.codenamescompanion.adapter.GridViewAdapter;
 import com.tonykazanjian.codenamescompanion.adapter.ItemBaseAdapter;
 import com.tonykazanjian.codenamescompanion.main.GamePresenter;
+import com.tonykazanjian.codenamescompanion.main.GameView;
 
 import java.util.List;
 
@@ -26,11 +27,11 @@ public class ViewDragListener implements View.OnDragListener {
     private List<WordCard> destList;
 
     private GamePresenter mGamePresenter;
-    private TextInputFocusListener mTextInputFocusListener;
+    private GameView mGameView;
 
-    public ViewDragListener(GamePresenter gamePresenter, TextInputFocusListener textInputFocusListener) {
+    public ViewDragListener(GamePresenter gamePresenter, GameView gameView) {
         mGamePresenter = gamePresenter;
-        mTextInputFocusListener = textInputFocusListener;
+        mGameView = gameView;
     }
 
     @Override
@@ -41,18 +42,27 @@ public class ViewDragListener implements View.OnDragListener {
         WordCard passedWord = passObject.mWordCard;
         List<WordCard> srcList = passObject.mSourceList;
         AbsListView oldParent = (AbsListView)listView.getParent();
+        LinearLayoutAbsListView newParent = (LinearLayoutAbsListView)view;
 
         switch (dragEvent.getAction()) {
 
             case DragEvent.ACTION_DRAG_STARTED:
-                mTextInputFocusListener.onViewDrag(false);
+                mGameView.onDragStarted(false);
+                break;
+
+            case DragEvent.ACTION_DRAG_ENTERED:
+                mGameView.onViewBGChanged(newParent, true);
+                break;
+
+            case DragEvent.ACTION_DRAG_EXITED:
+                mGameView.onViewBGChanged(newParent, false);
                 break;
 
             case DragEvent.ACTION_DROP:
-                mTextInputFocusListener.onViewDrag(true);
+                mGameView.onDragStarted(true);
+                mGameView.onViewBGChanged(newParent, false);
 
                 srcAdapter = (ItemBaseAdapter) (oldParent.getAdapter());
-                LinearLayoutAbsListView newParent = (LinearLayoutAbsListView)view;
                 destAdapter = (ItemBaseAdapter) newParent.mAbsListView.getAdapter();
                 destList = ((ItemBaseAdapter)destAdapter).getWordCards();
 
@@ -81,9 +91,5 @@ public class ViewDragListener implements View.OnDragListener {
         } else if(mGamePresenter.removeItemFromList(srcList, passedWord)){
             mGamePresenter.addItemToList(destList, passedWord);
         }
-    }
-
-    public interface TextInputFocusListener{
-        void onViewDrag(boolean hasFocus);
     }
 }

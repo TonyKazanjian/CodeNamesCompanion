@@ -39,8 +39,7 @@ import java.util.List;
  * @author Tony Kazanjian
  */
 
-public class GameFragment extends Fragment implements GameView, WordInputDialog.WordInputListener,
-        ViewDragListener.TextInputFocusListener{
+public class GameFragment extends Fragment implements GameView, WordInputDialog.WordInputListener {
 
     public static final String TAG = GameFragment.class.getName();
 
@@ -282,6 +281,23 @@ public class GameFragment extends Fragment implements GameView, WordInputDialog.
         }
     }
 
+    @Override
+    public void onViewBGChanged(LinearLayoutAbsListView newParent, boolean isEntered) {
+        if (isEntered) {
+            newParent.setBackgroundColor(getResources().getColor(R.color.activated_grey));
+        } else {
+            newParent.setBackgroundColor(getResources().getColor(android.R.color.background_light));
+        }
+    }
+
+    @Override
+    public void onDragStarted(boolean textInputHasFocus) {
+        for (TextInputEditText editText : mTextInputEditTexts) {
+            editText.setFocusable(textInputHasFocus);
+            editText.setFocusableInTouchMode(textInputHasFocus);
+        }
+    }
+
     public void initDialog() {
         WordInputDialog wordInputDialog =  WordInputDialog.newInstance();
         wordInputDialog.setCancelable(false);
@@ -304,14 +320,6 @@ public class GameFragment extends Fragment implements GameView, WordInputDialog.
             if (textInputEditTexts[i] != null){
                 textInputEditTexts[i].getText().clear();
             }
-        }
-    }
-
-    @Override
-    public void onViewDrag(boolean hasFocus) {
-        for (TextInputEditText editText : mTextInputEditTexts) {
-            editText.setFocusable(hasFocus);
-            editText.setFocusableInTouchMode(hasFocus);
         }
     }
 

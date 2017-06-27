@@ -80,4 +80,8 @@ public class GamePresenter {
         return l.remove(it);
     }
 
+    public boolean isViewBGdark() {
+        return false;
+    }
+
 }

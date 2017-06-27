@@ -72,4 +72,15 @@ public class GamePresenterTest {
         }
         Assert.assertTrue(mGamePresenter.getCardCount() == 0);
     }
+
+    @Test
+    public void whenCardIsDraggedIn() {
+//        Assert.assertTrue(mGamePresenter.isViewBGdark());
+        //TODO - Mockito stub?
+    }
+
+    @Test
+    public void whenCardIsDroppedOrMovedOut() {
+        Assert.assertFalse(mGamePresenter.isViewBGdark());
+    }
 }
