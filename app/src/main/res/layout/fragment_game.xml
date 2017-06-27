@@ -177,7 +177,7 @@
         style="@style/CodeWordInputLayoutStyle"
         app:hintEnabled="false"
         app:layout_constraintTop_toBottomOf="@id/code_panel2"
-        app:layout_constraintTop_toTopOf="@+id/code_panel4"
+        app:layout_constraintBottom_toTopOf="@+id/code_panel4"
         android:layout_marginTop="10dp"
         android:layout_marginEnd="9dp"
         app:layout_constraintRight_toRightOf="@+id/code_panel4"
@@ -198,7 +198,7 @@
         android:layout_height="0dp"
         android:layout_margin="4dp"
         android:background="@android:color/background_light"
-        app:layout_constraintBottom_toTopOf="@+id/code_panel4"
+        app:layout_constraintBottom_toTopOf="@+id/code_input_layout_4"
         app:layout_constraintLeft_toRightOf="@+id/code_panel1"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/code_input_layout_2">
