@@ -3,7 +3,7 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
-    <color name="activated_grey">#9e9e9e</color>
+    <color name="activated_grey">#eeeeee</color>
     <color name="pressed_grey">#757575</color>
     <color name="blue_team_blue">#0026fa</color>
     <color name="red_team_red">#f1000c</color>
