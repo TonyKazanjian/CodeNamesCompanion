@@ -53,16 +53,16 @@ public class ViewDragListener implements View.OnDragListener {
                 break;
 
             case DragEvent.ACTION_DRAG_ENTERED:
-                mGameView.onViewBGChanged(newParent, true);
+                mGameView.onViewBGChanged(newParent.mAbsListView, true);
                 break;
 
             case DragEvent.ACTION_DRAG_EXITED:
-                mGameView.onViewBGChanged(newParent, false);
+                mGameView.onViewBGChanged(newParent.mAbsListView, false);
                 break;
 
             case DragEvent.ACTION_DROP:
                 mGameView.onDragStarted(true);
-                mGameView.onViewBGChanged(newParent, false);
+                mGameView.onViewBGChanged(newParent.mAbsListView, false);
 
                 srcAdapter = (ItemBaseAdapter) (oldParent.getAdapter());
                 destAdapter = (ItemBaseAdapter) newParent.mAbsListView.getAdapter();

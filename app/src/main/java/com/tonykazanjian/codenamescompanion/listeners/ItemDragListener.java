@@ -6,10 +6,12 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 
+import com.tonykazanjian.codenamescompanion.LinearLayoutAbsListView;
 import com.tonykazanjian.codenamescompanion.PassObject;
 import com.tonykazanjian.codenamescompanion.Utils;
 import com.tonykazanjian.codenamescompanion.WordCard;
 import com.tonykazanjian.codenamescompanion.adapter.ItemBaseAdapter;
+import com.tonykazanjian.codenamescompanion.main.GameView;
 
 import java.util.List;
 
@@ -22,9 +24,11 @@ public class ItemDragListener implements View.OnDragListener{
     private BaseAdapter srcAdapter;
     private BaseAdapter destAdapter;
     private List<WordCard> destList;
+    private GameView mGameView;
 
-    public ItemDragListener(WordCard wordCard) {
+    public ItemDragListener(WordCard wordCard, GameView gameView) {
         mWordCard = wordCard;
+        mGameView = gameView;
     }
 
     @Override
@@ -35,11 +39,21 @@ public class ItemDragListener implements View.OnDragListener{
         WordCard passedWord = passObject.mWordCard;
         List<WordCard> srcList = passObject.mSourceList;
         AbsListView oldParent = (AbsListView)itemView.getParent();
+        AbsListView newParent = (AbsListView) view.getParent();
 
         switch (dragEvent.getAction()) {
+
+            case DragEvent.ACTION_DRAG_ENTERED:
+                mGameView.onViewBGChanged(newParent, true);
+                break;
+
+            case DragEvent.ACTION_DRAG_EXITED:
+                mGameView.onViewBGChanged(newParent, false);
+                break;
+
             case DragEvent.ACTION_DROP:
                 srcAdapter = (ItemBaseAdapter) (oldParent.getAdapter());
-                AbsListView newParent = (AbsListView) view.getParent();
+                mGameView.onViewBGChanged(newParent, false);
 
                 destAdapter = (ItemBaseAdapter) newParent.getAdapter();
                 destList = ((ItemBaseAdapter) destAdapter).getWordCards();

@@ -29,4 +29,8 @@ public class LinearLayoutAbsListView extends LinearLayout {
     public void setAbsListView(AbsListView absListView) {
         mAbsListView = absListView;
     }
+
+    public AbsListView getAbsListView(){
+        return mAbsListView;
+    }
 }

@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.tonykazanjian.codenamescompanion.R;
 import com.tonykazanjian.codenamescompanion.WordCard;
 import com.tonykazanjian.codenamescompanion.listeners.ItemDragListener;
+import com.tonykazanjian.codenamescompanion.main.GameView;
 
 import java.util.List;
 
@@ -21,8 +22,8 @@ import java.util.List;
 
 public class ItemListAdapter extends ItemBaseAdapter {
 
-    public ItemListAdapter(Context context, List<WordCard> wordCards) {
-        super(context, wordCards);
+    public ItemListAdapter(Context context, List<WordCard> wordCards, GameView gameView) {
+        super(context, wordCards, gameView);
     }
 
     @Override
@@ -47,7 +48,7 @@ public class ItemListAdapter extends ItemBaseAdapter {
                     notifyDataSetChanged();
                 }
             });
-            convertView.setOnDragListener(new ItemDragListener(mWordCards.get(i)));
+            convertView.setOnDragListener(new ItemDragListener(mWordCards.get(i), mGameView));
         }
 
         return convertView;

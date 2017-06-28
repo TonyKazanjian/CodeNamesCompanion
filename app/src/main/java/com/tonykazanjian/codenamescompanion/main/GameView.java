@@ -1,5 +1,6 @@
 package com.tonykazanjian.codenamescompanion.main;
 
+import android.widget.AbsListView;
 import android.widget.LinearLayout;
 
 import com.tonykazanjian.codenamescompanion.LinearLayoutAbsListView;
@@ -20,6 +21,6 @@ public interface GameView {
 //    void onCodePanelListDisplayed_4(List<WordCard> cards);
     void showEmptyState();
     void removeEmptyState();
-    void onViewBGChanged(LinearLayoutAbsListView newParent, boolean isEntered);
+    void onViewBGChanged(AbsListView newParent, boolean isEntered);
     void onDragStarted(boolean textInputHasFocus);
 }

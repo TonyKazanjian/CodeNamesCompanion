@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.tonykazanjian.codenamescompanion.R;
 import com.tonykazanjian.codenamescompanion.WordCard;
 import com.tonykazanjian.codenamescompanion.listeners.ItemDragListener;
+import com.tonykazanjian.codenamescompanion.main.GameView;
 
 import java.util.List;
 
@@ -19,8 +20,8 @@ import java.util.List;
 
 public class GridViewAdapter extends ItemBaseAdapter {
 
-    public GridViewAdapter(Context context, List<WordCard> words) {
-        super(context, words);
+    public GridViewAdapter(Context context, List<WordCard> words, GameView gameView) {
+        super(context, words, gameView);
         mWordCards = words;
         mContext = context;
     }
@@ -38,7 +39,7 @@ public class GridViewAdapter extends ItemBaseAdapter {
 
         if (i <= mWordCards.size()-1){
             holder.mCardText.setText(mWordCards.get(i).getWord());
-            view.setOnDragListener(new ItemDragListener(mWordCards.get(i)));
+            view.setOnDragListener(new ItemDragListener(mWordCards.get(i), mGameView));
         }
 
 

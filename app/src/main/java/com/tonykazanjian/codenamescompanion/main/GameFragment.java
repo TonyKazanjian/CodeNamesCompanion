@@ -13,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -161,10 +162,10 @@ public class GameFragment extends Fragment implements GameView, WordInputDialog.
             mPanel4List = new ArrayList<>();
         }
 
-        mItemListAdapter1 = new ItemListAdapter(getContext(), mPanel1List);
-        mItemListAdapter2 = new ItemListAdapter(getContext(), mPanel2List);
-        mItemListAdapter3 = new ItemListAdapter(getContext(), mPanel3List);
-        mItemListAdapter4 = new ItemListAdapter(getContext(), mPanel4List);
+        mItemListAdapter1 = new ItemListAdapter(getContext(), mPanel1List, this);
+        mItemListAdapter2 = new ItemListAdapter(getContext(), mPanel2List, this);
+        mItemListAdapter3 = new ItemListAdapter(getContext(), mPanel3List, this);
+        mItemListAdapter4 = new ItemListAdapter(getContext(), mPanel4List, this);
 
         setListAdaptersAndListeners(new ListView[]{mListView1, mListView2, mListView3, mListView4},
                 new ItemListAdapter[]{mItemListAdapter1, mItemListAdapter2, mItemListAdapter3, mItemListAdapter4});
@@ -251,7 +252,7 @@ public class GameFragment extends Fragment implements GameView, WordInputDialog.
     @Override
     public void onGridCardsDisplayed(List<WordCard> cards) {
         mGridList = cards;
-        mGridViewAdapter = new GridViewAdapter(getContext(), cards);
+        mGridViewAdapter = new GridViewAdapter(getContext(), cards, this);
         mGridView.setAdapter(mGridViewAdapter);
     }
 
@@ -282,7 +283,7 @@ public class GameFragment extends Fragment implements GameView, WordInputDialog.
     }
 
     @Override
-    public void onViewBGChanged(LinearLayoutAbsListView newParent, boolean isEntered) {
+    public void onViewBGChanged(AbsListView newParent, boolean isEntered) {
         if (isEntered) {
             newParent.setBackgroundColor(getResources().getColor(R.color.activated_grey));
         } else {

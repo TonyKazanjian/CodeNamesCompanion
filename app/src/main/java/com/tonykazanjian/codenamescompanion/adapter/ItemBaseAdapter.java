@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 
 import com.tonykazanjian.codenamescompanion.WordCard;
+import com.tonykazanjian.codenamescompanion.main.GameView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,10 +19,12 @@ public class ItemBaseAdapter extends BaseAdapter {
 
     Context mContext;
     List<WordCard> mWordCards;
+    GameView mGameView;
 
-    public ItemBaseAdapter(Context context, List<WordCard> wordCards) {
+    public ItemBaseAdapter(Context context, List<WordCard> wordCards, GameView gameView) {
         mContext = context;
         mWordCards = wordCards;
+        mGameView = gameView;
     }
 
     @Override
