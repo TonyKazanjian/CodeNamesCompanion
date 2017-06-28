@@ -29,7 +29,7 @@ public class GamePresenter {
 //        WordCard card3 = new WordCard();
 //        card3.setWord("Donkey");
 //        cards.add(card3);
-//
+
 //        WordCard card4 = new WordCard();
 //        card4.setWord("Keyboard");
 //        cards.add(card4);
@@ -48,7 +48,7 @@ public class GamePresenter {
 ////        wordCards.add(card8);
 ////        WordCard card9 = new WordCard();
 ////        card9.setWord("Street");
-////        wordCards.add(card9);
+//        wordCards.add(card9);
         mGameView.onGridCardsDisplayed(cards);
     }
 

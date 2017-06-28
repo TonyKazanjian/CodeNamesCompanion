@@ -11,44 +11,45 @@
         android:id="@+id/grid_panel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:minHeight="82dp"
         android:layout_marginTop="4dp"
         app:layout_constraintBottom_toTopOf="@+id/bottom_panel_title"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <GridView
-            android:id="@+id/card_grid"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:paddingEnd="8dp"
-            android:paddingStart="8dp"
-            android:paddingTop="8dp"
-            android:paddingBottom="4dp"
-            android:numColumns="3"
-            android:horizontalSpacing="2dp"
-            android:verticalSpacing="2dp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
-
-    </com.tonykazanjian.codenamescompanion.LinearLayoutAbsListView>
-
-    <com.tonykazanjian.codenamescompanion.LinearLayoutAbsListView
-        android:id="@+id/grid_empty_state_ll"
-        android:layout_width="0dp"
-        android:layout_height="80dp"
-        android:visibility="gone"
-        app:layout_constraintBottom_toTopOf="@+id/bottom_panel_title"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center"
-            android:text="Your word list is empty"/>
+            android:layout_gravity="center"
+            >
+
+            <GridView
+                android:id="@+id/card_grid"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingEnd="8dp"
+                android:paddingStart="8dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="4dp"
+                android:numColumns="3"
+                android:horizontalSpacing="2dp"
+                android:verticalSpacing="2dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <TextView
+                android:id="@+id/empty_textview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:visibility="invisible"
+                android:text="@string/grid_empty_state"/>
+
+        </FrameLayout>
+
+
     </com.tonykazanjian.codenamescompanion.LinearLayoutAbsListView>
 
     <TextView
