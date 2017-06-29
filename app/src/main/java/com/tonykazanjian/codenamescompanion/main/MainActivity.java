@@ -12,6 +12,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,16 +25,14 @@ import android.widget.ListView;
 import com.tonykazanjian.codenamescompanion.R;
 
 public class MainActivity extends AppCompatActivity {
-    public static final int GAME_POSITION = 0;
-    public static final int SCOREBOARD_POSITION = 1;
-    public static final int SETTINGS_POSITION = 2;
+
 
     private Fragment mSelectedFragment;
 
+    private Toolbar mToolbar;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
 
-//    private ListView mDrawerList;
     private NavigationView mNavigationView;
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
@@ -48,7 +47,10 @@ public class MainActivity extends AppCompatActivity {
             mSelectedFragment = getSupportFragmentManager().getFragment(savedInstanceState, GameFragment.TAG);
         }
 
+        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(mToolbar);
         mTitle = mDrawerTitle = getTitle();
+        mToolbar.setTitle(mTitle);
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         mNavigationView = (NavigationView) findViewById(R.id.my_navigation_view);
 
@@ -61,18 +63,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, R.string.drawer_open, R.string.drawer_close) {
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.drawer_open, R.string.drawer_close) {
             public void onDrawerClosed(View view) {
-                getSupportActionBar().setTitle(mTitle);
                 invalidateOptionsMenu();
             }
 
             public void onDrawerOpened(View drawerView) {
-                getSupportActionBar().setTitle(mDrawerTitle);
-                invalidateOptionsMenu();
+
             }
         };
         mDrawerLayout.addDrawerListener(mDrawerToggle);
@@ -81,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
             selectItem(R.id.nav_item_1);
             setTitle(getString(R.string.board));
         }
-        
     }
 
     private void selectItem(int i) {
@@ -178,8 +174,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void setTitle(CharSequence title) {
         mTitle = title;
-        getSupportActionBar().setTitle(mTitle);
+        mToolbar.setTitle(mTitle);
     }
-
-
 }

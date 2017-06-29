@@ -133,7 +133,6 @@ public class GameFragment extends Fragment implements GameView, WordInputDialog.
         mListView4 = (ListView) rootView.findViewById(R.id.listview4);
         mGridView = (GridView) rootView.findViewById(R.id.card_grid);
 
-//        mGridEmptyStateLl = (LinearLayoutAbsListView) rootView.findViewById(R.id.grid_empty_state_ll);
         mEmptyTextView = (TextView) rootView.findViewById(R.id.empty_textview);
 
         mCodePanel1 = (LinearLayoutAbsListView) rootView.findViewById(R.id.code_panel1);
@@ -142,7 +141,6 @@ public class GameFragment extends Fragment implements GameView, WordInputDialog.
         mCodePanel4 = (LinearLayoutAbsListView) rootView.findViewById(R.id.code_panel4);
         mGridPanel = (LinearLayoutAbsListView) rootView.findViewById(R.id.grid_panel);
 
-//        setupGridView(mGridPanel, mGridEmptyStateLl, mGamePresenter, mGridView);
         setupGridView(mGridPanel, mGamePresenter, mGridView);
 
         setListenersAndListViews(new LinearLayoutAbsListView[]{mCodePanel1, mCodePanel2, mCodePanel3, mCodePanel4},
