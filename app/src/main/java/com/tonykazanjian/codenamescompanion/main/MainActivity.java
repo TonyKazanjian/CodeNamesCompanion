@@ -1,7 +1,9 @@
 package com.tonykazanjian.codenamescompanion.main;
 
 import android.content.res.Configuration;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -31,8 +33,8 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
 
-    private ListView mDrawerList;
-    private String[] mFragmentTitles;
+//    private ListView mDrawerList;
+    private NavigationView mNavigationView;
     private CharSequence mDrawerTitle;
     private CharSequence mTitle;
 
@@ -47,12 +49,17 @@ public class MainActivity extends AppCompatActivity {
         }
 
         mTitle = mDrawerTitle = getTitle();
-        mFragmentTitles = getResources().getStringArray(R.array.drawer_title_array);
         mDrawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
-//        mDrawerList = (ListView)findViewById(R.id.left_drawer);
-//
-//        mDrawerList.setAdapter(new ArrayAdapter<>(this, R.layout.drawer_list_item, mFragmentTitles));
-//        mDrawerList.setOnItemClickListener(new DrawerItemClickListener());
+        mNavigationView = (NavigationView) findViewById(R.id.my_navigation_view);
+
+        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                selectItem(item.getItemId());
+                setTitle(item.getTitle());
+                return true;
+            }
+        });
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
@@ -71,10 +78,27 @@ public class MainActivity extends AppCompatActivity {
         mDrawerLayout.addDrawerListener(mDrawerToggle);
 
         if (savedInstanceState == null) {
-            selectItem(0);
+            selectItem(R.id.nav_item_1);
+            setTitle(getString(R.string.board));
         }
         
     }
+
+    private void selectItem(int i) {
+        switch (i) {
+            case R.id.nav_item_1:
+                setGameFragment();
+                break;
+            case R.id.nav_item_2:
+                setScoreboardFragment();
+                break;
+            case R.id.nav_item_3:
+                setSettingsFragment();
+                break;
+        }
+        mDrawerLayout.closeDrawer(Gravity.START);
+    }
+
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -104,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         // If the nav drawer is open, hide action items related to the content view
-        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mDrawerList);
+        boolean drawerOpen = mDrawerLayout.isDrawerOpen(mNavigationView);
         MenuItem newGameItem = menu.findItem(R.id.action_new_game);
         MenuItem timerItem = menu.findItem(R.id.action_timer);
         if (newGameItem != null && timerItem != null) {
@@ -124,32 +148,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         finish();
-    }
-
-    private class DrawerItemClickListener implements ListView.OnItemClickListener {
-
-        @Override
-        public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-            selectItem(i);
-            mDrawerLayout.closeDrawer(Gravity.START);
-        }
-    }
-
-    private void selectItem(int i) {
-        switch (i) {
-            case GAME_POSITION:
-                setGameFragment();
-                break;
-            case SCOREBOARD_POSITION:
-                setScoreboardFragment();
-                break;
-            case SETTINGS_POSITION:
-                setSettingsFragment();
-                break;
-        }
-
-        mDrawerList.setItemChecked(i, true);
-        setTitle(mFragmentTitles[i]);
     }
 
     private void setGameFragment() {

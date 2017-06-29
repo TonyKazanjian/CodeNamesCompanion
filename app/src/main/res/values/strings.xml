@@ -26,5 +26,8 @@
     <string name="three_minutes">3 minutes</string>
     <string name="word_input_error">You must have at least %1$d words to start the game.</string>
     <string name="grid_empty_state">Your word list is empty</string>
+    <string name="board">Board</string>
+    <string name="scoreboard">Scoreboard</string>
+    <string name="settings">Settings</string>
 
 </resources>
