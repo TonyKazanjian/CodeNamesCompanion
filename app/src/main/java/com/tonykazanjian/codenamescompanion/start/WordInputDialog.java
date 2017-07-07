@@ -3,6 +3,7 @@ package com.tonykazanjian.codenamescompanion.start;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
@@ -12,6 +13,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.tonykazanjian.codenamescompanion.R;
@@ -28,6 +30,7 @@ import java.util.List;
 public class WordInputDialog extends DialogFragment implements WordInputView {
     
     private View mRootView;
+    RadioGroup mRadioGroup;
     TextInputLayout mWordInputLayout1;
     TextInputEditText mWordInputEditText1;
     TextInputLayout mWordInputLayout2;
@@ -82,6 +85,9 @@ public class WordInputDialog extends DialogFragment implements WordInputView {
 
         mWordInputPresenter = new WordInputPresenter(new ArrayList<WordCard>(), this);
         mWordInputPresenter.getWordAmountPrefs();
+        mRadioGroup = (RadioGroup) mRootView.findViewById(R.id.radioButtonGroup);
+        setRadioGroup();
+
 
         AlertDialog dialog = createDialog();
         setupDialog(dialog);
@@ -121,6 +127,24 @@ public class WordInputDialog extends DialogFragment implements WordInputView {
         });
     }
 
+    private void setRadioGroup(){
+        mRadioGroup.check(UserPreferences.getCheckedButton(getContext()));
+        mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
+                UserPreferences.setCheckedButton(getContext(), i);
+                switch (i){
+                    case R.id.radioButtonEight:
+                        mWordInputPresenter.pickCardNumber(8);
+                        break;
+                    case R.id.radioButtonNine:
+                        mWordInputPresenter.pickCardNumber(9);
+                        break;
+                }
+            }
+        });
+    }
+
     @Override
     public void onStartBtnPressed() {
         List<String> strings = new ArrayList<>();
@@ -141,11 +165,13 @@ public class WordInputDialog extends DialogFragment implements WordInputView {
 
     @Override
     public int onWordAmountSet() {
-        int wordAmount = UserPreferences.getCardNumber(getContext());
-        if (wordAmount < 9) {
-            mWordInputLayout5.setVisibility(View.GONE);
-        }
-        return wordAmount;
+        return UserPreferences.getCardNumber(getContext());
+    }
+
+    @Override
+    public void onCardNumberPicked(int pickedNumber) {
+        UserPreferences.setCardNumber(getContext(), pickedNumber);
+        mWordInputLayout9.setVisibility(pickedNumber  == 9 ? View.VISIBLE : View.GONE);
     }
 
     private List<TextInputEditText> getTextInputEditTextList() {

@@ -17,8 +17,4 @@ public class SettingsPresenter {
     public void pickTime(int pickedTime){
         mSettingsView.onBaseTimePicked(pickedTime);
     }
-
-    public void pickCardNumber(int pickedNumber){
-        mSettingsView.onCardNumberPicked(pickedNumber);
-    }
 }

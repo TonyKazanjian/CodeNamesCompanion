@@ -44,6 +44,11 @@ public class WordInputPresenter {
         return mWordInputView.onWordAmountSet();
     }
 
+    public void pickCardNumber(int pickedNumber){
+        mWordInputView.onCardNumberPicked(pickedNumber);
+    }
+
+
     public void clearWords(){
         mWordCards.clear();
     }

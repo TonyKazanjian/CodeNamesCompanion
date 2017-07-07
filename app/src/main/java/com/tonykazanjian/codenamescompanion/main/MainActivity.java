@@ -23,6 +23,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.tonykazanjian.codenamescompanion.R;
+import com.tonykazanjian.codenamescompanion.UserPreferences;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -41,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        UserPreferences.setCardNumber(this, 8);
 
         if (savedInstanceState != null) {
             //Restore the fragment's instance

@@ -32,7 +32,6 @@ import java.util.List;
 public class SettingsFragment extends Fragment implements SettingsView {
 
     Spinner mBaseTimeSpinner;
-    RadioGroup mRadioGroup;
 
     SettingsPresenter mSettingsPresenter;
 
@@ -55,10 +54,8 @@ public class SettingsFragment extends Fragment implements SettingsView {
         mSettingsPresenter = new SettingsPresenter(this);
 
         mBaseTimeSpinner = (Spinner) rootview.findViewById(R.id.time_setting_spinner);
-        mRadioGroup = (RadioGroup) rootview.findViewById(R.id.radioButtonGroup);
         setupTimeSpinner(mBaseTimeSpinner);
         mBaseTimeSpinner.setSelection(UserPreferences.getSpinnerPosition(getContext()));
-        setRadioGroup();
     }
 
     private void setupTimeSpinner(Spinner timeSpinner) {
@@ -99,31 +96,8 @@ public class SettingsFragment extends Fragment implements SettingsView {
         });
     }
 
-    private void setRadioGroup(){
-        mRadioGroup.check(UserPreferences.getCheckedButton(getContext()));
-        mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
-                UserPreferences.setCheckedButton(getContext(), i);
-                switch (i){
-                    case R.id.radioButtonEight:
-                        mSettingsPresenter.pickCardNumber(8);
-                        break;
-                    case R.id.radioButtonNine:
-                        mSettingsPresenter.pickCardNumber(9);
-                        break;
-                }
-            }
-        });
-    }
-
     @Override
     public void onBaseTimePicked(int pickedTime) {
         UserPreferences.setBaseTime(getContext(), pickedTime);
-    }
-
-    @Override
-    public void onCardNumberPicked(int pickedNumber) {
-        UserPreferences.setCardNumber(getContext(), pickedNumber);
     }
 }
