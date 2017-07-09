@@ -1,14 +1,11 @@
 package com.tonykazanjian.codenamescompanion.listeners;
 
-import android.support.annotation.Nullable;
 import android.view.DragEvent;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 
-import com.tonykazanjian.codenamescompanion.LinearLayoutAbsListView;
 import com.tonykazanjian.codenamescompanion.PassObject;
-import com.tonykazanjian.codenamescompanion.Utils;
 import com.tonykazanjian.codenamescompanion.WordCard;
 import com.tonykazanjian.codenamescompanion.adapter.ItemBaseAdapter;
 import com.tonykazanjian.codenamescompanion.main.GameView;
@@ -45,6 +42,7 @@ public class ItemDragListener implements View.OnDragListener{
 
             case DragEvent.ACTION_DRAG_ENTERED:
                 mGameView.onViewBGChanged(newParent, true);
+                mGameView.onViewBGChanged(oldParent, false);
                 break;
 
             case DragEvent.ACTION_DRAG_EXITED:

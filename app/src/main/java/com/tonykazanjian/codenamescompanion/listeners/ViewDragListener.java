@@ -1,15 +1,12 @@
 package com.tonykazanjian.codenamescompanion.listeners;
 
-import android.support.v7.widget.CardView;
 import android.view.DragEvent;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.BaseAdapter;
-import android.widget.ListView;
 
 import com.tonykazanjian.codenamescompanion.LinearLayoutAbsListView;
 import com.tonykazanjian.codenamescompanion.PassObject;
-import com.tonykazanjian.codenamescompanion.UserPreferences;
 import com.tonykazanjian.codenamescompanion.WordCard;
 import com.tonykazanjian.codenamescompanion.adapter.GridViewAdapter;
 import com.tonykazanjian.codenamescompanion.adapter.ItemBaseAdapter;
@@ -50,10 +47,12 @@ public class ViewDragListener implements View.OnDragListener {
 
             case DragEvent.ACTION_DRAG_STARTED:
                 mGameView.onDragStarted(false);
+                mGameView.onViewBGChanged(oldParent, false);
                 break;
 
             case DragEvent.ACTION_DRAG_ENTERED:
                 mGameView.onViewBGChanged(newParent.mAbsListView, true);
+                mGameView.onViewBGChanged(oldParent, false);
                 break;
 
             case DragEvent.ACTION_DRAG_EXITED:
