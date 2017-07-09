@@ -54,7 +54,6 @@ public class GameFragment extends Fragment implements GameView, WordInputDialog.
     ListView mListView2;
     ListView mListView3;
     ListView mListView4;
-    ListView mEmptyView;
     ItemListAdapter mItemListAdapter1;
     ItemListAdapter mItemListAdapter2;
     ItemListAdapter mItemListAdapter3;

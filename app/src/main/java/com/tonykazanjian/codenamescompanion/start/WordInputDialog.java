@@ -10,6 +10,7 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -52,6 +53,7 @@ public class WordInputDialog extends DialogFragment implements WordInputView {
 
     WordInputPresenter mWordInputPresenter;
     WordInputListener mWordInputListener;
+    List<TextInputEditText> mTextInputEditTexts;
 
     public WordInputDialog() {
     }
@@ -84,10 +86,12 @@ public class WordInputDialog extends DialogFragment implements WordInputView {
         mWordInputEditText9 = (TextInputEditText)mRootView.findViewById(R.id.word_input_9);
 
         mWordInputPresenter = new WordInputPresenter(new ArrayList<WordCard>(), this);
-        mWordInputPresenter.getWordAmountPrefs();
+        mTextInputEditTexts = getTextInputEditTextList();
+
+        mWordInputPresenter.pickCardNumber(mWordInputPresenter.getWordAmountPrefs());
+
         mRadioGroup = (RadioGroup) mRootView.findViewById(R.id.radioButtonGroup);
         setRadioGroup();
-
 
         AlertDialog dialog = createDialog();
         setupDialog(dialog);
@@ -128,6 +132,7 @@ public class WordInputDialog extends DialogFragment implements WordInputView {
     }
 
     private void setRadioGroup(){
+        Log.i(this.getClass().getSimpleName(), String.valueOf(UserPreferences.getCheckedButton(getContext())));
         mRadioGroup.check(UserPreferences.getCheckedButton(getContext()));
         mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -148,7 +153,7 @@ public class WordInputDialog extends DialogFragment implements WordInputView {
     @Override
     public void onStartBtnPressed() {
         List<String> strings = new ArrayList<>();
-        addTextToWordList(getTextInputEditTextList(), strings, UserPreferences.getCardNumber(getContext()));
+        addTextToWordList(mTextInputEditTexts, strings, UserPreferences.getCardNumber(getContext()));
 
         mWordInputPresenter.setWordText(strings);
         int cardNumber = mWordInputPresenter.getWordAmountPrefs();
@@ -170,8 +175,17 @@ public class WordInputDialog extends DialogFragment implements WordInputView {
 
     @Override
     public void onCardNumberPicked(int pickedNumber) {
-        UserPreferences.setCardNumber(getContext(), pickedNumber);
-        mWordInputLayout9.setVisibility(pickedNumber  == 9 ? View.VISIBLE : View.GONE);
+        if (pickedNumber == 8) {
+            UserPreferences.setCardNumber(getContext(), 8);
+            mTextInputEditTexts.remove(mWordInputEditText9);
+            mWordInputLayout9.setVisibility(View.GONE);
+        } else {
+            mWordInputLayout9.setVisibility(View.VISIBLE);
+            UserPreferences.setCardNumber(getContext(), 9);
+            if (!mTextInputEditTexts.contains(mWordInputEditText9)) {
+                mTextInputEditTexts.add(mWordInputEditText9);
+            }
+        }
     }
 
     private List<TextInputEditText> getTextInputEditTextList() {
@@ -190,7 +204,7 @@ public class WordInputDialog extends DialogFragment implements WordInputView {
 
     private void addTextToWordList(List<TextInputEditText> textInputEditTexts, List<String> strings, int wordAmount) {
         if (wordAmount == 8) {
-            textInputEditTexts.remove(mWordInputEditText5);
+            textInputEditTexts.remove(mWordInputEditText9);
         }
 
         for (int i = 0; i < textInputEditTexts.size(); i++){
