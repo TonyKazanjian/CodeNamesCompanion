@@ -1,7 +1,5 @@
 package com.tonykazanjian.codenamescompanion.start;
 
-import com.tonykazanjian.codenamescompanion.CodeNamesCompanionApplication;
-import com.tonykazanjian.codenamescompanion.UserPreferences;
 import com.tonykazanjian.codenamescompanion.WordCard;
 
 import java.util.List;

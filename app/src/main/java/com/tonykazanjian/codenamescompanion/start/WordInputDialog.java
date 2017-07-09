@@ -10,7 +10,6 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
@@ -88,10 +87,11 @@ public class WordInputDialog extends DialogFragment implements WordInputView {
         mWordInputPresenter = new WordInputPresenter(new ArrayList<WordCard>(), this);
         mTextInputEditTexts = getTextInputEditTextList();
 
-        mWordInputPresenter.pickCardNumber(mWordInputPresenter.getWordAmountPrefs());
-
         mRadioGroup = (RadioGroup) mRootView.findViewById(R.id.radioButtonGroup);
+//        mRadioGroup.check(R.id.radioButtonEight);
         setRadioGroup();
+
+        mWordInputPresenter.pickCardNumber(mWordInputPresenter.getWordAmountPrefs());
 
         AlertDialog dialog = createDialog();
         setupDialog(dialog);
@@ -132,8 +132,11 @@ public class WordInputDialog extends DialogFragment implements WordInputView {
     }
 
     private void setRadioGroup(){
-        Log.i(this.getClass().getSimpleName(), String.valueOf(UserPreferences.getCheckedButton(getContext())));
-        mRadioGroup.check(UserPreferences.getCheckedButton(getContext()));
+        if (UserPreferences.getCheckedButton(getContext()) == 0) {
+            mRadioGroup.check(R.id.radioButtonEight);
+        } else {
+            mRadioGroup.check(UserPreferences.getCheckedButton(getContext()));
+        }
         mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {

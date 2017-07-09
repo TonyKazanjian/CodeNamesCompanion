@@ -134,6 +134,10 @@ public class GameFragment extends Fragment implements GameView, WordInputDialog.
 
         mEmptyTextView = (TextView) rootView.findViewById(R.id.empty_textview);
 
+        if (mGridList == null) {
+            showEmptyState();
+        }
+
         mCodePanel1 = (LinearLayoutAbsListView) rootView.findViewById(R.id.code_panel1);
         mCodePanel2 = (LinearLayoutAbsListView) rootView.findViewById(R.id.code_panel2);
         mCodePanel3 = (LinearLayoutAbsListView) rootView.findViewById(R.id.code_panel3);
@@ -254,6 +258,7 @@ public class GameFragment extends Fragment implements GameView, WordInputDialog.
 
     @Override
     public void onGridCardsDisplayed(List<WordCard> cards) {
+        removeEmptyState();
         mGridList = cards;
         mGridViewAdapter = new GridViewAdapter(getContext(), cards, this);
         mGridView.setAdapter(mGridViewAdapter);
