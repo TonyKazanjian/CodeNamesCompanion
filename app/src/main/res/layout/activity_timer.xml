@@ -26,7 +26,7 @@
             android:layout_marginStart="15dp"
             app:matProg_barColor="@color/colorPrimary"
             app:matProg_barWidth="6dp"
-            app:matProg_circleRadius="250dp"
+            app:matProg_circleRadius="220dp"
             app:matProg_fillRadius="true"
             app:matProg_progressIndeterminate="false"
             app:matProg_rimColor="#EEEEEE"

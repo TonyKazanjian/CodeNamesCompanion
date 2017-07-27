@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context="com.tonykazanjian.codenamescompanion.main.MainActivity">
 
-    <com.tonykazanjian.codenamescompanion.LinearLayoutAbsListView
+    <com.tonykazanjian.codenamescompanion.views.LinearLayoutAbsListView
         android:id="@+id/grid_panel"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -50,7 +50,7 @@
         </FrameLayout>
 
 
-    </com.tonykazanjian.codenamescompanion.LinearLayoutAbsListView>
+    </com.tonykazanjian.codenamescompanion.views.LinearLayoutAbsListView>
 
     <TextView
         android:id="@+id/bottom_panel_title"
@@ -66,7 +66,7 @@
         />
 
 
-    <com.tonykazanjian.codenamescompanion.LinearLayoutAbsListView
+    <com.tonykazanjian.codenamescompanion.views.LinearLayoutAbsListView
         android:id="@+id/code_panel1"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -81,9 +81,9 @@
             android:id="@+id/listview1"
             style="@style/ListViewStyle"/>
 
-    </com.tonykazanjian.codenamescompanion.LinearLayoutAbsListView>
+    </com.tonykazanjian.codenamescompanion.views.LinearLayoutAbsListView>
 
-    <com.tonykazanjian.codenamescompanion.LinearLayoutAbsListView
+    <com.tonykazanjian.codenamescompanion.views.LinearLayoutAbsListView
         android:id="@+id/code_panel3"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -98,9 +98,9 @@
             android:id="@+id/listview3"
             style="@style/ListViewStyle"/>
 
-    </com.tonykazanjian.codenamescompanion.LinearLayoutAbsListView>
+    </com.tonykazanjian.codenamescompanion.views.LinearLayoutAbsListView>
 
-    <com.tonykazanjian.codenamescompanion.LinearLayoutAbsListView
+    <com.tonykazanjian.codenamescompanion.views.LinearLayoutAbsListView
         android:id="@+id/code_panel4"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -115,7 +115,7 @@
             android:id="@+id/listview4"
             style="@style/ListViewStyle"/>
 
-    </com.tonykazanjian.codenamescompanion.LinearLayoutAbsListView>
+    </com.tonykazanjian.codenamescompanion.views.LinearLayoutAbsListView>
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/code_input_layout_1"
@@ -193,7 +193,7 @@
 
     </android.support.design.widget.TextInputLayout>
 
-    <com.tonykazanjian.codenamescompanion.LinearLayoutAbsListView
+    <com.tonykazanjian.codenamescompanion.views.LinearLayoutAbsListView
         android:id="@+id/code_panel2"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -208,6 +208,6 @@
             android:id="@+id/listview2"
             style="@style/ListViewStyle"/>
 
-    </com.tonykazanjian.codenamescompanion.LinearLayoutAbsListView>
+    </com.tonykazanjian.codenamescompanion.views.LinearLayoutAbsListView>
 
 </android.support.constraint.ConstraintLayout>

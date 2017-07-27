@@ -1,4 +1,4 @@
-package com.tonykazanjian.codenamescompanion;
+package com.tonykazanjian.codenamescompanion.views;
 
 import android.content.Context;
 import android.support.annotation.Nullable;

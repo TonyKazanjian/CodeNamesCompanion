@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.tonykazanjian.codenamescompanion.LinearLayoutAbsListView xmlns:android="http://schemas.android.com/apk/res/android"
-                                             xmlns:tools="http://schemas.android.com/tools"
-                                             android:layout_width="match_parent"
-                                             android:layout_height="wrap_content"
-                                             xmlns:app="http://schemas.android.com/apk/res-auto">
+<com.tonykazanjian.codenamescompanion.views.LinearLayoutAbsListView xmlns:android="http://schemas.android.com/apk/res/android"
+                                                                    xmlns:tools="http://schemas.android.com/tools"
+                                                                    android:layout_width="match_parent"
+                                                                    android:layout_height="wrap_content"
+                                                                    xmlns:app="http://schemas.android.com/apk/res-auto">
 
 
     <android.support.constraint.ConstraintLayout
@@ -40,4 +40,4 @@
 
 
 
-</com.tonykazanjian.codenamescompanion.LinearLayoutAbsListView>
+</com.tonykazanjian.codenamescompanion.views.LinearLayoutAbsListView>

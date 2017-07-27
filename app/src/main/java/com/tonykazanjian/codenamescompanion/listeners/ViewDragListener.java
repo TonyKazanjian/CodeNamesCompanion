@@ -5,7 +5,7 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 
-import com.tonykazanjian.codenamescompanion.LinearLayoutAbsListView;
+import com.tonykazanjian.codenamescompanion.views.LinearLayoutAbsListView;
 import com.tonykazanjian.codenamescompanion.PassObject;
 import com.tonykazanjian.codenamescompanion.WordCard;
 import com.tonykazanjian.codenamescompanion.adapter.GridViewAdapter;
