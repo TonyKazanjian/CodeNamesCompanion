@@ -10,17 +10,15 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.pnikosis.materialishprogress.ProgressWheel;
 import com.tonykazanjian.codenamescompanion.R;
 import com.tonykazanjian.codenamescompanion.UserPreferences;
-import com.tonykazanjian.codenamescompanion.Utils;
 
 import java.util.concurrent.TimeUnit;
 
@@ -34,6 +32,7 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
     TimerPresenter mTimerPresenter;
     ImageButton mStartPauseButton;
     ImageButton mResetButton;
+    ProgressWheel mTimerProgress;
 
     TimerService mTimerService;
     TimerTickReceiver mTimerTickReceiver;
@@ -65,6 +64,9 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
         mTimerText = (TextView)findViewById(R.id.timer_text);
         mStartPauseButton = (ImageButton) findViewById(R.id.start_pause_btn);
         mResetButton = (ImageButton) findViewById(R.id.reset_btn);
+        mTimerProgress = (ProgressWheel) findViewById(R.id.timer_progress);
+
+        //TODO - if paused, set wheel
 
         mTimerPresenter = new TimerPresenter(this);
 
@@ -75,6 +77,7 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
             @Override
             public void onClick(View view) {
                 mTimerPresenter.resetTimer();
+                mTimerProgress.setInstantProgress(1);
             }
         });
     }
@@ -111,6 +114,9 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
         timerIntent.setAction(TimerService.ACTION_RESET);
         startService(timerIntent);
         mStartPauseButton.setImageDrawable(getDrawable(R.drawable.ic_start_timer));
+        mTimerProgress.setLinearProgress(true);
+        // setting up timer progress when activity is built
+        mTimerProgress.setInstantProgress(1);
     }
 
     @Override
@@ -186,6 +192,7 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
         @Override
         public void onReceive(Context context, Intent intent) {
             long timeLeft = intent.getLongExtra(TimerService.TIME_LEFT_EXTRA, 0);
+            mTimerProgress.setProgress(timeLeft/ (float) UserPreferences.getBaseTime(context));
             setTimerText(timeLeft-1);
         }
     }
@@ -195,6 +202,7 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
         @Override
         public void onReceive(Context context, Intent intent) {
             mTimerPresenter.resetTimer();
+            mTimerProgress.setProgress(0);
         }
     }
 }

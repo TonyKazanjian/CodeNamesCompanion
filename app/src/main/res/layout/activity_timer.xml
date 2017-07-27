@@ -19,7 +19,7 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <com.pnikosis.materialishprogress.ProgressWheel
-            android:id="@+id/class_view_progress"
+            android:id="@+id/timer_progress"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginEnd="15dp"

@@ -62,7 +62,9 @@ public class TimerService extends Service {
         }
 
         // Cancel notification if there is one
-        mNotificationManager.cancelAll();
+        if (mNotificationManager != null) {
+            mNotificationManager.cancelAll();
+        }
 
         return Service.START_NOT_STICKY;
     }
@@ -96,6 +98,8 @@ public class TimerService extends Service {
                 .setDefaults(Notification.DEFAULT_VIBRATE)
                 .setPriority(Notification.PRIORITY_HIGH);
     }
+
+    //TODO - create paused and playing pending intents with extras for pause and play state
 
     private class MyCountDownTimer extends android.os.CountDownTimer {
 
