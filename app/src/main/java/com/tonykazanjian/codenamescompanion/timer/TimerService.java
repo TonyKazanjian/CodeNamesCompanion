@@ -10,6 +10,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.NotificationCompat;
 
 import com.tonykazanjian.codenamescompanion.UserPreferences;
+import com.tonykazanjian.codenamescompanion.Utils;
 
 /**
  * @author Tony Kazanjian
@@ -60,6 +61,9 @@ public class TimerService extends Service {
                 break;
         }
 
+        // Cancel notification if there is one
+        mNotificationManager.cancelAll();
+
         return Service.START_NOT_STICKY;
     }
 
@@ -80,6 +84,8 @@ public class TimerService extends Service {
     }
 
     private NotificationCompat.Builder getNotificationBuilder() {
+
+        //TODO - set pending intent and figure out actionable notifications
         return new NotificationCompat.Builder(this)
                 .setCategory(NotificationCompat.CATEGORY_ALARM)
                 .setSmallIcon(android.R.drawable.ic_lock_idle_alarm)

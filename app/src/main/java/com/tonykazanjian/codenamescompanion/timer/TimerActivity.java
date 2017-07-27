@@ -6,17 +6,21 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.tonykazanjian.codenamescompanion.R;
 import com.tonykazanjian.codenamescompanion.UserPreferences;
+import com.tonykazanjian.codenamescompanion.Utils;
 
 import java.util.concurrent.TimeUnit;
 
@@ -28,8 +32,8 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
 
     TextView mTimerText;
     TimerPresenter mTimerPresenter;
-    Button mStartPauseButton;
-    Button mResetButton;
+    ImageButton mStartPauseButton;
+    ImageButton mResetButton;
 
     TimerService mTimerService;
     TimerTickReceiver mTimerTickReceiver;
@@ -59,8 +63,8 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
         setContentView(R.layout.activity_timer);
 
         mTimerText = (TextView)findViewById(R.id.timer_text);
-        mStartPauseButton = (Button) findViewById(R.id.start_btn);
-        mResetButton = (Button) findViewById(R.id.reset_btn);
+        mStartPauseButton = (ImageButton) findViewById(R.id.start_pause_btn);
+        mResetButton = (ImageButton) findViewById(R.id.reset_btn);
 
         mTimerPresenter = new TimerPresenter(this);
 
@@ -87,9 +91,6 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
         registerReceiver(mTimerFinishedReceiver, new IntentFilter(TimerService.TIMER_FINISHED_INTENT_FILTER));
     }
 
-
-
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -109,7 +110,7 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
         Intent timerIntent = new Intent(this, TimerService.class);
         timerIntent.setAction(TimerService.ACTION_RESET);
         startService(timerIntent);
-        mStartPauseButton.setText("Start");
+        mStartPauseButton.setImageDrawable(getDrawable(R.drawable.ic_start_timer));
     }
 
     @Override
@@ -122,7 +123,6 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
         startService(timerIntent);
     }
 
-    //TODO - these send intents to the service
     @Override
     public void onTimerResumed() {
         sIsTicking = true;
@@ -150,10 +150,12 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
     }
 
     private void setButtonText() {
+        Drawable start = getDrawable(R.drawable.ic_start_timer);
+        Drawable pause = getDrawable(R.drawable.ic_pause_24dp);
         if (sIsTicking) {
-            mStartPauseButton.setText("Pause");
+            mStartPauseButton.setImageDrawable(pause);
         } else {
-            mStartPauseButton.setText("Start");
+            mStartPauseButton.setImageDrawable(start);
         }
     }
 
