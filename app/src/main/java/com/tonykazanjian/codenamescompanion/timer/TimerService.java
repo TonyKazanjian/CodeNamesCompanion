@@ -47,6 +47,7 @@ public class TimerService extends Service {
     public void onCreate() {
         super.onCreate();
         mMyCountDownTimer = new MyCountDownTimer(UserPreferences.getBaseTime(getApplicationContext()), 1000);
+//        mMyCountDownTimer = new MyCountDownTimer(10, 1000);
         mNotificationManager = (NotificationManager) getApplicationContext().getSystemService(NOTIFICATION_SERVICE);
     }
 
@@ -57,10 +58,6 @@ public class TimerService extends Service {
             case ACTION_START:
                 mMyCountDownTimer.start();
                 startForeground(TIMER_NOTIFICATION_ID, getNotificationBuilder().build());
-                // Cancel notification if there is one
-//                if (mNotificationManager != null) {
-//                    mNotificationManager.cancelAll();
-//                }
                 updateNotificationAction(true);
                 break;
             case ACTION_PAUSE:
@@ -70,6 +67,7 @@ public class TimerService extends Service {
             case ACTION_RESUME:
                 mMyCountDownTimer = new MyCountDownTimer(mTimeLeft, 1000);
                 mMyCountDownTimer.start();
+                updateNotificationAction(true);
                 break;
             case ACTION_RESET:
                 mMyCountDownTimer.cancel();
@@ -111,9 +109,6 @@ public class TimerService extends Service {
                 .setContentIntent(getRegularUIPendingIntent())
                 .addAction(0,"Start", getResumePendingIntent())
                 .addAction(0,"Restart", getRestartPendingIntent());
-//                .setDefaults(Notification.VISIBILITY_PUBLIC)
-//                .setDefaults(Notification.DEFAULT_VIBRATE)
-//                .setPriority(Notification.PRIORITY_HIGH);
     }
 
     private String getTimerTextFormat(){
@@ -219,8 +214,14 @@ public class TimerService extends Service {
         @Override
         public void onFinish() {
             sendBroadcast(new Intent(TIMER_FINISHED_INTENT_FILTER));
-            mNotificationManager.notify(TIMER_NOTIFICATION_ID, getNotificationBuilder().build());
-            updateNotificationAction(false);
+            mNotificationBuilder.setContentTitle("Time's up!");
+            mNotificationBuilder.setContentText("Your turn is over!");
+            mNotificationBuilder.mActions.clear();
+            mNotificationBuilder.addAction(0,"Restart", getRestartPendingIntent());
+            mNotificationBuilder.setDefaults(Notification.VISIBILITY_PUBLIC);
+            mNotificationBuilder.setDefaults(Notification.DEFAULT_VIBRATE);
+            mNotificationBuilder.setPriority(Notification.PRIORITY_HIGH);
+            mNotificationManager.notify(TIMER_NOTIFICATION_ID, mNotificationBuilder.build());
         }
     }
 }
