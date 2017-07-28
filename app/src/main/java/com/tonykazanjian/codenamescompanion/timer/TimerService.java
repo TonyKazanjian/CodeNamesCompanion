@@ -2,6 +2,7 @@ package com.tonykazanjian.codenamescompanion.timer;
 
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
@@ -26,6 +27,7 @@ public class TimerService extends Service {
     public static final String ACTION_PAUSE = "com.tonykazanjian.codenamescompanion.action.ACTION_PAUSE";
     public static final String ACTION_RESUME = "com.tonykazanjian.codenamescompanion.action.ACTION_RESUME";
     public static final String ACTION_RESET = "com.tonykazanjian.codenamescompanion.action.ACTION_RESET";
+    private static final String EXTRA_IS_UI_PAUSED = "EXTRA_IS_UI_PAUSED";
 
     private final IBinder mTimerBinder = new TimerBinder();
 
@@ -33,6 +35,8 @@ public class TimerService extends Service {
 
     MyCountDownTimer mMyCountDownTimer;
     NotificationManager mNotificationManager;
+    private PendingIntent mPausePendingIntent;
+    private PendingIntent mPlayPendingIntent;
 
     @Override
     public void onCreate() {
@@ -93,12 +97,24 @@ public class TimerService extends Service {
                 .setContentTitle("Time's up")
                 .setContentText("Your turn is over!")
                 .setAutoCancel(true)
+                .setContentIntent(getRegularUIPendingIntent())
                 .setDefaults(Notification.VISIBILITY_PUBLIC)
                 .setDefaults(Notification.DEFAULT_VIBRATE)
                 .setPriority(Notification.PRIORITY_HIGH);
     }
 
     //TODO - create paused and playing pending intents with extras for pause and play state
+
+    private PendingIntent getRegularUIPendingIntent(){
+        Intent timerIntent = new Intent(getApplicationContext(), TimerActivity.class);
+        timerIntent.putExtra(EXTRA_IS_UI_PAUSED, false);
+        timerIntent.putExtra(TimerActivity.EXTRA_REBIND_SERVICE, true);
+        timerIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        return PendingIntent.getActivity(getApplicationContext(), (int) System.currentTimeMillis(),
+                timerIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+    }
 
     private class MyCountDownTimer extends android.os.CountDownTimer {
 

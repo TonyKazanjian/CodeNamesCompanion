@@ -28,6 +28,8 @@ import java.util.concurrent.TimeUnit;
 
 public class TimerActivity extends AppCompatActivity implements TimerView {
 
+    public static final String EXTRA_REBIND_SERVICE = "EXTRA_REBIND_SERVICE";
+
     TextView mTimerText;
     TimerPresenter mTimerPresenter;
     ImageButton mStartPauseButton;
