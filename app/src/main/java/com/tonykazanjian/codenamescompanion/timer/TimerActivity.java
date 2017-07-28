@@ -61,6 +61,8 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timer);
 
+        //TODO - add action bar
+
         mTimerText = (TextView)findViewById(R.id.timer_text);
         mStartPauseButton = (ImageButton) findViewById(R.id.start_pause_btn);
         mResetButton = (ImageButton) findViewById(R.id.reset_btn);
@@ -76,7 +78,7 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
         mResetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mTimerPresenter.resetTimer();
+                mTimerPresenter.resetTimer(true);
                 mTimerProgress.setInstantProgress(1);
             }
         });
@@ -148,7 +150,7 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
     }
 
     @Override
-    public void onTimerReset() {
+    public void onTimerReset(boolean isButtonPressed) {
         mTimerPresenter.setTimer(UserPreferences.getBaseTime(this));
         sIsStarted = false;
         sIsTicking = false;
@@ -201,8 +203,8 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            mTimerPresenter.resetTimer();
-            mTimerProgress.setProgress(0);
+            mTimerPresenter.resetTimer(false);
+            mTimerProgress.setProgress(1);
         }
     }
 }

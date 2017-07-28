@@ -9,5 +9,5 @@ public interface TimerView {
     void onTimerStarted();
     void onTimerResumed();
     void onTimerPaused();
-    void onTimerReset();
+    void onTimerReset(boolean isButtonPressed);
 }

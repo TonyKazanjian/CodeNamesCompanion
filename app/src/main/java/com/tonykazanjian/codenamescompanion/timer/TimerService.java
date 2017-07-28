@@ -47,6 +47,10 @@ public class TimerService extends Service {
         switch (intent.getAction()) {
             case ACTION_START:
                 mMyCountDownTimer.start();
+                // Cancel notification if there is one
+                if (mNotificationManager != null) {
+                    mNotificationManager.cancelAll();
+                }
                 break;
             case ACTION_PAUSE:
                 mMyCountDownTimer.cancel();
@@ -59,11 +63,6 @@ public class TimerService extends Service {
                 mMyCountDownTimer.cancel();
                 mMyCountDownTimer = new MyCountDownTimer(UserPreferences.getBaseTime(getApplicationContext()), 1000);
                 break;
-        }
-
-        // Cancel notification if there is one
-        if (mNotificationManager != null) {
-            mNotificationManager.cancelAll();
         }
 
         return Service.START_NOT_STICKY;
