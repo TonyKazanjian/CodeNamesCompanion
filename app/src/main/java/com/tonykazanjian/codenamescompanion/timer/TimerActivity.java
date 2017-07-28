@@ -61,8 +61,6 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timer);
 
-        //TODO - add action bar
-
         mTimerText = (TextView)findViewById(R.id.timer_text);
         mStartPauseButton = (ImageButton) findViewById(R.id.start_pause_btn);
         mResetButton = (ImageButton) findViewById(R.id.reset_btn);
