@@ -3,4 +3,12 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="activated_grey">#eeeeee</color>
+    <color name="pressed_grey">#757575</color>
+    <color name="blue_team_blue">#0026fa</color>
+    <color name="red_team_red">#f1000c</color>
+
+    <color name="copy_regular">#2e2e2e</color>
+    <color name="light_titles">#9d9d9d</color>
+
 </resources>

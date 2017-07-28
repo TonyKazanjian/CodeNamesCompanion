@@ -1,3 +1,33 @@
 <resources>
-    <string name="app_name">CodeNamesCompanion</string>
+    <string name="app_name">Codenames Companion</string>
+    <string name="bottom_panel_title">Codenames</string>
+    <string-array name="drawer_title_array">
+        <item>Board</item>
+        <item>Scoreboard</item>
+        <item>Settings</item>
+    </string-array>
+    <string-array name="base_time_array">
+        <item>@string/fifty_seconds</item>
+        <item>@string/seventyfive_seconds</item>
+        <item>@string/ninety_seconds</item>
+        <item>@string/two_minutes</item>
+        <item>@string/three_minutes</item>
+    </string-array>
+    <string name="drawer_open">Open navigation drawer</string>
+    <string name="drawer_close">Close navigation drawer</string>
+    <string name="card_settings_prompt">Number of cards</string>
+    <string name="time_settings_prompt">Base Time</string>
+    <string name="checkbox_eight">Eight</string>
+    <string name="checkbox_nine">Nine</string>
+    <string name="fifty_seconds">50 seconds</string>
+    <string name="seventyfive_seconds">75 seconds</string>
+    <string name="ninety_seconds">90 seconds</string>
+    <string name="two_minutes">2 minutes</string>
+    <string name="three_minutes">3 minutes</string>
+    <string name="word_input_error">You must have at least %1$d words to start the game.</string>
+    <string name="grid_empty_state">Your word list is empty</string>
+    <string name="board">Board</string>
+    <string name="scoreboard">Scoreboard</string>
+    <string name="settings">Settings</string>
+
 </resources>
