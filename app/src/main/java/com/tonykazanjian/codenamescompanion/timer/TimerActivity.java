@@ -10,6 +10,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -78,7 +79,7 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
         mResetButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mTimerPresenter.resetTimer(true);
+                mTimerPresenter.resetTimer();
                 mTimerProgress.setInstantProgress(1);
             }
         });
@@ -91,22 +92,28 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
         bindService(intent, mServiceConnection, Context.BIND_AUTO_CREATE);
         Log.i(this.getClass().getCanonicalName(), "Service is bound");
         mTimerTickReceiver = new TimerTickReceiver();
-        registerReceiver(mTimerTickReceiver, new IntentFilter(TimerService.TIMER_TICK_INTENT_FILTER));
+        LocalBroadcastManager.getInstance(this).registerReceiver(mTimerTickReceiver, new IntentFilter(TimerService.TIMER_BROADCAST_EVENT));
         mTimerFinishedReceiver = new TimerFinishedReceiver();
-        registerReceiver(mTimerFinishedReceiver, new IntentFilter(TimerService.TIMER_FINISHED_INTENT_FILTER));
+        LocalBroadcastManager.getInstance(this).registerReceiver(mTimerFinishedReceiver, new IntentFilter(TimerService.TIMER_FINISHED_INTENT_FILTER));
+    }
+
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mTimerTickReceiver != null) {
+            LocalBroadcastManager.getInstance(this).unregisterReceiver(mTimerTickReceiver);
+        }
+        if (mTimerFinishedReceiver != null) {
+            LocalBroadcastManager.getInstance(this).unregisterReceiver(mTimerFinishedReceiver);
+        }
     }
 
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         super.onDestroy();
         unbindService(mServiceConnection);
         Log.i(this.getClass().getSimpleName(), "Service is unbound");
-        if (mTimerTickReceiver != null) {
-            unregisterReceiver(mTimerTickReceiver);
-        }
-        if (mTimerFinishedReceiver != null) {
-            unregisterReceiver(mTimerFinishedReceiver);
-        }
     }
 
     @Override
@@ -150,7 +157,7 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
     }
 
     @Override
-    public void onTimerReset(boolean isButtonPressed) {
+    public void onTimerReset() {
         mTimerPresenter.setTimer(UserPreferences.getBaseTime(this));
         sIsStarted = false;
         sIsTicking = false;
@@ -193,9 +200,21 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            long timeLeft = intent.getLongExtra(TimerService.TIME_LEFT_EXTRA, 0);
-            mTimerProgress.setProgress(timeLeft/ (float) UserPreferences.getBaseTime(context));
-            setTimerText(timeLeft-1);
+            String message = intent.getStringExtra(TimerService.EXTRA_TIMER_BROADCAST_MSG);
+
+            switch (message) {
+                case TimerService.NOTIFICATION_PLAY_MSG:
+                    long timeLeft = intent.getLongExtra(TimerService.TIME_LEFT_EXTRA, 0);
+                    mTimerProgress.setProgress(timeLeft/ (float) UserPreferences.getBaseTime(context));
+                    setTimerText(timeLeft-1);
+                    break;
+                case TimerService.NOTIFICATION_PAUSE_MSG:
+                    setButtonText();
+                    break;
+                case TimerService.NOTIFICATION_RESET_MSG:
+                    setButtonText();
+                    break;
+            }
         }
     }
 
@@ -203,7 +222,7 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            mTimerPresenter.resetTimer(false);
+            mTimerPresenter.resetTimer();
             mTimerProgress.setProgress(1);
         }
     }

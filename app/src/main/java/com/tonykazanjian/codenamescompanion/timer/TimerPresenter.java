@@ -28,7 +28,7 @@ public class TimerPresenter {
         mTimerView.onTimerPaused();
     }
 
-    public void resetTimer(boolean isButtonPressed) {
-        mTimerView.onTimerReset(isButtonPressed);
+    public void resetTimer() {
+        mTimerView.onTimerReset();
     }
 }
