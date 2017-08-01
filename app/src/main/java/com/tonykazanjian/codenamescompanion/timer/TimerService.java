@@ -69,12 +69,13 @@ public class TimerService extends Service {
                 break;
             case ACTION_PAUSE:
                 mMyCountDownTimer.cancel();
-//                updateNotificationAction(false);
+                updateNotificationAction(false);
                 sendNotificationPausedBroadcast();
                 break;
             case ACTION_RESUME:
                 mMyCountDownTimer = new MyCountDownTimer(mTimeLeft, 1000);
                 mMyCountDownTimer.start();
+                updateNotificationAction(true);
                 sendNotificationStartBroadcast();
                 break;
             case ACTION_RESET:
@@ -160,9 +161,12 @@ public class TimerService extends Service {
         return new NotificationCompat.Action.Builder(0, "Pause", pendingIntent).build();
     }
 
-//    private NotificationCompat.Action getResumeAction() {
-//
-//    }
+    private NotificationCompat.Action getResumeAction(Intent intent) {
+        intent.setAction(ACTION_RESUME);
+        PendingIntent pendingIntent = PendingIntent.getService(getApplicationContext(), (int) System.currentTimeMillis(),
+                intent, PendingIntent.FLAG_UPDATE_CURRENT);
+        return new NotificationCompat.Action.Builder(0, "Resume", pendingIntent).build();
+    }
 
     private NotificationCompat.Action getResetAction(Intent intent) {
         intent.setAction(ACTION_RESET);
@@ -188,24 +192,14 @@ public class TimerService extends Service {
     private void updateNotificationAction(boolean isTicking) {
         NotificationCompat.Builder builder = (mNotificationBuilder == null ?
                 getNotificationBuilder() : mNotificationBuilder);
-        NotificationCompat.Action playAction = builder.mActions.get(0);
-        NotificationCompat.Action restartAction = builder.mActions.get(
-                (builder.mActions.size() == 2 ? 1 : 0));
-        restartAction.actionIntent = getRestartPendingIntent();
-        builder.setContentIntent(getRegularUIPendingIntent());
-        mNotificationManager.notify(TIMER_NOTIFICATION_ID, builder.build());
-
-        if (isTicking && playAction.actionIntent != mPausePendingIntent) {
-            playAction.actionIntent = getPausePendingIntent();
-            playAction.title = "Pause";
-            builder.setContentIntent(getRegularUIPendingIntent());
-            mNotificationManager.notify(TIMER_NOTIFICATION_ID, builder.build());
-        } else if (!isTicking && playAction.actionIntent != mResumePendingIntent) {
-            playAction.actionIntent = getResumePendingIntent();
-            playAction.title = "Resume";
-            builder.setContentIntent(getPausedUIPendingIntent());
-            mNotificationManager.notify(TIMER_NOTIFICATION_ID, builder.build());
+        builder.mActions.remove(0);
+        if (isTicking) {
+            builder.mActions.add(0, getPauseAction(new Intent(getApplicationContext(), TimerService.class)));
+        } else {
+            builder.mActions.add(0, getResumeAction(new Intent(getApplicationContext(), TimerService.class)));
         }
+
+        mNotificationManager.notify(TIMER_NOTIFICATION_ID, builder.build());
 
     }
 
