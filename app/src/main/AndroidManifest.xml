@@ -23,6 +23,7 @@
             android:name=".timer.TimerActivity"
             android:theme="@style/TimerTheme"
             android:label="Timer"
+            android:launchMode="singleTask"
             android:parentActivityName=".main.MainActivity">
 
             <intent-filter>

@@ -67,7 +67,7 @@ public class Utils {
 
         // TODO - CHANGE BACK TO FIFTY!!!
         public static long getFiftySeconds(){
-            return SECOND * 10;
+            return SECOND * 20;
         }
 
         public static long getSeventyFiveSeconds(){

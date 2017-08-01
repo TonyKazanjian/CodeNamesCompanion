@@ -44,6 +44,8 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
     // TODO - service variables
     public boolean sIsTicking = false;
     public boolean sIsStarted = false;
+    private boolean mIsTimeServiceBound = false;
+    private boolean mRebindingService = false;
 
     private ServiceConnection mServiceConnection = new ServiceConnection() {
         @Override
@@ -51,13 +53,25 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
             TimerService.TimerBinder binder = (TimerService.TimerBinder) iBinder;
             mTimerService = binder.getService();
             Log.i(this.getClass().getCanonicalName(), "service connected");
+//
+//            if (mRebindingService) {
+//                onRebindTimerService();
+//            } else {
+//                onTimerStarted();
+//            }
         }
 
         @Override
         public void onServiceDisconnected(ComponentName componentName) {
-            mTimerService = null;
+//            mTimerService = null;
         }
     };
+
+    private void onRebindTimerService() {
+        if (mIsTimeServiceBound && mTimerService != null) {
+
+        }
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -68,6 +82,8 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
         mStartPauseButton = (ImageButton) findViewById(R.id.start_pause_btn);
         mResetButton = (ImageButton) findViewById(R.id.reset_btn);
         mTimerProgress = (ProgressWheel) findViewById(R.id.timer_progress);
+
+//        mRebindingService = getIntent().getExtras().getBoolean(EXTRA_REBIND_SERVICE, false);
 
         //TODO - if paused, set wheel
 
@@ -90,7 +106,12 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
         super.onStart();
         Intent intent = new Intent(this, TimerService.class);
         bindService(intent, mServiceConnection, Context.BIND_AUTO_CREATE);
-        Log.i(this.getClass().getCanonicalName(), "Service is bound");
+        Log.i(this.getClass().getCanonicalName(), "Service is bound");;
+    }
+
+    @Override
+    protected void onResume(){
+        super.onResume();
         mTimerTickReceiver = new TimerTickReceiver();
         LocalBroadcastManager.getInstance(this).registerReceiver(mTimerTickReceiver, new IntentFilter(TimerService.TIMER_BROADCAST_EVENT));
         mTimerFinishedReceiver = new TimerFinishedReceiver();
@@ -108,6 +129,7 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
             LocalBroadcastManager.getInstance(this).unregisterReceiver(mTimerFinishedReceiver);
         }
     }
+
 
     @Override
     public void onDestroy() {
@@ -205,14 +227,15 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
             switch (message) {
                 case TimerService.NOTIFICATION_PLAY_MSG:
                     long timeLeft = intent.getLongExtra(TimerService.TIME_LEFT_EXTRA, 0);
-                    mTimerProgress.setProgress(timeLeft/ (float) UserPreferences.getBaseTime(context));
-                    setTimerText(timeLeft-1);
+                    Log.i(this.getClass().getSimpleName(), String.valueOf(timeLeft));
+                    mTimerProgress.setProgress(timeLeft / (float) UserPreferences.getBaseTime(context));
+                    setTimerText(timeLeft -1);
                     break;
                 case TimerService.NOTIFICATION_PAUSE_MSG:
-                    setButtonText();
+//                    onTimerPaused();
                     break;
                 case TimerService.NOTIFICATION_RESET_MSG:
-                    setButtonText();
+//                    onTimerReset();
                     break;
             }
         }
