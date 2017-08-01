@@ -141,9 +141,6 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
     @Override
     public void onTimerSet(long timeRemaining) {
         setTimerText(UserPreferences.getBaseTime(this));
-        Intent timerIntent = new Intent(this, TimerService.class);
-        timerIntent.setAction(TimerService.ACTION_RESET);
-        startService(timerIntent);
         mStartPauseButton.setImageDrawable(getDrawable(R.drawable.ic_start_timer));
         mTimerProgress.setLinearProgress(true);
         // setting up timer progress when activity is built
@@ -154,7 +151,7 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
     public void onTimerStarted() {
         sIsTicking = true;
         sIsStarted = true;
-        setButtonText();
+        setButtonDrawable();
         Intent timerIntent = new Intent(this, TimerService.class);
         timerIntent.setAction(TimerService.ACTION_START);
         startService(timerIntent);
@@ -163,7 +160,7 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
     @Override
     public void onTimerResumed() {
         sIsTicking = true;
-        setButtonText();
+        setButtonDrawable();
         Intent pauseIntent = new Intent(this, TimerService.class);
         pauseIntent.setAction(TimerService.ACTION_RESUME);
         startService(pauseIntent);
@@ -175,7 +172,7 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
         pauseIntent.setAction(TimerService.ACTION_PAUSE);
         startService(pauseIntent);
         sIsTicking = false;
-        setButtonText();
+        setButtonDrawable();
     }
 
     @Override
@@ -183,10 +180,10 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
         mTimerPresenter.setTimer(UserPreferences.getBaseTime(this));
         sIsStarted = false;
         sIsTicking = false;
-        setButtonText();
+        setButtonDrawable();
     }
 
-    private void setButtonText() {
+    private void setButtonDrawable() {
         Drawable start = getDrawable(R.drawable.ic_start_timer);
         Drawable pause = getDrawable(R.drawable.ic_pause_24dp);
         if (sIsTicking) {
@@ -232,10 +229,11 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
                     setTimerText(timeLeft -1);
                     break;
                 case TimerService.NOTIFICATION_PAUSE_MSG:
-//                    onTimerPaused();
+                    sIsTicking = false;
+                    setButtonDrawable();
                     break;
                 case TimerService.NOTIFICATION_RESET_MSG:
-//                    onTimerReset();
+                    mTimerPresenter.resetTimer();
                     break;
             }
         }
