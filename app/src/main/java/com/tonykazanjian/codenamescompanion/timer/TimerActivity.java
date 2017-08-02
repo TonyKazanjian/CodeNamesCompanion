@@ -180,6 +180,9 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
         mTimerPresenter.setTimer(UserPreferences.getBaseTime(this));
         sIsStarted = false;
         sIsTicking = false;
+        Intent resetIntent = new Intent(this, TimerService.class);
+        resetIntent.setAction(TimerService.ACTION_RESET);
+        startService(resetIntent);
         setButtonDrawable();
     }
 
@@ -227,13 +230,15 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
                     Log.i(this.getClass().getSimpleName(), String.valueOf(timeLeft));
                     mTimerProgress.setProgress(timeLeft / (float) UserPreferences.getBaseTime(context));
                     setTimerText(timeLeft -1);
+                    sIsTicking = true;
                     break;
                 case TimerService.NOTIFICATION_PAUSE_MSG:
                     sIsTicking = false;
                     setButtonDrawable();
                     break;
                 case TimerService.NOTIFICATION_RESET_MSG:
-                    mTimerPresenter.resetTimer();
+                    mTimerPresenter.setTimer(UserPreferences.getBaseTime(getApplicationContext()));
+                    sIsTicking = false;
                     break;
             }
         }

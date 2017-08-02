@@ -65,7 +65,6 @@ public class TimerService extends Service {
             case ACTION_START:
                 mMyCountDownTimer.start();
                 startForeground(TIMER_NOTIFICATION_ID, getNotificationBuilder().build());
-//                updateNotificationAction(true);
                 break;
             case ACTION_PAUSE:
                 mMyCountDownTimer.cancel();
@@ -82,8 +81,8 @@ public class TimerService extends Service {
                 mMyCountDownTimer.cancel();
                 mMyCountDownTimer = new MyCountDownTimer(UserPreferences.getBaseTime(getApplicationContext()), 1000);
                 mTimeLeft = UserPreferences.getBaseTime(this);
-                sendNotificationResetBroadcast();
                 updateNotificationText();
+                sendNotificationResetBroadcast();
                 break;
         }
 
@@ -277,7 +276,7 @@ public class TimerService extends Service {
             mNotificationBuilder.setContentTitle("Time's up!");
             mNotificationBuilder.setContentText("Your turn is over!");
             mNotificationBuilder.mActions.clear();
-            mNotificationBuilder.addAction(0,"Restart", getRestartPendingIntent());
+            mNotificationBuilder.addAction(getResetAction(new Intent(getApplicationContext(), TimerService.class)));
             mNotificationBuilder.setDefaults(Notification.VISIBILITY_PUBLIC);
             mNotificationBuilder.setDefaults(Notification.DEFAULT_VIBRATE);
             mNotificationBuilder.setPriority(Notification.PRIORITY_HIGH);
