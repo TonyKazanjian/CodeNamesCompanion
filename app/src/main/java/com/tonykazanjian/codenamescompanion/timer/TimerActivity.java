@@ -53,25 +53,13 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
             TimerService.TimerBinder binder = (TimerService.TimerBinder) iBinder;
             mTimerService = binder.getService();
             Log.i(this.getClass().getCanonicalName(), "service connected");
-//
-//            if (mRebindingService) {
-//                onRebindTimerService();
-//            } else {
-//                onTimerStarted();
-//            }
         }
 
         @Override
         public void onServiceDisconnected(ComponentName componentName) {
-//            mTimerService = null;
+            mTimerService = null;
         }
     };
-
-    private void onRebindTimerService() {
-        if (mIsTimeServiceBound && mTimerService != null) {
-
-        }
-    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -231,6 +219,7 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
                     mTimerProgress.setProgress(timeLeft / (float) UserPreferences.getBaseTime(context));
                     setTimerText(timeLeft -1);
                     sIsTicking = true;
+                    setButtonDrawable();
                     break;
                 case TimerService.NOTIFICATION_PAUSE_MSG:
                     sIsTicking = false;
