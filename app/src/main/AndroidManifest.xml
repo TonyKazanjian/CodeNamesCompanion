@@ -25,11 +25,11 @@
             android:label="Timer"
             android:launchMode="singleTask"
             android:parentActivityName=".main.MainActivity">
-
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
+
         </activity>
 
         <service android:name=".timer.TimerService"

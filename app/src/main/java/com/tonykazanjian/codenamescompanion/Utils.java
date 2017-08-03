@@ -65,9 +65,8 @@ public class Utils {
         public static final long SECOND = 1000;
         public static final long MINUTE = 1000 * 60;
 
-        // TODO - CHANGE BACK TO FIFTY!!!
         public static long getFiftySeconds(){
-            return SECOND * 20;
+            return SECOND * 5;
         }
 
         public static long getSeventyFiveSeconds(){

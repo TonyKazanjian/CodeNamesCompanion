@@ -41,9 +41,12 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
     TimerTickReceiver mTimerTickReceiver;
     TimerFinishedReceiver mTimerFinishedReceiver;
 
+    long mTimeLeft;
+
     // TODO - service variables
-    public boolean sIsTicking = false;
-    public boolean sIsStarted = false;
+    public static boolean sIsTicking = false;
+    public static boolean sIsStarted = false;
+    public static boolean sIsFinished = false;
     private boolean mIsTimeServiceBound = false;
     private boolean mRebindingService = false;
 
@@ -77,7 +80,9 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
 
         mTimerPresenter = new TimerPresenter(this);
 
-        mTimerPresenter.setTimer(UserPreferences.getBaseTime(this));
+        if (!sIsStarted || !sIsTicking) {
+            mTimerPresenter.setTimer(UserPreferences.getBaseTime(this));
+        }
 
         mStartPauseButton.setOnClickListener(new StartPauseClickListener());
         mResetButton.setOnClickListener(new View.OnClickListener() {
@@ -104,8 +109,20 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
         LocalBroadcastManager.getInstance(this).registerReceiver(mTimerTickReceiver, new IntentFilter(TimerService.TIMER_BROADCAST_EVENT));
         mTimerFinishedReceiver = new TimerFinishedReceiver();
         LocalBroadcastManager.getInstance(this).registerReceiver(mTimerFinishedReceiver, new IntentFilter(TimerService.TIMER_FINISHED_INTENT_FILTER));
+
+        mTimerProgress.setInstantProgress(mTimeLeft);
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        //TODO - save state of time left
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+    }
 
     @Override
     public void onPause() {
@@ -189,13 +206,19 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
 
         @Override
         public void onClick(View view) {
-            if (!sIsStarted) {
-                mTimerPresenter.startTimer();
-            } else if (!sIsTicking) {
-                mTimerPresenter.resumeTimer();
+            if (!sIsFinished) {
+                if (!sIsStarted) {
+                    mTimerPresenter.startTimer();
+                } else if (!sIsTicking) {
+                    mTimerPresenter.resumeTimer();
+                } else {
+                    mTimerPresenter.pauseTimer();
+                }
             } else {
-                mTimerPresenter.pauseTimer();
+                mTimerPresenter.resetTimer();
+                sIsFinished = false;
             }
+
         }
     }
 
@@ -214,10 +237,10 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
 
             switch (message) {
                 case TimerService.NOTIFICATION_PLAY_MSG:
-                    long timeLeft = intent.getLongExtra(TimerService.TIME_LEFT_EXTRA, 0);
-                    Log.i(this.getClass().getSimpleName(), String.valueOf(timeLeft));
-                    mTimerProgress.setProgress(timeLeft / (float) UserPreferences.getBaseTime(context));
-                    setTimerText(timeLeft -1);
+                    mTimeLeft = intent.getLongExtra(TimerService.TIME_LEFT_EXTRA, 0);
+                    Log.i(this.getClass().getSimpleName(), String.valueOf(mTimeLeft));
+                    mTimerProgress.setProgress(mTimeLeft / (float) UserPreferences.getBaseTime(context));
+                    setTimerText(mTimeLeft -1);
                     sIsTicking = true;
                     setButtonDrawable();
                     break;
@@ -228,6 +251,8 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
                 case TimerService.NOTIFICATION_RESET_MSG:
                     mTimerPresenter.setTimer(UserPreferences.getBaseTime(getApplicationContext()));
                     sIsTicking = false;
+                    Intent resetIntent = new Intent(TimerService.RESET_TIMER_INTENT_FILTER);
+                    LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(resetIntent);
                     break;
             }
         }
@@ -237,8 +262,10 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            mTimerPresenter.resetTimer();
-            mTimerProgress.setProgress(1);
+            mTimerProgress.setProgress(0);
+            sIsStarted = false;
+            sIsTicking = false;
+            sIsFinished = true;
         }
     }
 }
