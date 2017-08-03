@@ -23,6 +23,10 @@ import com.tonykazanjian.codenamescompanion.UserPreferences;
 
 import java.util.concurrent.TimeUnit;
 
+import static com.tonykazanjian.codenamescompanion.timer.TimerService.sIsFinished;
+import static com.tonykazanjian.codenamescompanion.timer.TimerService.sIsStarted;
+import static com.tonykazanjian.codenamescompanion.timer.TimerService.sIsTicking;
+
 /**
  * @author Tony Kazanjian
  */
@@ -43,12 +47,9 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
 
     long mTimeLeft;
 
-    // TODO - service variables
-    public static boolean sIsTicking = false;
-    public static boolean sIsStarted = false;
-    public static boolean sIsFinished = false;
-    private boolean mIsTimeServiceBound = false;
-    private boolean mRebindingService = false;
+    //TODO - see if we need to rebind
+//    private boolean mIsTimeServiceBound = false;
+//    private boolean mRebindingService = false;
 
     private ServiceConnection mServiceConnection = new ServiceConnection() {
         @Override
@@ -76,22 +77,7 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
 
 //        mRebindingService = getIntent().getExtras().getBoolean(EXTRA_REBIND_SERVICE, false);
 
-        //TODO - if paused, set wheel
-
         mTimerPresenter = new TimerPresenter(this);
-
-        if (!sIsStarted || !sIsTicking) {
-            mTimerPresenter.setTimer(UserPreferences.getBaseTime(this));
-        }
-
-        mStartPauseButton.setOnClickListener(new StartPauseClickListener());
-        mResetButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                mTimerPresenter.resetTimer();
-                mTimerProgress.setInstantProgress(1);
-            }
-        });
     }
 
     @Override
@@ -110,7 +96,11 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
         mTimerFinishedReceiver = new TimerFinishedReceiver();
         LocalBroadcastManager.getInstance(this).registerReceiver(mTimerFinishedReceiver, new IntentFilter(TimerService.TIMER_FINISHED_INTENT_FILTER));
 
-        mTimerProgress.setInstantProgress(mTimeLeft);
+        if (!sIsStarted || !sIsTicking) {
+            mTimerPresenter.setTimer(UserPreferences.getBaseTime(this));
+        } else {
+            mTimerProgress.setInstantProgress(mTimeLeft);
+        }
     }
 
     @Override
@@ -150,6 +140,15 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
         mTimerProgress.setLinearProgress(true);
         // setting up timer progress when activity is built
         mTimerProgress.setInstantProgress(1);
+
+        mStartPauseButton.setOnClickListener(new StartPauseClickListener());
+        mResetButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                mTimerPresenter.resetTimer();
+                mTimerProgress.setInstantProgress(1);
+            }
+        });
     }
 
     @Override
@@ -164,7 +163,6 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
 
     @Override
     public void onTimerResumed() {
-        sIsTicking = true;
         setButtonDrawable();
         Intent pauseIntent = new Intent(this, TimerService.class);
         pauseIntent.setAction(TimerService.ACTION_RESUME);
@@ -183,8 +181,6 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
     @Override
     public void onTimerReset() {
         mTimerPresenter.setTimer(UserPreferences.getBaseTime(this));
-        sIsStarted = false;
-        sIsTicking = false;
         Intent resetIntent = new Intent(this, TimerService.class);
         resetIntent.setAction(TimerService.ACTION_RESET);
         startService(resetIntent);
@@ -215,7 +211,7 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
                     mTimerPresenter.pauseTimer();
                 }
             } else {
-                mTimerPresenter.resetTimer();
+                mTimerPresenter.resumeTimer();
                 sIsFinished = false;
             }
 
@@ -241,16 +237,13 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
                     Log.i(this.getClass().getSimpleName(), String.valueOf(mTimeLeft));
                     mTimerProgress.setProgress(mTimeLeft / (float) UserPreferences.getBaseTime(context));
                     setTimerText(mTimeLeft -1);
-                    sIsTicking = true;
                     setButtonDrawable();
                     break;
                 case TimerService.NOTIFICATION_PAUSE_MSG:
-                    sIsTicking = false;
                     setButtonDrawable();
                     break;
                 case TimerService.NOTIFICATION_RESET_MSG:
                     mTimerPresenter.setTimer(UserPreferences.getBaseTime(getApplicationContext()));
-                    sIsTicking = false;
                     Intent resetIntent = new Intent(TimerService.RESET_TIMER_INTENT_FILTER);
                     LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(resetIntent);
                     break;
@@ -263,9 +256,7 @@ public class TimerActivity extends AppCompatActivity implements TimerView {
         @Override
         public void onReceive(Context context, Intent intent) {
             mTimerProgress.setProgress(0);
-            sIsStarted = false;
-            sIsTicking = false;
-            sIsFinished = true;
+            mStartPauseButton.setOnClickListener(null);
         }
     }
 }
