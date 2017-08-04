@@ -32,7 +32,7 @@ public class TimerService extends Service {
     public static final String ACTION_PAUSE = "com.tonykazanjian.codenamescompanion.action.ACTION_PAUSE";
     public static final String ACTION_RESUME = "com.tonykazanjian.codenamescompanion.action.ACTION_RESUME";
     public static final String ACTION_RESET = "com.tonykazanjian.codenamescompanion.action.ACTION_RESET";
-    private static final String EXTRA_IS_UI_PAUSED = "EXTRA_IS_UI_PAUSED";
+    public static final String EXTRA_IS_UI_PAUSED = "EXTRA_IS_UI_PAUSED";
     private static final int TIMER_NOTIFICATION_ID = 1;
 
     /**
@@ -45,6 +45,8 @@ public class TimerService extends Service {
     public static final String NOTIFICATION_RESET_MSG = "NOTIFICATION_RESET_MSG";
 
     public static final String RESET_TIMER_INTENT_FILTER = "RESET_TIMER_INTENT_FILTER";
+    public static final String TIMER_TICK_BROADCAST_MSG = "TIMER_TICK_BROADCAST_MSG";
+    public static final String EXTRA_TIME_UNTIL_FINISHED = "EXTRA_TIME_UNTIL_FINISHED";
 
     private final IBinder mTimerBinder = new TimerBinder();
 
@@ -119,6 +121,7 @@ public class TimerService extends Service {
 
         return Service.START_NOT_STICKY;
     }
+
     private Intent getStandardBroadcastIntent(String broadcastMessage) {
         Intent intent = new Intent(TIMER_BROADCAST_EVENT);
         intent.putExtra(EXTRA_TIMER_BROADCAST_MSG, broadcastMessage);
@@ -137,6 +140,14 @@ public class TimerService extends Service {
 
     private void sendNotificationResetBroadcast() {
         LocalBroadcastManager.getInstance(this).sendBroadcast(getStandardBroadcastIntent(NOTIFICATION_RESET_MSG));
+    }
+
+    private void sendTimerTickBroadcast(long millisUntilFinished) {
+        Intent intent = getStandardBroadcastIntent(TIMER_TICK_BROADCAST_MSG);
+        intent.putExtra(EXTRA_TIME_UNTIL_FINISHED, millisUntilFinished);
+
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent);
+
     }
 
     @Nullable
@@ -164,7 +175,7 @@ public class TimerService extends Service {
         mNotificationBuilder =  new NotificationCompat.Builder(this)
                 .setCategory(NotificationCompat.CATEGORY_ALARM)
                 .setSmallIcon(android.R.drawable.ic_lock_idle_alarm)
-                .setContentText(getTimerTextFormat())
+                .setContentText(getTimerTextFormat(mTimeLeft))
                 .setContentIntent(getRegularUIPendingIntent())
                 .setAutoCancel(true)
                 .addAction(getPauseAction(new Intent(getApplicationContext(), TimerService.class)))
@@ -194,15 +205,15 @@ public class TimerService extends Service {
         return new NotificationCompat.Action.Builder(0, "Reset", pendingIntent).build();
     }
 
-    private String getTimerTextFormat(){
-        return String.format("%02d:%02d", TimeUnit.MILLISECONDS.toMinutes(mTimeLeft) -
-                        TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(mTimeLeft)),
-                TimeUnit.MILLISECONDS.toSeconds(mTimeLeft) -
-                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(mTimeLeft)));
+    public static String getTimerTextFormat(long timeLeft){
+        return String.format("%02d:%02d", TimeUnit.MILLISECONDS.toMinutes(timeLeft) -
+                        TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(timeLeft)),
+                TimeUnit.MILLISECONDS.toSeconds(timeLeft) -
+                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(timeLeft)));
     }
 
     private void updateNotificationText(){
-        getNotificationBuilder().setContentText(getTimerTextFormat());
+        getNotificationBuilder().setContentText(getTimerTextFormat(mTimeLeft));
     }
 
     //TODO - create paused and playing pending intents with extras for pause and play state
@@ -215,8 +226,10 @@ public class TimerService extends Service {
         }
         if (isTicking) {
             builder.mActions.add(0, getPauseAction(new Intent(getApplicationContext(), TimerService.class)));
+            builder.setContentIntent(getPausedUIPendingIntent());
         } else {
             builder.mActions.add(0, getResumeAction(new Intent(getApplicationContext(), TimerService.class)));
+            builder.setContentIntent(getRegularUIPendingIntent());
         }
     }
 
@@ -224,21 +237,24 @@ public class TimerService extends Service {
         Intent regularUIIntent = new Intent(getApplicationContext(), TimerActivity.class);
         regularUIIntent.putExtra(EXTRA_IS_UI_PAUSED, false);
         regularUIIntent.putExtra(TimerActivity.EXTRA_REBIND_SERVICE, true);
-//        regularUIIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP| Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        regularUIIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP| Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         return PendingIntent.getActivity(getApplicationContext(), (int) System.currentTimeMillis(),
                 regularUIIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
-//    private PendingIntent getPausedUIPendingIntent() {
-//        Intent pausedUIIntent = new Intent(getApplicationContext(), TimerActivity.class);
-//        pausedUIIntent.putExtra(EXTRA_IS_UI_PAUSED, true);
-//        pausedUIIntent.putExtra(TimerActivity.EXTRA_REBIND_SERVICE, true);
-////        pausedUIIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-//
-//        return PendingIntent.getActivity(getApplicationContext(), (int) System.currentTimeMillis(),
-//                pausedUIIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-//    }
+
+
+    private PendingIntent getPausedUIPendingIntent() {
+        Intent pausedUIIntent = new Intent(getApplicationContext(), TimerActivity.class);
+        pausedUIIntent.putExtra(EXTRA_IS_UI_PAUSED, true);
+        pausedUIIntent.putExtra(TimerActivity.EXTRA_REBIND_SERVICE, true);
+        pausedUIIntent.putExtra(TIME_LEFT_EXTRA, mTimeLeft);
+        pausedUIIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+
+        return PendingIntent.getActivity(getApplicationContext(), (int) System.currentTimeMillis(),
+                pausedUIIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
 //
 //    private PendingIntent getResumePendingIntent(){
 //        if(mResumePendingIntent != null) return mResumePendingIntent;
@@ -297,7 +313,7 @@ public class TimerService extends Service {
             sIsTicking = true;
             sIsStarted = true;
             mTimeLeft = millisUntilFinished;
-            sendNotificationStartBroadcast();
+            sendTimerTickBroadcast(mTimeLeft);
             updateNotificationText();
             mNotificationManager.notify(TIMER_NOTIFICATION_ID, mNotificationBuilder.build());
         }

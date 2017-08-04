@@ -12,8 +12,8 @@ public class TimerPresenter {
         mTimerView = timerView;
     }
 
-    public void setTimer(long startTime){
-        mTimerView.onTimerSet(startTime);
+    public void setTimer(){
+        mTimerView.onTimerSet();
     }
 
     public void startTimer() {

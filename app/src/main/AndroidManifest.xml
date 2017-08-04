@@ -12,10 +12,10 @@
         android:theme="@style/AppTheme">
         <activity android:name=".main.MainActivity"
                   android:windowSoftInputMode="adjustPan">
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN"/>-->
-                <!--<category android:name="android.intent.category.LAUNCHER"/>-->
-            <!--</intent-filter>-->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
 
         </activity>
 
@@ -23,12 +23,8 @@
             android:name=".timer.TimerActivity"
             android:theme="@style/TimerTheme"
             android:label="Timer"
-            android:launchMode="singleTask"
+            android:screenOrientation="portrait"
             android:parentActivityName=".main.MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN"/>
-                <category android:name="android.intent.category.LAUNCHER"/>
-            </intent-filter>
 
         </activity>
 
