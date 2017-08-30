@@ -16,6 +16,8 @@ import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.LocalBroadcastManager;
 
 import com.tonykazanjian.codenamescompanion.UserPreferences;
+import com.tonykazanjian.codenamescompanion.main.MainActivity;
+import com.tonykazanjian.codenamescompanion.main.TimerFragment;
 
 import java.util.concurrent.TimeUnit;
 
@@ -156,8 +158,8 @@ public class TimerService extends Service {
         return mTimerBinder;
     }
 
-    class TimerBinder extends Binder {
-        TimerService getService() {
+    public class TimerBinder extends Binder {
+        public TimerService getService() {
             return TimerService.this;
         }
     }
@@ -234,9 +236,9 @@ public class TimerService extends Service {
     }
 
     private PendingIntent getRegularUIPendingIntent(){
-        Intent regularUIIntent = new Intent(getApplicationContext(), TimerActivity.class);
+        Intent regularUIIntent = new Intent(getApplicationContext(), MainActivity.class);
         regularUIIntent.putExtra(EXTRA_IS_UI_PAUSED, false);
-        regularUIIntent.putExtra(TimerActivity.EXTRA_REBIND_SERVICE, true);
+        regularUIIntent.putExtra(TimerFragment.EXTRA_REBIND_SERVICE, true);
         regularUIIntent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP| Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
         return PendingIntent.getActivity(getApplicationContext(), (int) System.currentTimeMillis(),
@@ -246,9 +248,9 @@ public class TimerService extends Service {
 
 
     private PendingIntent getPausedUIPendingIntent() {
-        Intent pausedUIIntent = new Intent(getApplicationContext(), TimerActivity.class);
+        Intent pausedUIIntent = new Intent(getApplicationContext(), MainActivity.class);
         pausedUIIntent.putExtra(EXTRA_IS_UI_PAUSED, true);
-        pausedUIIntent.putExtra(TimerActivity.EXTRA_REBIND_SERVICE, true);
+        pausedUIIntent.putExtra(TimerFragment.EXTRA_REBIND_SERVICE, true);
         pausedUIIntent.putExtra(TIME_LEFT_EXTRA, mTimeLeft);
         pausedUIIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 

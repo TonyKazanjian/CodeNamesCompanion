@@ -12,8 +12,8 @@
             android:title="@string/scoreboard" />
         <item
             android:id="@+id/nav_item_3"
-            android:icon="@drawable/ic_settings"
-            android:title="@string/settings" />
+            android:icon="@drawable/ic_timer_24dp"
+            android:title="@string/timer" />
     </group>
 
 </menu>

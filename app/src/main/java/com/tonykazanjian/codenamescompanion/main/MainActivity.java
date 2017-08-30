@@ -92,7 +92,7 @@ public class MainActivity extends AppCompatActivity {
                 setScoreboardFragment();
                 break;
             case R.id.nav_item_3:
-                setSettingsFragment();
+                setTimerFragment();
                 break;
         }
         mDrawerLayout.closeDrawer(Gravity.START);
@@ -107,6 +107,11 @@ public class MainActivity extends AppCompatActivity {
         if (mSelectedFragment != null) {
             getSupportFragmentManager().putFragment(outState, GameFragment.TAG, mSelectedFragment);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 
     @Override
@@ -132,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
         MenuItem timerItem = menu.findItem(R.id.action_timer);
         if (newGameItem != null && timerItem != null) {
             menu.findItem(R.id.action_new_game).setVisible(!drawerOpen);
-            menu.findItem(R.id.action_timer).setVisible(!drawerOpen);
+//            menu.findItem(R.id.action_timer).setVisible(!drawerOpen);
         }
         return super.onPrepareOptionsMenu(menu);
     }
@@ -167,9 +172,16 @@ public class MainActivity extends AppCompatActivity {
         transaction.commit();
     }
 
-    private void setSettingsFragment() {
+//    private void setSettingsFragment() {
+//        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+//        transaction.replace(R.id.content_frame, SettingsFragment.newInstance(), null);
+//        transaction.addToBackStack(null);
+//        transaction.commit();
+//    }
+
+    private void setTimerFragment(){
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.content_frame, SettingsFragment.newInstance(), null);
+        transaction.replace(R.id.content_frame, TimerFragment.newInstance(), null);
         transaction.addToBackStack(null);
         transaction.commit();
     }
