@@ -220,6 +220,9 @@ public class TimerFragment extends Fragment implements TimerView
 
     @Override
     public void onTimerResumed() {
+//        if (sIsFinished){
+//            onTimerStarted();
+//        }
         setButtonDrawable();
         Intent pauseIntent = new Intent(getContext(), TimerService.class);
         pauseIntent.setAction(TimerService.ACTION_RESUME);
@@ -315,8 +318,6 @@ public class TimerFragment extends Fragment implements TimerView
                     mStartPauseButton.setImageDrawable(getContext().getDrawable(R.drawable.ic_start_timer));
                     break;
                 case TimerService.NOTIFICATION_RESET_MSG:
-                    sIsStarted = false;
-                    sIsTicking = false;
                     mTimerProgress.setInstantProgress(1);
                     setTimerText(UserPreferences.getBaseTime(getContext()));
                     mStartPauseButton.setImageDrawable(getContext().getDrawable(R.drawable.ic_start_timer));
@@ -330,7 +331,9 @@ public class TimerFragment extends Fragment implements TimerView
         @Override
         public void onReceive(Context context, Intent intent) {
             mTimerProgress.setProgress(0);
-            mStartPauseButton.setOnClickListener(null);
+//            mStartPauseButton.setOnClickListener(null);
+//            sIsStarted = false;
+//            sIsTicking = false;
         }
     }
 }

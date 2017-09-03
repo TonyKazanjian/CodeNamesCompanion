@@ -113,6 +113,9 @@ public class TimerService extends Service {
                 mMyCountDownTimer.cancel();
                 mMyCountDownTimer = new MyCountDownTimer(UserPreferences.getBaseTime(getApplicationContext()), 1000);
                 mTimeLeft = UserPreferences.getBaseTime(this);
+                if (sIsFinished){
+                    sIsFinished = false;
+                }
                 sIsTicking = false;
                 sIsStarted = false;
                 updateNotificationAction(false);
