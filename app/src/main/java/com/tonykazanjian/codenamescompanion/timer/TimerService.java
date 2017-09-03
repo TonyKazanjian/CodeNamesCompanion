@@ -64,8 +64,8 @@ public class TimerService extends Service {
 
     private ResetReceiver mResetReceiver;
     //TODO - see if we need these pending intents
-//    private PendingIntent mPausePendingIntent;
-//    private PendingIntent mResumePendingIntent;
+    private PendingIntent mPausePendingIntent;
+    private PendingIntent mResumePendingIntent;
 
     @Override
     public void onCreate() {
@@ -223,14 +223,18 @@ public class TimerService extends Service {
     private void updateNotificationAction(boolean isTicking) {
         NotificationCompat.Builder builder = (mNotificationBuilder == null ?
                 getNotificationBuilder() : mNotificationBuilder);
+        NotificationCompat.Action action = builder.mActions.get(0);
+
         if (builder.mActions.size()>1) {
             builder.mActions.remove(0);
         }
         if (isTicking) {
             builder.mActions.add(0, getPauseAction(new Intent(getApplicationContext(), TimerService.class)));
+            action.actionIntent = getResumePendingIntent();
             builder.setContentIntent(getPausedUIPendingIntent());
         } else {
             builder.mActions.add(0, getResumeAction(new Intent(getApplicationContext(), TimerService.class)));
+            action.actionIntent = getPausePendingIntent();
             builder.setContentIntent(getRegularUIPendingIntent());
         }
     }
@@ -257,32 +261,32 @@ public class TimerService extends Service {
         return PendingIntent.getActivity(getApplicationContext(), (int) System.currentTimeMillis(),
                 pausedUIIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
+
+    private PendingIntent getResumePendingIntent(){
+        if(mResumePendingIntent != null) return mResumePendingIntent;
+        else {
+            Intent timerStartIntent = new Intent(getApplicationContext(), TimerService.class);
+            timerStartIntent.setAction(ACTION_RESUME);
+
+            mResumePendingIntent = PendingIntent.getService(getApplicationContext(), (int) System.currentTimeMillis(),
+                    timerStartIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        }
+
+        return mResumePendingIntent;
+    }
 //
-//    private PendingIntent getResumePendingIntent(){
-//        if(mResumePendingIntent != null) return mResumePendingIntent;
-//        else {
-//            Intent timerStartIntent = new Intent(getApplicationContext(), TimerActivity.class);
-//            timerStartIntent.setAction(ACTION_RESUME);
-//
-//            mResumePendingIntent = PendingIntent.getService(getApplicationContext(), (int) System.currentTimeMillis(),
-//                    timerStartIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-//        }
-//
-//        return mResumePendingIntent;
-//    }
-//
-//    private PendingIntent getPausePendingIntent(){
-//        if(mPausePendingIntent != null) return mPausePendingIntent;
-//        else {
-//            Intent timerPauseIntent = new Intent(getApplicationContext(), TimerActivity.class);
-//            timerPauseIntent.setAction(ACTION_PAUSE);
-//
-//            mPausePendingIntent = PendingIntent.getService(getApplicationContext(), (int) System.currentTimeMillis(),
-//                    timerPauseIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-//
-//            return mPausePendingIntent;
-//        }
-//    }
+    private PendingIntent getPausePendingIntent(){
+        if(mPausePendingIntent != null) return mPausePendingIntent;
+        else {
+            Intent timerPauseIntent = new Intent(getApplicationContext(), TimerService.class);
+            timerPauseIntent.setAction(ACTION_PAUSE);
+
+            mPausePendingIntent = PendingIntent.getService(getApplicationContext(), (int) System.currentTimeMillis(),
+                    timerPauseIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            return mPausePendingIntent;
+        }
+    }
 //
 //    private PendingIntent getRestartPendingIntent() {
 //
@@ -349,5 +353,9 @@ public class TimerService extends Service {
                 mNotificationManager.notify(TIMER_NOTIFICATION_ID, mNotificationBuilder.build());
             }
         }
+    }
+
+    public long getTimeLeft(){
+        return mTimeLeft;
     }
 }

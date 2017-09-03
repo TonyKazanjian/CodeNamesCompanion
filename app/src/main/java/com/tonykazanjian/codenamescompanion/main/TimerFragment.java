@@ -54,7 +54,6 @@ public class TimerFragment extends Fragment implements TimerView
 
     long mTimeLeft;
 
-    //TODO - see if we need to rebind
     private boolean mIsTimeServiceBound = false;
     private boolean mRebindingService = false;
 
@@ -64,6 +63,9 @@ public class TimerFragment extends Fragment implements TimerView
             TimerService.TimerBinder binder = (TimerService.TimerBinder) iBinder;
             mTimerService = binder.getService();
             Log.i(getContext().getClass().getCanonicalName(), "service connected");
+            mIsTimeServiceBound = true;
+
+            setTimerInfo();
 
             if (mRebindingService) {
                 onRebindService();
@@ -75,6 +77,14 @@ public class TimerFragment extends Fragment implements TimerView
             mTimerService = null;
         }
     };
+
+    private void doBindService(){
+        Intent intent = new Intent(getContext(), TimerService.class);
+        if (!mIsTimeServiceBound) {
+            getActivity().bindService(intent, mServiceConnection, Context.BIND_AUTO_CREATE);
+        }
+        Log.i(getContext().getClass().getCanonicalName(), "Service is bound");
+    }
 
     private void onRebindService() {
         if (mIsTimeServiceBound && mTimerService != null) {
@@ -89,7 +99,15 @@ public class TimerFragment extends Fragment implements TimerView
             }
         }
     }
-    
+
+    private void doUnbindService(){
+        if(mIsTimeServiceBound){
+            mIsTimeServiceBound = false;
+            getContext().unbindService(mServiceConnection);
+            mTimerService = null;
+        }
+    }
+
     public static TimerFragment newInstance(){
         return new TimerFragment();
     }
@@ -124,30 +142,26 @@ public class TimerFragment extends Fragment implements TimerView
         }
 
         mTimerPresenter = new TimerPresenter(this);
-        
+
         return rootView;
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        Intent intent = new Intent(getContext(), TimerService.class);
-        if (!mIsTimeServiceBound) {
-            getActivity().bindService(intent, mServiceConnection, Context.BIND_AUTO_CREATE);
-            mIsTimeServiceBound = true;
-        }
-        Log.i(getContext().getClass().getCanonicalName(), "Service is bound");
+        doBindService();
+        mTimerPresenter.setTimer();
+
     }
 
     @Override
-    public void onResume(){
+    public void onResume() {
         super.onResume();
+        setRetainInstance(true);
         mTimerTickReceiver = new TimerTickReceiver();
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(mTimerTickReceiver, new IntentFilter(TimerService.TIMER_BROADCAST_EVENT));
         mTimerFinishedReceiver = new TimerFinishedReceiver();
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(mTimerFinishedReceiver, new IntentFilter(TimerService.TIMER_FINISHED_INTENT_FILTER));
-
-        mTimerPresenter.setTimer();
     }
 
 
@@ -165,9 +179,6 @@ public class TimerFragment extends Fragment implements TimerView
     @Override
     public void onStop() {
         super.onStop();
-        getActivity().unbindService(mServiceConnection);
-        mIsTimeServiceBound = false;
-        mRebindingService = true;
         Log.i(getContext().getClass().getSimpleName(), "Service is unbound");
     }
 
@@ -177,18 +188,15 @@ public class TimerFragment extends Fragment implements TimerView
     }
 
     @Override
+    public void onDestroyView(){
+        super.onDestroyView();
+        doUnbindService();
+    }
+
+    @Override
     public void onTimerSet() {
         mStartPauseButton.setImageDrawable(getContext().getDrawable(R.drawable.ic_start_timer));
         mTimerProgress.setLinearProgress(true);
-        if (!sIsStarted) {
-            setTimerText(UserPreferences.getBaseTime(getContext()));
-            // setting up timer progress when activity is built
-            mTimerProgress.setInstantProgress(1);
-        }
-        else {
-            setTimerText(mTimeLeft);
-            mTimerProgress.setInstantProgress(mTimeLeft/ (float) UserPreferences.getBaseTime(getContext()));
-        }
 
         mStartPauseButton.setOnClickListener(new StartPauseClickListener());
         mResetButton.setOnClickListener(new View.OnClickListener() {
@@ -267,6 +275,18 @@ public class TimerFragment extends Fragment implements TimerView
         }
     }
 
+    private void setTimerInfo(){
+        long timeLeft;
+        if (!sIsStarted){
+            timeLeft = UserPreferences.getBaseTime(getContext());
+            mTimerProgress.setInstantProgress(1);
+        } else {
+            timeLeft = mTimerService.getTimeLeft();
+            mTimerProgress.setInstantProgress(timeLeft / (float) UserPreferences.getBaseTime(getContext()));
+        }
+        setTimerText(timeLeft);
+    }
+
     private void setTimerText(long timeLeft){
         mTimerText.setText(String.format("%02d:%02d", TimeUnit.MILLISECONDS.toMinutes(timeLeft) -
                         TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(timeLeft)),
@@ -292,7 +312,7 @@ public class TimerFragment extends Fragment implements TimerView
                     setButtonDrawable();
                     break;
                 case TimerService.NOTIFICATION_RESET_MSG:
-                    mTimerPresenter.setTimer();
+                    mTimerPresenter.resetTimer();
                     Intent resetIntent = new Intent(TimerService.RESET_TIMER_INTENT_FILTER);
                     LocalBroadcastManager.getInstance(getContext()).sendBroadcast(resetIntent);
                     break;
