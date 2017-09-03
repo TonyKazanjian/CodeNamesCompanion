@@ -309,17 +309,17 @@ public class TimerFragment extends Fragment implements TimerView
                     mTimerProgress.setInstantProgress(mTimeLeft / (float) UserPreferences.getBaseTime(context));
                     setTimerText(mTimeLeft -1);
                 case TimerService.NOTIFICATION_PLAY_MSG:
-                    setButtonDrawable();
+                    mStartPauseButton.setImageDrawable(getContext().getDrawable(R.drawable.ic_pause_24dp));
                     break;
                 case TimerService.NOTIFICATION_PAUSE_MSG:
-                    setButtonDrawable();
+                    mStartPauseButton.setImageDrawable(getContext().getDrawable(R.drawable.ic_start_timer));
                     break;
                 case TimerService.NOTIFICATION_RESET_MSG:
                     sIsStarted = false;
                     sIsTicking = false;
                     mTimerProgress.setInstantProgress(1);
                     setTimerText(UserPreferences.getBaseTime(getContext()));
-                    setButtonDrawable();
+                    mStartPauseButton.setImageDrawable(getContext().getDrawable(R.drawable.ic_start_timer));
                     break;
             }
         }

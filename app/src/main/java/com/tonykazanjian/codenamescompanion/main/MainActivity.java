@@ -134,10 +134,8 @@ public class MainActivity extends AppCompatActivity {
         // If the nav drawer is open, hide action items related to the content view
         boolean drawerOpen = mDrawerLayout.isDrawerOpen(mNavigationView);
         MenuItem newGameItem = menu.findItem(R.id.action_new_game);
-        MenuItem timerItem = menu.findItem(R.id.action_timer);
-        if (newGameItem != null && timerItem != null) {
+        if (newGameItem != null) {
             menu.findItem(R.id.action_new_game).setVisible(!drawerOpen);
-//            menu.findItem(R.id.action_timer).setVisible(!drawerOpen);
         }
         return super.onPrepareOptionsMenu(menu);
     }
