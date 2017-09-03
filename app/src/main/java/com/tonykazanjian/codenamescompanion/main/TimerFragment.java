@@ -195,7 +195,7 @@ public class TimerFragment extends Fragment implements TimerView
 
     @Override
     public void onTimerSet() {
-        mStartPauseButton.setImageDrawable(getContext().getDrawable(R.drawable.ic_start_timer));
+        setButtonDrawable();
         mTimerProgress.setLinearProgress(true);
 
         mStartPauseButton.setOnClickListener(new StartPauseClickListener());
@@ -312,7 +312,7 @@ public class TimerFragment extends Fragment implements TimerView
                     setButtonDrawable();
                     break;
                 case TimerService.NOTIFICATION_RESET_MSG:
-                    mTimerPresenter.resetTimer();
+                    mTimerPresenter.setTimer();
                     Intent resetIntent = new Intent(TimerService.RESET_TIMER_INTENT_FILTER);
                     LocalBroadcastManager.getInstance(getContext()).sendBroadcast(resetIntent);
                     break;
