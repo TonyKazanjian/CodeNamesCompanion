@@ -62,7 +62,6 @@ public class TimerService extends Service {
     private NotificationManager mNotificationManager;
     private NotificationCompat.Builder mNotificationBuilder;
 
-    private ResetReceiver mResetReceiver;
     //TODO - see if we need these pending intents
     private PendingIntent mPausePendingIntent;
     private PendingIntent mResumePendingIntent;
@@ -72,16 +71,12 @@ public class TimerService extends Service {
         super.onCreate();
         mMyCountDownTimer = new MyCountDownTimer(UserPreferences.getBaseTime(getApplicationContext()), 1000);
         mNotificationManager = (NotificationManager) getApplicationContext().getSystemService(NOTIFICATION_SERVICE);
-        mResetReceiver = new ResetReceiver();
-        LocalBroadcastManager.getInstance(getApplicationContext()).registerReceiver(mResetReceiver,
-                new IntentFilter(RESET_TIMER_INTENT_FILTER));
     }
 
     @Override
     public void onDestroy() {
         stopForeground(true);
         mNotificationManager.cancelAll();
-        LocalBroadcastManager.getInstance(getApplicationContext()).unregisterReceiver(mResetReceiver);
     }
 
     @Override
@@ -113,13 +108,8 @@ public class TimerService extends Service {
                 mMyCountDownTimer.cancel();
                 mMyCountDownTimer = new MyCountDownTimer(UserPreferences.getBaseTime(getApplicationContext()), 1000);
                 mTimeLeft = UserPreferences.getBaseTime(this);
-                if (sIsFinished){
-                    sIsFinished = false;
-                }
                 sIsTicking = false;
-                sIsStarted = false;
-                updateNotificationAction(false);
-                resetTimerInNotification();
+                resetTimerInNotification(false);
                 sendNotificationResetBroadcast();
                 break;
         }
@@ -180,6 +170,7 @@ public class TimerService extends Service {
         mNotificationBuilder =  new NotificationCompat.Builder(this)
                 .setCategory(NotificationCompat.CATEGORY_ALARM)
                 .setSmallIcon(android.R.drawable.ic_lock_idle_alarm)
+                .setContentTitle("Time left: ")
                 .setContentText(getTimerTextFormat(mTimeLeft))
                 .setContentIntent(getRegularUIPendingIntent())
                 .setAutoCancel(true)
@@ -218,7 +209,7 @@ public class TimerService extends Service {
     }
 
     private void updateNotificationText(){
-        getNotificationBuilder().setContentText(getTimerTextFormat(mTimeLeft));
+        mNotificationBuilder.setContentText(getTimerTextFormat(mTimeLeft));
     }
 
     //TODO - create paused and playing pending intents with extras for pause and play state
@@ -252,8 +243,6 @@ public class TimerService extends Service {
                 regularUIIntent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
-
-
     private PendingIntent getPausedUIPendingIntent() {
         Intent pausedUIIntent = new Intent(getApplicationContext(), MainActivity.class);
         pausedUIIntent.putExtra(EXTRA_IS_UI_PAUSED, true);
@@ -277,7 +266,7 @@ public class TimerService extends Service {
 
         return mResumePendingIntent;
     }
-//
+
     private PendingIntent getPausePendingIntent(){
         if(mPausePendingIntent != null) return mPausePendingIntent;
         else {
@@ -300,14 +289,11 @@ public class TimerService extends Service {
 //                timerRestartIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 //    }
 
-    private void resetTimerInNotification() {
+    private void resetTimerInNotification(boolean isTicking) {
         updateNotificationText();
-        if (!sIsFinished){
-            mNotificationManager.notify(TIMER_NOTIFICATION_ID, mNotificationBuilder.build());
-        } else {
-            mNotificationBuilder = null;
-            mNotificationBuilder = getNotificationBuilder();
-        }
+        updateNotificationAction(isTicking);
+        mNotificationBuilder.setContentTitle("Time left: ");
+        mNotificationManager.notify(TIMER_NOTIFICATION_ID, mNotificationBuilder.build());
     }
 
     private class MyCountDownTimer extends android.os.CountDownTimer {
@@ -337,24 +323,13 @@ public class TimerService extends Service {
             mNotificationBuilder.setContentTitle("Time's up!");
             mNotificationBuilder.setContentText("Your turn is over!");
             mNotificationBuilder.setOngoing(false);
-            mNotificationBuilder.mActions.clear();
+            mNotificationBuilder.mActions.remove(0);
             mNotificationBuilder.addAction(getResetAction(new Intent(getApplicationContext(), TimerService.class)));
             mNotificationBuilder.setDefaults(Notification.VISIBILITY_PUBLIC);
             mNotificationBuilder.setDefaults(Notification.DEFAULT_VIBRATE);
             mNotificationBuilder.setPriority(Notification.PRIORITY_HIGH);
             stopForeground(false);
             mNotificationManager.notify(TIMER_NOTIFICATION_ID, mNotificationBuilder.build());
-        }
-    }
-
-    public class ResetReceiver extends BroadcastReceiver {
-
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            if (sIsFinished) {
-                updateNotificationAction(false);
-                mNotificationManager.notify(TIMER_NOTIFICATION_ID, mNotificationBuilder.build());
-            }
         }
     }
 
