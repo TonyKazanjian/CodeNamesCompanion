@@ -209,7 +209,9 @@ public class TimerService extends Service {
     }
 
     private void updateNotificationText(){
-        mNotificationBuilder.setContentText(getTimerTextFormat(mTimeLeft));
+        if (mNotificationBuilder != null) {
+            mNotificationBuilder.setContentText(getTimerTextFormat(mTimeLeft));
+        }
     }
 
     //TODO - create paused and playing pending intents with extras for pause and play state

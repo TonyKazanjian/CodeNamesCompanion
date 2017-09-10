@@ -12,18 +12,23 @@ import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.util.TimeUtils;
+import android.support.v7.widget.PopupMenu;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AbsListView;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.pnikosis.materialishprogress.ProgressWheel;
 import com.tonykazanjian.codenamescompanion.R;
 import com.tonykazanjian.codenamescompanion.UserPreferences;
+import com.tonykazanjian.codenamescompanion.Utils;
 import com.tonykazanjian.codenamescompanion.timer.TimerPresenter;
 import com.tonykazanjian.codenamescompanion.timer.TimerService;
 import com.tonykazanjian.codenamescompanion.timer.TimerView;
@@ -117,7 +122,9 @@ public class TimerFragment extends Fragment implements TimerView
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.activity_timer, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_timer, container, false);
+
+        setHasOptionsMenu(true);
 
         mTimerText = (TextView)rootView.findViewById(R.id.timer_text);
         mStartPauseButton = (ImageButton) rootView.findViewById(R.id.start_pause_btn);
@@ -152,13 +159,12 @@ public class TimerFragment extends Fragment implements TimerView
     public void onStart() {
         super.onStart();
         doBindService();
-        mTimerPresenter.setTimer();
-
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        mTimerPresenter.setTimer();
         setRetainInstance(true);
         mTimerTickReceiver = new TimerTickReceiver();
         LocalBroadcastManager.getInstance(getContext()).registerReceiver(mTimerTickReceiver, new IntentFilter(TimerService.TIMER_BROADCAST_EVENT));
@@ -196,6 +202,46 @@ public class TimerFragment extends Fragment implements TimerView
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
+        super.onCreateOptionsMenu(menu, menuInflater);
+
+        MenuInflater inflater = getActivity().getMenuInflater();
+        inflater.inflate(R.menu.menu_timer, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+            switch (item.getItemId()) {
+                case R.id.fifty_seconds:
+                    setBaseTime(this.getContext(),Utils.TimeUtil.getFiftySeconds());
+                    break;
+                case R.id.seventyfive_seconds:
+                    setBaseTime(this.getContext(),Utils.TimeUtil.getSeventyFiveSeconds());
+                    break;
+                case R.id.ninety_seconds:
+                    setBaseTime(this.getContext(),Utils.TimeUtil.getNinetySeconds());
+                    break;
+                case R.id.two_minutes:
+                    setBaseTime(this.getContext(),Utils.TimeUtil.getTwoMinutes());
+                    break;
+                case R.id.three_minutes:
+                    setBaseTime(this.getContext(),Utils.TimeUtil.getThreeMinutes());
+                    break;
+            }
+
+        return true;
+    }
+
+    private void setBaseTime(Context context, long baseTime){
+        if (sIsFinished || !sIsTicking) {
+            UserPreferences.setBaseTime(context, (int) baseTime);
+            mTimerPresenter.resetTimer();
+        } else {
+            Toast.makeText(context, "Please pause the timer before setting a new time limit", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
     public void onTimerSet() {
         setButtonDrawable();
         mTimerProgress.setLinearProgress(true);
@@ -222,9 +268,6 @@ public class TimerFragment extends Fragment implements TimerView
 
     @Override
     public void onTimerResumed() {
-//        if (sIsFinished){
-//            onTimerStarted();
-//        }
         setButtonDrawable();
         Intent pauseIntent = new Intent(getContext(), TimerService.class);
         pauseIntent.setAction(TimerService.ACTION_RESUME);

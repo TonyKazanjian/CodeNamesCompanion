@@ -92,9 +92,9 @@ public class GameFragment extends Fragment implements GameView, WordInputDialog.
             mGridList = (List<WordCard>) savedInstanceState.getSerializable(UserPreferences.GRID_WORDS_KEY);
         }
 
-        if (mGridList == null) {
-            initDialog();
-        }
+//        if (mGridList == null) {
+//            initDialog();
+//        }
     }
     @Nullable
     @Override
