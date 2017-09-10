@@ -168,7 +168,7 @@ public class TimerService extends Service {
         }
 
         mNotificationBuilder =  new NotificationCompat.Builder(this)
-                .setCategory(NotificationCompat.CATEGORY_ALARM)
+                .setCategory(NotificationCompat.CATEGORY_PROGRESS)
                 .setSmallIcon(android.R.drawable.ic_lock_idle_alarm)
                 .setContentTitle("Time left: ")
                 .setContentText(getTimerTextFormat(mTimeLeft))
@@ -318,18 +318,21 @@ public class TimerService extends Service {
             sIsFinished = true;
             sIsTicking = false;
             sIsStarted = false;
+            NotificationCompat.Builder finishNotificationBuilder = new NotificationCompat.Builder(getApplicationContext())
+                    .setCategory(NotificationCompat.CATEGORY_ALARM)
+                    .setSmallIcon(android.R.drawable.ic_lock_idle_alarm)
+                    .setContentTitle("Time's up!")
+                    .setContentText("Your turn is over!")
+                    .setContentIntent(getRegularUIPendingIntent())
+                    .setOngoing(false)
+                    .addAction(getResetAction(new Intent(getApplicationContext(), TimerService.class)))
+                    .setDefaults(Notification.VISIBILITY_PUBLIC)
+                    .setDefaults(Notification.DEFAULT_VIBRATE)
+                    .setPriority(Notification.PRIORITY_HIGH);
 
             LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(new Intent(TIMER_FINISHED_INTENT_FILTER));
-            mNotificationBuilder.setContentTitle("Time's up!");
-            mNotificationBuilder.setContentText("Your turn is over!");
-            mNotificationBuilder.setOngoing(false);
-            mNotificationBuilder.mActions.remove(0);
-            mNotificationBuilder.addAction(getResetAction(new Intent(getApplicationContext(), TimerService.class)));
-            mNotificationBuilder.setDefaults(Notification.VISIBILITY_PUBLIC);
-            mNotificationBuilder.setDefaults(Notification.DEFAULT_VIBRATE);
-            mNotificationBuilder.setPriority(Notification.PRIORITY_HIGH);
             stopForeground(false);
-            mNotificationManager.notify(TIMER_NOTIFICATION_ID, mNotificationBuilder.build());
+            mNotificationManager.notify(TIMER_NOTIFICATION_ID, finishNotificationBuilder.build());
         }
     }
 

@@ -16,7 +16,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.pnikosis.materialishprogress.ProgressWheel;
@@ -274,6 +276,7 @@ public class TimerFragment extends Fragment implements TimerView
                     mTimerPresenter.pauseTimer();
                 }
             } else {
+                mTimerPresenter.resetTimer();
                 mTimerPresenter.resumeTimer();
                 sIsFinished = false;
             }
@@ -330,7 +333,14 @@ public class TimerFragment extends Fragment implements TimerView
 
         @Override
         public void onReceive(Context context, Intent intent) {
+            sIsFinished = true;
+            sIsTicking = false;
             mTimerProgress.setProgress(0);
+            setButtonDrawable();
+//            mStartPauseButton.setVisibility(View.GONE);
+//            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+//            lp.setMargins(0,0,0,0);
+//            mResetButton.setLayoutParams(lp);
 //            mStartPauseButton.setOnClickListener(null);
 //            sIsStarted = false;
 //            sIsTicking = false;

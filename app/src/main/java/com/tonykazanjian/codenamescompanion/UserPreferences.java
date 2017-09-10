@@ -49,8 +49,8 @@ public class UserPreferences {
     }
 
     public static long getBaseTime(Context context) {
-        return ((getSharedPreferences(context).getInt(BASE_TIME_KEY, 0) == 0 ? 10*1000 :
-                10*1000));
+        return ((getSharedPreferences(context).getInt(BASE_TIME_KEY, 0) == 0 ? Utils.TimeUtil.getFiftySeconds() :
+                getSharedPreferences(context).getInt(BASE_TIME_KEY, 0)));
     }
 
     public static void setSpinnerPosition(Context context, int spinnerPosition) {
