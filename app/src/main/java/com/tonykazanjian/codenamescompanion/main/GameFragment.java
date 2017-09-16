@@ -205,7 +205,7 @@ public class GameFragment extends Fragment implements GameView, WordInputDialog.
     private void setTextInputAndKeyboardInteraction(TextInputEditText[] textInputEditTexts) {
 
         for (final TextInputEditText editText : textInputEditTexts){
-            editText.setFocusable(false);
+            editText.setFocusable(true);
             editText.setOnFocusChangeListener(new CodeInputListener());
             Utils.setKeyboardDoneAction(editText, new Utils.KeyboardInterface() {
                 @Override
