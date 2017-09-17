@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Binder;
+import android.os.CountDownTimer;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
@@ -58,7 +59,7 @@ public class TimerService extends Service {
     public static boolean sIsStarted = false;
     public static boolean sIsFinished = false;
 
-    private MyCountDownTimer mMyCountDownTimer;
+    private CountDownTimer mMyCountDownTimer = null;
     private NotificationManager mNotificationManager;
     private NotificationCompat.Builder mNotificationBuilder;
 
@@ -69,7 +70,8 @@ public class TimerService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        mMyCountDownTimer = new MyCountDownTimer(UserPreferences.getBaseTime(getApplicationContext()), 1000);
+        mTimeLeft = UserPreferences.getBaseTime(getApplicationContext());
+//        mMyCountDownTimer = new MyCountDownTimer(UserPreferences.getBaseTime(getApplicationContext()), 1000);
         mNotificationManager = (NotificationManager) getApplicationContext().getSystemService(NOTIFICATION_SERVICE);
     }
 
@@ -84,6 +86,7 @@ public class TimerService extends Service {
 
         switch (intent.getAction()) {
             case ACTION_START:
+                mMyCountDownTimer = startCountdownTimer(UserPreferences.getBaseTime(getApplicationContext()), mTimeLeft);
                 mMyCountDownTimer.start();
                 startForeground(TIMER_NOTIFICATION_ID, getNotificationBuilder().build());
                 mNotificationManager.notify(TIMER_NOTIFICATION_ID, getNotificationBuilder().build());
@@ -97,7 +100,7 @@ public class TimerService extends Service {
 
                 break;
             case ACTION_RESUME:
-                mMyCountDownTimer = new MyCountDownTimer(mTimeLeft, 1000);
+                mMyCountDownTimer = startCountdownTimer(UserPreferences.getBaseTime(getApplicationContext()), mTimeLeft);
                 mMyCountDownTimer.start();
                 updateNotificationAction(true);
                 sendNotificationStartBroadcast();
@@ -106,7 +109,7 @@ public class TimerService extends Service {
                 break;
             case ACTION_RESET:
                 mMyCountDownTimer.cancel();
-                mMyCountDownTimer = new MyCountDownTimer(UserPreferences.getBaseTime(getApplicationContext()), 1000);
+                mMyCountDownTimer = startCountdownTimer(UserPreferences.getBaseTime(getApplicationContext()), mTimeLeft);
                 mTimeLeft = UserPreferences.getBaseTime(this);
                 sIsTicking = false;
                 resetTimerInNotification(false);
@@ -298,44 +301,43 @@ public class TimerService extends Service {
         mNotificationManager.notify(TIMER_NOTIFICATION_ID, mNotificationBuilder.build());
     }
 
-    private class MyCountDownTimer extends android.os.CountDownTimer {
+    private CountDownTimer startCountdownTimer (final long totalTime, final long timeLeft) {
+        long countDownInterval = 1;
 
-        MyCountDownTimer(long millisInFuture, long countDownInterval) {
-            super(millisInFuture, countDownInterval);
-        }
+        return new CountDownTimer(timeLeft, countDownInterval) {
+            @Override
+            public void onTick(long l) {
+                sIsFinished = false;
+                sIsTicking = true;
+                sIsStarted = true;
+                mTimeLeft = l;
+                sendTimerTickBroadcast(l);
+                updateNotificationText();
+                mNotificationManager.notify(TIMER_NOTIFICATION_ID, mNotificationBuilder.build());
+            }
 
-        @Override
-        public void onTick(long millisUntilFinished) {
-            sIsFinished = false;
-            sIsTicking = true;
-            sIsStarted = true;
-            mTimeLeft = millisUntilFinished;
-            sendTimerTickBroadcast(mTimeLeft);
-            updateNotificationText();
-            mNotificationManager.notify(TIMER_NOTIFICATION_ID, mNotificationBuilder.build());
-        }
+            @Override
+            public void onFinish() {
+                sIsFinished = true;
+                sIsTicking = false;
+                sIsStarted = false;
+                NotificationCompat.Builder finishNotificationBuilder = new NotificationCompat.Builder(getApplicationContext())
+                        .setCategory(NotificationCompat.CATEGORY_ALARM)
+                        .setSmallIcon(android.R.drawable.ic_lock_idle_alarm)
+                        .setContentTitle("Time's up!")
+                        .setContentText("Your turn is over!")
+                        .setContentIntent(getRegularUIPendingIntent())
+                        .setOngoing(false)
+                        .addAction(getResetAction(new Intent(getApplicationContext(), TimerService.class)))
+                        .setDefaults(Notification.VISIBILITY_PUBLIC)
+                        .setDefaults(Notification.DEFAULT_VIBRATE)
+                        .setPriority(Notification.PRIORITY_HIGH);
 
-        @Override
-        public void onFinish() {
-            sIsFinished = true;
-            sIsTicking = false;
-            sIsStarted = false;
-            NotificationCompat.Builder finishNotificationBuilder = new NotificationCompat.Builder(getApplicationContext())
-                    .setCategory(NotificationCompat.CATEGORY_ALARM)
-                    .setSmallIcon(android.R.drawable.ic_lock_idle_alarm)
-                    .setContentTitle("Time's up!")
-                    .setContentText("Your turn is over!")
-                    .setContentIntent(getRegularUIPendingIntent())
-                    .setOngoing(false)
-                    .addAction(getResetAction(new Intent(getApplicationContext(), TimerService.class)))
-                    .setDefaults(Notification.VISIBILITY_PUBLIC)
-                    .setDefaults(Notification.DEFAULT_VIBRATE)
-                    .setPriority(Notification.PRIORITY_HIGH);
-
-            LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(new Intent(TIMER_FINISHED_INTENT_FILTER));
-            stopForeground(false);
-            mNotificationManager.notify(TIMER_NOTIFICATION_ID, finishNotificationBuilder.build());
-        }
+                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(new Intent(TIMER_FINISHED_INTENT_FILTER));
+                stopForeground(false);
+                mNotificationManager.notify(TIMER_NOTIFICATION_ID, finishNotificationBuilder.build());
+            }
+        };
     }
 
     public long getTimeLeft(){
