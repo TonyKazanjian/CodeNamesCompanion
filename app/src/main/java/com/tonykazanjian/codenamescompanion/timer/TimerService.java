@@ -71,7 +71,6 @@ public class TimerService extends Service {
     public void onCreate() {
         super.onCreate();
         mTimeLeft = UserPreferences.getBaseTime(getApplicationContext());
-//        mMyCountDownTimer = new MyCountDownTimer(UserPreferences.getBaseTime(getApplicationContext()), 1000);
         mNotificationManager = (NotificationManager) getApplicationContext().getSystemService(NOTIFICATION_SERVICE);
     }
 
