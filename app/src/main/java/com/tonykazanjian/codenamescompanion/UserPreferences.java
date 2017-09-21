@@ -53,14 +53,6 @@ public class UserPreferences {
                 getSharedPreferences(context).getInt(BASE_TIME_KEY, 0)));
     }
 
-    public static void setSpinnerPosition(Context context, int spinnerPosition) {
-        getSharedPreferences(context).edit().putInt(SPINNER_POSITION, spinnerPosition).apply();
-    }
-
-    public static int getSpinnerPosition(Context context){
-        return getSharedPreferences(context).getInt(SPINNER_POSITION, 0);
-    }
-
     public static void setCardNumber(Context context, int cardNumber) {
         getSharedPreferences(context).edit().putInt(CARD_NUMBER, cardNumber).apply();
     }
@@ -74,7 +66,8 @@ public class UserPreferences {
     }
 
     public static int getCheckedButton(Context context) {
-        return getSharedPreferences(context).getInt(CHECKED_BUTTON, 0);
+        return ((getSharedPreferences(context).getInt(CHECKED_BUTTON, 0) == 0 ? R.id.radioButtonEight :
+                getSharedPreferences(context).getInt(CHECKED_BUTTON, 0)));
     }
 
     public static SharedPreferences getSharedPreferences(Context context) {
