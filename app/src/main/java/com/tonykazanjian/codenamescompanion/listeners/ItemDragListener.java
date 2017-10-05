@@ -52,6 +52,7 @@ public class ItemDragListener implements View.OnDragListener{
             case DragEvent.ACTION_DROP:
                 srcAdapter = (ItemBaseAdapter) (oldParent.getAdapter());
                 mGameView.onViewBGChanged(newParent, false);
+                mGameView.onDragStarted(true);
 
                 destAdapter = (ItemBaseAdapter) newParent.getAdapter();
                 destList = ((ItemBaseAdapter) destAdapter).getWordCards();

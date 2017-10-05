@@ -307,18 +307,20 @@ public class GameFragment extends Fragment implements GameView, WordInputDialog.
 
     public void removeAllCards(ItemBaseAdapter[] adapters){
 
-        for (int i = 0; i < adapters.length; i++) {
-            if (adapters[i] != null) {
-                adapters[i].clearWordCards();
-                adapters[i].notifyDataSetChanged();
+        for (ItemBaseAdapter adapter : adapters) {
+            if (adapter != null) {
+                adapter.clearWordCards();
+                adapter.notifyDataSetChanged();
             }
         }
     }
 
     public void clearEditTexts(TextInputEditText[] textInputEditTexts){
-        for (int i = 0; i < textInputEditTexts.length; i++){
-            if (textInputEditTexts[i] != null){
-                textInputEditTexts[i].getText().clear();
+        if (textInputEditTexts !=  null) {
+            for (TextInputEditText textInputEditText : textInputEditTexts) {
+                if (textInputEditText != null) {
+                    textInputEditText.getText().clear();
+                }
             }
         }
     }
