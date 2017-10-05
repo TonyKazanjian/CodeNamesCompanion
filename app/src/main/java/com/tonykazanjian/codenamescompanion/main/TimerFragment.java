@@ -378,15 +378,9 @@ public class TimerFragment extends Fragment implements TimerView
         public void onReceive(Context context, Intent intent) {
             sIsFinished = true;
             sIsTicking = false;
+            setTimerText(0);
             mTimerProgress.setProgress(0);
             setButtonDrawable();
-//            mStartPauseButton.setVisibility(View.GONE);
-//            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-//            lp.setMargins(0,0,0,0);
-//            mResetButton.setLayoutParams(lp);
-//            mStartPauseButton.setOnClickListener(null);
-//            sIsStarted = false;
-//            sIsTicking = false;
         }
     }
 }
