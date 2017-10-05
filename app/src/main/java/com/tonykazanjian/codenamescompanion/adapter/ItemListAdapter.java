@@ -1,9 +1,10 @@
 package com.tonykazanjian.codenamescompanion.adapter;
 
-import android.app.Activity;
 import android.content.Context;
+import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.TouchDelegate;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -62,7 +63,24 @@ public class ItemListAdapter extends ItemBaseAdapter {
             super(itemView);
             text = (TextView) itemView.findViewById(R.id.word_text);
             mCloseBtn = (ImageView)itemView.findViewById(R.id.close_btn);
+
+            expandTouchArea(itemView, mCloseBtn, 20);
         }
+    }
+
+    public void expandTouchArea(final View bigView, final View smallView, final int extraPadding) {
+        bigView.post(new Runnable() {
+            @Override
+            public void run() {
+                Rect rect = new Rect();
+                smallView.getHitRect(rect);
+                rect.top -= extraPadding;
+                rect.left -= extraPadding;
+                rect.right += extraPadding;
+                rect.bottom += extraPadding;
+                bigView.setTouchDelegate(new TouchDelegate(rect, smallView));
+            }
+        });
     }
 
 
